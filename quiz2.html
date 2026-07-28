@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <title>窥视者问卷 · 味味舍</title>
+    <style>
+        /* 返回按钮 */
+        .back-to-home {
+            position: fixed;
+            top: 12px;
+            left: 12px;
+            z-index: 99999;
+            background: rgba(255,255,255,0.92);
+            border: 1px solid #ccc3b9;
+            border-radius: 30px;
+            padding: 6px 16px;
+            font-size: 13px;
+            color: #7a6f66;
+            cursor: pointer;
+            font-family: 'Georgia', serif;
+            letter-spacing: 1px;
+            text-decoration: none;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+            backdrop-filter: blur(4px);
+            transition: 0.2s;
+        }
+        .back-to-home:hover { background: #e3d8ce; }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: #f4ede8;
+            font-family: 'Segoe UI', 'Noto Sans', system-ui, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+        }
+        .cover {
+            max-width: 640px;
+            width: 100%;
+            background: #ffffff;
+            border: 1px solid #ccc3b9;
+            padding: 44px 40px 38px 40px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.03);
+            margin-bottom: 10px;
+        }
+        .cover h1 {
+            font-weight: 300;
+            font-size: 28px;
+            letter-spacing: 8px;
+            color: #1f1b18;
+            text-align: center;
+            border-bottom: 1px solid #ddd2c8;
+            padding-bottom: 14px;
+            margin-bottom: 16px;
+        }
+        .cover .note {
+            font-size: 12px;
+            color: #3d3732;
+            line-height: 1.8;
+            padding: 0 4px;
+            border-left: 2px solid #c9bbb0;
+            padding-left: 20px;
+            margin: 12px 0 18px 0;
+        }
+        .cover .note strong { font-weight: 500; color: #1a1410; }
+        .cover .hint {
+            font-size: 10px;
+            color: #7a6f66;
+            text-align: right;
+            border-top: 1px dashed #d4c8bd;
+            padding-top: 12px;
+            letter-spacing: 1px;
+        }
+        .cover .btn-enter {
+            display: block;
+            margin: 24px auto 0 auto;
+            background: #1f1b18;
+            color: #f0e9e2;
+            border: none;
+            padding: 12px 48px;
+            font-size: 15px;
+            letter-spacing: 5px;
+            cursor: pointer;
+            border-radius: 60px;
+            transition: 0.15s;
+            font-weight: 300;
+        }
+        .cover .btn-enter:hover { background: #2e2621; transform: scale(1.01); }
+        .cover .disabled-tip { font-size: 11px; color: #a3968c; text-align: center; margin-top: 14px; }
+        .cover .disabled-tip span { border-bottom: 0.5px dashed #b3a59a; cursor: not-allowed; }
+        .paper {
+            max-width: 800px;
+            width: 100%;
+            background: #ffffff;
+            border: 1px solid #ddd3c9;
+            padding: 34px 30px;
+            box-shadow: 0 12px 40px rgba(0,0,0,0.02);
+            display: none;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            border-bottom: 1px solid #dacfc4;
+            padding-bottom: 8px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+        .title { font-weight: 350; letter-spacing: 2px; font-size: 20px; color: #2b231e; }
+        .counter {
+            background: #efe7df;
+            padding: 6px 18px;
+            border-radius: 40px;
+            font-size: 14px;
+            color: #3b312b;
+            border: 1px solid #d4c7bb;
+        }
+        .question-block { margin: 8px 0 20px 0; min-height: 80px; }
+        .q-text {
+            font-size: 21px;
+            font-weight: 360;
+            color: #1d1713;
+            line-height: 1.4;
+            padding: 10px 0 14px 22px;
+            border-left: 4px solid #9f887a;
+            background: #fcf8f4;
+            border-radius: 0 8px 8px 0;
+        }
+        .options { display: flex; flex-direction: column; gap: 8px; margin-top: 18px; }
+        .opt {
+            background: #f4efe9;
+            border: 1px solid #d3c8bd;
+            border-radius: 60px;
+            padding: 12px 22px;
+            color: #221b17;
+            cursor: pointer;
+            transition: all 0.12s;
+            font-size: 16px;
+            font-weight: 330;
+            box-shadow: inset 0 1px 3px #ffffffb0;
+        }
+        .opt:hover { background: #e8ded4; border-color: #a48e7e; transform: scale(1.005); }
+        .opt.selected { background: #d4c4b6; border-color: #7f6a5c; font-weight: 400; color: #110d0a; }
+        .possession-overlay {
+            position: fixed; top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: #0b0000; z-index: 999;
+            pointer-events: none;
+            display: flex; flex-wrap: wrap;
+            align-content: flex-start;
+            justify-content: center;
+            padding: 30px 20px;
+            overflow: hidden;
+            animation: rainFade 2.8s forwards;
+        }
+        .possession-overlay .line {
+            display: block; width: 100%;
+            font-size: 22px; font-weight: 800;
+            letter-spacing: 4px;
+            text-shadow: 0 0 20px #d62b1a, 0 0 5px #b30000;
+            color: #d1341e; background: transparent;
+            line-height: 2.1; white-space: nowrap;
+            animation: scrollLine 5s linear infinite;
+            opacity: 0.9; margin: 2px 0;
+            flex-shrink: 0;
+        }
+        .possession-overlay .line:nth-child(odd) { animation-direction: reverse; font-size: 26px; opacity: 0.7; letter-spacing: 8px; }
+        .possession-overlay .line:nth-child(3n) { font-size: 30px; letter-spacing: 10px; color: #bf2b18; text-shadow: 0 0 40px #ff3311; animation-duration: 7s; }
+        .possession-overlay .line:nth-child(5n+2) { font-size: 18px; letter-spacing: 12px; opacity: 0.6; animation-duration: 9s; }
+        .possession-overlay .line:nth-child(7n+4) { font-size: 32px; color: #a82a1a; text-shadow: 0 0 50px #b3240c; animation-duration: 6s; }
+        @keyframes scrollLine { 0% { transform: translateX(120%); } 100% { transform: translateX(-120%); } }
+        @keyframes rainFade { 0% { opacity: 0; background: #050000; } 8% { opacity: 1; background: #100202; } 75% { opacity: 1; background: #0c0101; } 98% { opacity: 0.8; background: #0a0000; } 100% { opacity: 0; pointer-events: none; } }
+        .reset-area { display: flex; justify-content: flex-end; margin-top: 30px; }
+        .reset-btn {
+            background: transparent; border: 1px solid #c8bbb0;
+            padding: 8px 34px; border-radius: 60px;
+            color: #3b322c; font-size: 14px; cursor: pointer;
+            transition: 0.12s; letter-spacing: 2px;
+        }
+        .reset-btn:hover { background: #e3d8ce; border-color: #9f8b7c; }
+        .muted-extra { color: #9b8e84; margin-top: 24px; font-size: 12px; text-align: center; }
+    </style>
+</head>
+<body>
+<a class="back-to-home" href="index.html">← 返回</a>
+<div class="cover" id="coverBlock">
+    <h1>⟡ 警 告 ⟡</h1>
+    <div class="note">
+        <strong>阅读提示：</strong> 以下内容包含关于边界侵蚀、强烈控制、偷窥、精神渗透、身体侵入、隐秘观察与权力交换的虚构情境。部分描写可能唤起压抑或不安，请确认你具备足够的心理空间。<br>
+        请基于真实感受作答，所有场景均为虚构。
+    </div>
+    <div class="note" style="border-left-color:#ac988a; margin-top:6px;">
+        <strong>建议：</strong> 如果你对"被注视"、"被控制"、产生被凝视、被追踪的幻觉，或对"下药""禁锢"类敏感，请慎重考虑是否继续。
+    </div>
+    <div class="hint">内容面向18岁以上 · 你永远不知道谁在看着你</div>
+    <button class="btn-enter" id="enterBtn">我已了解 · 进入</button>
+    <div class="disabled-tip"><span>我尚未准备好</span> (无法点击)</div>
+</div>
+
+<div class="paper" id="surveyBlock">
+    <div class="header">
+        <span class="title">窥 视 者</span>
+        <span class="counter" id="qCounter">1 / 50</span>
+    </div>
+    <div class="question-block">
+        <div class="q-text" id="questionText">加载中…</div>
+    </div>
+    <div class="options" id="optionsContainer"></div>
+    <div class="reset-area">
+        <button class="reset-btn" id="resetSurvey">⟲ 重新选择</button>
+    </div>
+    <div class="muted-extra">每一个拒绝都会加深他的凝视</div>
+</div>
+
+<script>
+(function() {
+    let currentIndex = 0;
+    let answers = [];
+    let quizStarted = false;
+
+    const container = document.getElementById('optionsContainer');
+    const qText = document.getElementById('questionText');
+    const counter = document.getElementById('qCounter');
+    const resetBtn = document.getElementById('resetSurvey');
+    const cover = document.getElementById('coverBlock');
+    const survey = document.getElementById('surveyBlock');
+    const enterBtn = document.getElementById('enterBtn');
+
+    function buildQuestion(idx, pastAns) {
+        const pool = [
+            `你是否有过被人注视的感觉？即使窗外空无一人。`,
+            `你是否曾经忘记拉上窗帘？心里有没有一丝异样？`,
+            `你能接受邻居在阳台偶尔看向你的窗户吗？`,
+            `如果发现有人翻过你晾晒的内衣，你第一反应是愤怒还是……？`,
+            `你试过半夜裸身走到窗边吗？哪怕只是一瞬间。`,
+            `你是否曾幻想过被隔壁的人偷听自慰的声音？`,
+            `如果你发现门锁有被撬过的痕迹，你会报警还是先检查床底？`,
+            `你相信有人会通过锁孔窥视室内吗？`,
+            `如果半夜三点听见隔壁传来你的名字，你会害怕还是好奇？`,
+            `你是否曾在洗澡时感觉有人在看？`,
+            `你愿不愿意被一个沉默的邻居每天记录你的作息？`,
+            `如果捡到一张你睡姿的照片，角度明显是窗外拍的……你会留着吗？`,
+            `你对于"被监视"会产生生理性的兴奋吗？`,
+            `如果确认有人私藏你的贴身衣物，你想拿回来还是……装作不知道？`,
+            `你希望邻居用备用钥匙在深夜潜入你的房间吗？`,
+            `如果他在你的饮料里放入溶解的药片，你会警觉还是喝下？`,
+            `你想不想在睡梦中被手指磨蹭阴唇，醒来却找不到人？`,
+            `你愿不愿意在昏沉中被分开双腿，被舌尖反复舔舐阴蒂？`,
+            `如果邻居拍下了你熟睡时掰开小穴的照片，你希望他寄给你吗？`,
+            `你幻想过被隔壁男人用你的内裤蒙住眼睛，然后被他……？`,
+            `你能接受他趁你不在躺在你的床上自慰，并把精液涂在你的内裤上吗？`,
+            `你是否想尝试被乙醚捂住口鼻，在失去意识前被进入体内？`,
+            `你希望邻居在你洗澡时潜入，隔着浴帘抚摸你的身体轮廓？`,
+            `如果你发现阴道里有不属于你的体液，你会先自慰还是先报警？`,
+            `你愿不愿意被绑在椅子上，看着邻居慢条斯理地磨蹭你的大腿根部？`,
+            `他一边用你的内裤塞住你的嘴，一边用龟头磨你的阴唇，你湿了吗？`,
+            `想不想在深夜被撬开嘴灌入不明液体，然后任由他摆布？`,
+            `你是否发现被隔壁的男人连续用药，醒来时发现阴道红肿？`,
+            `现在开始，一边回答一边用指尖揉搓阴蒂——邻居在窗外看着你自慰。`,
+            `你愿意被他用领带勒住脖子，在轻微窒息中高潮吗？`,
+            `如果他在你的小穴里埋入一个遥控跳蛋，并让你去超市……你会听话吗？`,
+            `他想在你的乳房上烙印他的瞳孔图案，你会因疼痛而兴奋吗？`,
+            `你能否接受他在你熟睡时给你剃掉阴毛，并收藏起来？`,
+            `你希望他用冰凉的按摩棒慢慢插入你的后穴，同时捂住你的嘴？`,
+            `他会把你囚禁在隔音的房间里每天替你口交，但不让你高潮。`,
+            `你愿意每天凌晨被他的敲门声惊醒，然后跪着开门迎接他的鸡巴吗？`,
+            `他想用你的尿液洗脸，并说这是爱的洗礼。`,
+            `如果他在你的子宫口涂上风油精，你会痛苦扭动还是求他操你？`,
+            `你希望他在你耳边重复："我看见你每一下自慰，你的身体早就属于我了。"`,
+            `你敢不敢在深夜打开窗户，让他用手电筒照亮你的阴部？`,
+            `他给你下了缓释春药，你会在药效发作时主动敲他的门吗？`,
+            `你是否幻想过被他从背后捂住口鼻，强行按在窗台上操干？`,
+            `现在一边自慰一边幻想邻居的脸正贴着你的窗户，他命令你高潮。`,
+            `你愿意被关进地下室，只靠他的精液和尿液维生吗？`,
+            `他想在你的阴道里放入一个刻着他名字的金属塞，永远不取出。`,
+            `如果你试图逃跑，他会打断你的脚踝并继续操你。`,
+            `他趁你熟睡时在你的后穴里塞入跳蛋，遥控器在他手里——你会扭动还是继续装睡？`,
+            `他想让你怀孕，并作为他的私有财产。`,
+            `如果你报警，他会把录像发给所有人，并标注"自愿"。`,
+            `最终：你愿意把整个灵魂交给他，成为他永远的私有物，连呼吸都得到他的许可随时被窥视、被使用吗？`
+        ];
+
+        let qBase = pool[idx] || `他正透过钥匙孔看着你，你想让他进来吗？`;
+        let extra = '';
+        if (idx >= 12 && idx < 22) extra = '  (想象窗帘没有拉紧)';
+        else if (idx >= 22 && idx < 34) extra = '  (一边感受被注视一边摸自己的阴蒂)';
+        else if (idx >= 34 && idx < 44) extra = '  (自慰时幻想他用龟头顶着你的会阴)';
+        else if (idx >= 44) extra = '  (加快速度，想象他就在你身后，鸡巴抵着你的后颈)';
+        if (idx > 8 && !extra.includes('幻想')) extra += ' ⤷ 他的视线正黏在你的阴部。';
+
+        const question = qBase + extra;
+        let opts = [];
+        if (idx < 10) opts = ['A. 从未  不感兴趣', 'B. 有一点好奇', 'C. 可能暗中兴奋', 'D. 拒绝 (他会记得)'];
+        else if (idx < 22) opts = ['A. 是的  我想要', 'B. 羞耻但刺激', 'C. 害怕但接受', 'D. 不要 (但你的身体会背叛)'];
+        else if (idx < 36) opts = ['A. 我是你的猎物  占有我', 'B. 我会服从, 即使颤抖', 'C. 勉强顺从', 'D. 停下 (这由不得你)'];
+        else opts = ['A. 请随意使用我的肉体', 'B. 我愿意被折磨成性奴', 'C. 我… 无法拒绝', 'D. 绝不 (你会被强行占有)'];
+        return { question, options: opts };
+    }
+
+    function renderQuestion(idx) {
+        if (idx >= 50) {
+            qText.innerText = '档案封闭 · 你已彻底被记录在窥视者的笔记本里。';
+            container.innerHTML = `<div style="color:#6b5b50;padding:30px;text-align:center;border:1px solid #d0c2b6;border-radius:40px;background:#f7f2ec;">所有选择都已归档，他会一直看着你。</div>`;
+            counter.innerText = '50/50';
+            return;
+        }
+        const data = buildQuestion(idx, answers);
+        qText.innerText = data.question;
+        counter.innerText = `${idx+1} / 50`;
+        container.innerHTML = '';
+        data.options.forEach((text, i) => {
+            const div = document.createElement('div');
+            div.className = 'opt';
+            div.innerText = text;
+            div.dataset.idx = i;
+            if (answers[idx] !== undefined && answers[idx] === i) div.classList.add('selected');
+            div.addEventListener('click', function(e) { handleSelect(idx, parseInt(this.dataset.idx)); });
+            container.appendChild(div);
+        });
+    }
+
+    function handleSelect(idx, choice) {
+        if (idx !== currentIndex) return;
+        answers[idx] = choice;
+        container.querySelectorAll('.opt').forEach((el, i) => { if (i === choice) el.classList.add('selected'); else el.classList.remove('selected'); });
+        if (choice === 3) { showPossession(idx); }
+        else { setTimeout(() => { if (currentIndex < 49) { currentIndex++; renderQuestion(currentIndex); } else { renderQuestion(50); } }, 150); }
+    }
+
+    function showPossession(idx) {
+        const overlay = document.createElement('div');
+        overlay.className = 'possession-overlay';
+        const bloodStyle = document.createElement('style');
+        bloodStyle.textContent = `@keyframes bloodDrop { 0% { top: -10%; opacity: 1; } 100% { top: 110%; opacity: 0; } } .blood-drop { position: fixed; width: 3px; height: 12px; background: #8b0000; border-radius: 0 0 4px 4px; box-shadow: 0 0 6px red; pointer-events: none; z-index: 1001; animation: bloodDrop 1.5s linear forwards; }`;
+        document.head.appendChild(bloodStyle);
+        for (let i = 0; i < 60; i++) {
+            const drop = document.createElement('div');
+            drop.className = 'blood-drop';
+            drop.style.left = Math.random() * 100 + '%';
+            drop.style.animationDelay = Math.random() * 2 + 's';
+            document.body.appendChild(drop);
+            setTimeout(() => drop.remove(), 2000);
+        }
+        const lines = ['我爱你','别离开我','我看到你了','你永远逃不掉','你的身体在回应我','永远纠缠你','别想离开','我会永远看着你','今晚我会来','窗帘已经被我剪开','你洗澡的样子我都记得','你的阴蒂属于我','我闻过你的内裤','墙上有我钻的孔','你的呼吸我都熟悉','别拒绝','你越反抗我越兴奋','你已经是我的了','我就在你身后','窗户没锁','血液在沸腾','舔过你的每一寸','药效快发作了','你的尖叫很好听','乖乖等我','我偏执地爱你','你的子宫会记住我','黑暗里我在凝视','你属于我','精液已经混进你的饮料','你的挣扎很美','永远看着我'];
+        for (let i = 0; i < 90; i++) {
+            const span = document.createElement('span');
+            span.className = 'line';
+            span.innerText = lines[Math.floor(Math.random() * lines.length)] + '  ';
+            overlay.appendChild(span);
+        }
+        document.body.appendChild(overlay);
+        setTimeout(() => {
+            if (overlay.parentNode) overlay.parentNode.removeChild(overlay);
+            if (bloodStyle && bloodStyle.parentNode) bloodStyle.parentNode.removeChild(bloodStyle);
+            document.querySelectorAll('.blood-drop').forEach(drop => drop.remove());
+            if (currentIndex < 49) { currentIndex++; renderQuestion(currentIndex); } else { renderQuestion(50); }
+        }, 2900);
+    }
+
+    resetBtn.addEventListener('click', function() {
+        currentIndex = 0; answers = []; renderQuestion(0);
+        document.querySelectorAll('.possession-overlay').forEach(el => el.remove());
+        document.querySelectorAll('.blood-drop').forEach(el => el.remove());
+        document.querySelectorAll('style').forEach(style => { if (style.textContent.includes('bloodDrop')) style.remove(); });
+    });
+
+    enterBtn.addEventListener('click', function() {
+        cover.style.display = 'none'; survey.style.display = 'block';
+        if (!quizStarted) { quizStarted = true; currentIndex = 0; answers = []; renderQuestion(0); }
+    });
+
+    survey.style.display = 'none';
+})();
+</script>
+</body>
+</html>

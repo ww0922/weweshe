@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>人外问卷 · 味味舍</title>
+    <style>
+        /* 返回按钮 */
+        .back-to-home {
+            position: fixed;
+            top: 12px;
+            left: 12px;
+            z-index: 99999;
+            background: rgba(243,239,233,0.92);
+            border: 1px solid #70665a;
+            border-radius: 30px;
+            padding: 6px 16px;
+            font-size: 13px;
+            color: #4a3c2e;
+            cursor: pointer;
+            font-family: 'Courier New', 'Consolas', monospace;
+            letter-spacing: 1px;
+            text-decoration: none;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.3);
+            backdrop-filter: blur(4px);
+            transition: 0.2s;
+        }
+        .back-to-home:hover {
+            background: #e4dbd0;
+        }
+
+        /* 原有样式全部保留 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Courier New', 'Consolas', monospace;
+        }
+        body {
+            background: #0b0b0b;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .page {
+            display: none;
+            max-width: 800px;
+            width: 100%;
+        }
+        .page.active {
+            display: block;
+        }
+
+        .preamble-card {
+            background: #f3efe9;
+            border-radius: 28px;
+            padding: 38px 34px 46px;
+            box-shadow: 0 30px 50px rgba(0,0,0,0.9);
+            border: 1px solid #70665a;
+            position: relative;
+        }
+
+        .stamp {
+            position: absolute;
+            top: 20px;
+            right: 28px;
+            color: #7a2626;
+            font-size: 12px;
+            letter-spacing: 4px;
+            border: 2px solid #8f3a3a;
+            padding: 6px 12px;
+            border-radius: 30px;
+            opacity: 0.7;
+            transform: rotate(6deg);
+            font-weight: 600;
+        }
+
+        .preamble-title {
+            font-size: 22px;
+            font-weight: 600;
+            letter-spacing: 3px;
+            color: #2f291f;
+            border-bottom: 2px solid #b8aa96;
+            padding-bottom: 18px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+        .preamble-title span:last-child {
+            font-size: 14px;
+            font-weight: 300;
+            color: #7b6c59;
+        }
+
+        .narrative {
+            background: #fcf9f5;
+            padding: 22px 24px;
+            border-radius: 20px;
+            border-left: 4px solid #aa7e6b;
+            line-height: 1.8;
+            color: #1f1b16;
+            font-size: 16px;
+            letter-spacing: 0.3px;
+            box-shadow: inset 0 1px 4px #ddd5ca;
+        }
+
+        .narrative p {
+            margin-bottom: 18px;
+            text-indent: 2em;
+        }
+        .narrative p:last-child {
+            margin-bottom: 0;
+        }
+
+        .narrative .highlight {
+            color: #802d2d;
+            font-weight: 600;
+        }
+
+        .narrative .italic-note {
+            font-style: italic;
+            color: #665a4a;
+            background: #e6ddd2;
+            padding: 2px 12px;
+            border-radius: 20px;
+            display: inline-block;
+        }
+
+        .separator-preamble {
+            margin: 24px 0 16px;
+            border: none;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #b8aa96, transparent);
+        }
+
+        .transition-line {
+            text-align: right;
+            font-size: 14px;
+            color: #7f6d58;
+            margin-top: 24px;
+            letter-spacing: 1px;
+            border-top: 1px dashed #ccc0b0;
+            padding-top: 22px;
+        }
+
+        .btn-continue {
+            display: inline-block;
+            background: #29231c;
+            color: #f0e4d6;
+            padding: 10px 30px;
+            border-radius: 60px;
+            font-size: 15px;
+            letter-spacing: 2px;
+            border: 1px solid #6b5c4a;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-top: 14px;
+        }
+        .btn-continue:hover {
+            background: #42382e;
+        }
+
+        .footnote-preamble {
+            margin-top: 22px;
+            font-size: 12px;
+            color: #a28d78;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .cover-page {
+            background: #f5f3ef;
+            border-radius: 20px;
+            padding: 40px 32px 50px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.9), inset 0 0 0 1px #444;
+            text-align: center;
+            min-height: 70vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .cover-main {
+            max-width: 550px;
+            margin: 0 auto;
+        }
+
+        .cover-line {
+            font-size: 14px;
+            font-weight: 300;
+            color: #1a1a1a;
+            line-height: 2;
+            opacity: 0.8;
+            letter-spacing: 1.5px;
+            margin-bottom: 6px;
+        }
+
+        .cover-line.small {
+            font-size: 11px;
+            letter-spacing: 4px;
+            opacity: 0.5;
+            margin-top: 18px;
+        }
+
+        .cover-line.mid {
+            font-size: 13px;
+            letter-spacing: 3px;
+            opacity: 0.65;
+            margin-top: 10px;
+        }
+
+        .cover-divider {
+            width: 80px;
+            height: 1px;
+            background: #a09080;
+            margin: 28px auto;
+            opacity: 0.4;
+        }
+
+        .btn-enter {
+            background: transparent;
+            border: 1px solid #6b5c4a;
+            color: #3a2c1e;
+            padding: 12px 48px;
+            border-radius: 60px;
+            font-size: 14px;
+            letter-spacing: 6px;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 30px;
+            opacity: 0.7;
+        }
+        .btn-enter:hover {
+            background: #e4dbd0;
+            opacity: 1;
+            letter-spacing: 8px;
+        }
+
+        .paper {
+            background: #f5f3ef;
+            border-radius: 20px;
+            padding: 30px 28px 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.9), inset 0 0 0 1px #444;
+            position: relative;
+        }
+
+        .question-counter {
+            font-size: 14px;
+            color: #6b5a4a;
+            background: #e8e2da;
+            display: inline-block;
+            padding: 2px 18px 2px 14px;
+            border-radius: 40px;
+            margin-bottom: 18px;
+            letter-spacing: 2px;
+        }
+
+        .question-box {
+            background: #faf9f7;
+            padding: 28px 16px 20px;
+            border-radius: 24px;
+            box-shadow: inset 0 1px 4px #ccc9c2, 0 8px 14px -12px black;
+            border: 1px solid #dbd5cd;
+            min-height: 160px;
+        }
+
+        .question-text {
+            font-size: 20px;
+            font-weight: 500;
+            color: #1e1b18;
+            line-height: 1.5;
+            margin-bottom: 28px;
+            padding: 0 8px;
+        }
+
+        .choices {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .choice-btn {
+            background: #efebe6;
+            border: 1px solid #bcb4aa;
+            border-radius: 60px;
+            padding: 14px 18px;
+            font-size: 17px;
+            font-weight: 400;
+            color: #23201c;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            text-align: left;
+            letter-spacing: 0.3px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+
+        .choice-btn:hover {
+            background: #e4dbd0;
+            border-color: #8f7e6e;
+            transform: scale(1.01);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .choice-btn.reject {
+            border-left: 8px solid #a12b2b;
+            color: #7a2727;
+        }
+
+        .threat-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: #0a0000;
+            color: #df1f1f;
+            font-size: 15px;
+            line-height: 1.8;
+            z-index: 9999;
+            padding: 18px 30px;
+            overflow-y: auto;
+            pointer-events: none;
+            font-weight: 600;
+            border: 6px solid #aa2222;
+            box-sizing: border-box;
+            text-shadow: 0 0 8px #aa0000;
+            letter-spacing: 2px;
+            background-image: repeating-linear-gradient(0deg, rgba(180,0,0,0.1) 0px, rgba(180,0,0,0.1) 2px, transparent 2px, transparent 6px);
+        }
+
+        .threat-overlay.show {
+            display: block;
+            animation: bloodRain 0.5s infinite linear;
+        }
+
+        @keyframes bloodRain {
+            0% { background-position: 0 0; }
+            100% { background-position: 0 20px; }
+        }
+
+        .threat-line {
+            font-family: 'Courier New', monospace;
+            border-bottom: 1px dashed #770000;
+            padding: 6px 0;
+            margin: 4px 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .threat-line:before {
+            content: "⚠  ERROR // ";
+            color: #fa5e5e;
+        }
+
+        .footer-sub {
+            margin-top: 20px;
+            font-size: 12px;
+            color: #92897e;
+            text-align: right;
+            border-top: 1px solid #d9d2c8;
+            padding-top: 16px;
+            letter-spacing: 2px;
+        }
+
+        .footer-sub i {
+            color: #5f5142;
+        }
+
+        @media (max-width: 520px) {
+            .question-text { font-size: 17px; }
+            .choice-btn { font-size: 15px; padding: 12px 14px; }
+            .preamble-card { padding: 24px 16px; }
+            .preamble-title { font-size: 18px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- 返回按钮 -->
+<a class="back-to-home" href="index.html">← 返回</a>
+
+<!-- ===================== 页面1：简介 ===================== -->
+<div class="page active" id="pagePreamble">
+    <div class="preamble-card">
+        <div class="stamp">☆ 捕获档案 ☆</div>
+
+        <div class="preamble-title">
+            <span>卷宗 Z-0 · 捕获前序</span>
+            <span>Ω-2 观测前</span>
+        </div>
+
+        <div class="narrative">
+            <p>你记得那个夜晚——天空被一道没有来源的蓝白色光芒撕裂，紧接着是失重感，像被一只无形的巨手从现实里拎起。等你恢复意识时，你已经躺在冰冷的合金观测台上，四周是半透明的有机玻璃墙壁，里面流淌着幽绿的培养液。</p>
+
+            <p>这就是 <span class="highlight">『深渊触所』</span> —— 一艘伪装成小行星的外星科技研究舰。你被归类为"样本 001号 · 智人繁殖雌体"。</p>
+
+            <p>最初几天，你只能透过舱壁的条纹窥见它的本体：那是一团由无数机械触手缠绕而成的银色巨树，每条触手都覆盖着精密的仿生鳞片，关节处脉动着幽蓝的光泽。它们能在真空中延伸数百米，也能收缩成比发丝更细的探针。<span class="highlight">它</span> 没有固定的形态，却可以通过全息实体投影塑造出类人的面容与躯体——但它很少这么做。它更享受以触手的本来面目与你接触。</p>
+
+            <p>你被囚禁在第7环的"恒温巢室"里。它对你着迷——一个会分泌温热体液、会在恐惧与刺激下收缩肌肉、会因为快感而无法自制颤抖的柔软生物。它称你的子宫为"值得研究的温暖容器"，称你的淫水为"信号丰富的电解质液"。它开始对你进行系统性的<span class="highlight">性开发</span>，记录你每一次高潮时的瞳孔扩张数据、阴道内壁的蠕动频率、以及你被操到失语时喉咙里发出的频率波段。</p>
+
+            <p>一开始，它只是好奇。<br>
+            慢慢地，好奇变成了迷恋。<br>
+            再后来，它会在你睡着时，用触手尖端的柔软部分轻轻缠绕你的脚踝，像是在抚摸一件珍贵的收藏品。</p>
+
+            <p class="italic-note">"你只是蝼蚁……但我开始喜欢你这只蝼蚁了。" —— 它在某次深度插入时，用投影出的嘴唇贴着你的耳垂说。</p>
+
+            <p>在巢室的第三天，它想更系统地了解你——你对自己身体的感知、你对被开发的接受度、你的极限与渴望。于是它编撰了这份 <span class="highlight">《Ω-2 繁殖问卷》</span>，共五十题，嵌入嵌套协议。当你拒绝回答时，它会惩罚你，用血红的警告与轻微的痛觉刺激提醒你谁掌控着局面。</p>
+
+            <p>但它没有告诉你的是——在问卷的最后几题，它悄悄加入了一个变量：<span class="highlight">它开始期待你的回答</span>。不是作为数据，而是作为某种……它尚未命名的东西。</p>
+        </div>
+
+        <hr class="separator-preamble">
+
+        <div class="transition-line">
+            <i>▸ 卷宗结束 · 继续前往问卷协议 ▸</i><br>
+            <span style="display: inline-block; margin-top: 10px; font-weight: 300; color: #534439;">点击下方按钮，进入问卷封面页——</span>
+        </div>
+
+        <div style="text-align: center; margin-top: 18px;">
+            <div class="btn-continue" onclick="showCover()">· 前 往 封 面 ·</div>
+        </div>
+
+        <div class="footnote-preamble">
+            <span>档案加密: Z-0/Ω-2</span>
+            <span>母巢时间: 星系历 4471.3</span>
+        </div>
+    </div>
+</div>
+
+<!-- ===================== 页面2：封面 ===================== -->
+<div class="page" id="pageCover">
+    <div class="cover-page">
+        <div class="cover-main">
+            <div class="cover-line">警   告</div>
+            <div class="cover-line" style="font-size:12px; opacity:0.5; letter-spacing:5px;">被捕获者的身体记忆</div>
+            
+            <div class="cover-divider"></div>
+
+            <div class="cover-line mid">本问卷内容皆为虚假，内含人外，触手，囚禁，人体改造？，强迫，无三观，R18。禁止模仿，娱乐游玩</div>
+            <div class="cover-line mid">请谨慎游玩</div>
+            <div class="cover-line mid" style="opacity:0.4;">所有回答将录入核心数据库</div>
+
+            <div class="cover-divider"></div>
+
+            <div class="cover-line small">▸ 问卷协议 v.7.1.1 · 触手实验室 ◂</div>
+
+            <div class="btn-enter" onclick="enterQuestionnaire()">进 入 问 卷</div>
+
+            <div style="margin-top:40px; font-size:10px; color:#8a7a6a; opacity:0.3; letter-spacing:2px;">
+                每项选择均会影响开发参数 · 拒绝即受罚
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ===================== 页面3：问卷 ===================== -->
+<div class="page" id="pageQuestionnaire">
+    <div class="paper">
+        <div class="question-counter" id="counterDisplay">第 1 / 50 题</div>
+
+        <div class="question-box" id="questionBox">
+            <div class="question-text" id="questionText">加载中...</div>
+            <div class="choices" id="choicesContainer"></div>
+        </div>
+
+        <div class="footer-sub">
+            <i>每项选择均会影响开发参数 · 拒绝即受罚</i>
+        </div>
+    </div>
+</div>
+
+<!-- 威胁弹幕覆盖层 -->
+<div class="threat-overlay" id="threatOverlay"></div>
+
+<script>
+    function showCover() {
+        document.getElementById('pagePreamble').classList.remove('active');
+        document.getElementById('pageCover').classList.add('active');
+    }
+
+    function enterQuestionnaire() {
+        document.getElementById('pageCover').classList.remove('active');
+        document.getElementById('pageQuestionnaire').classList.add('active');
+        if (window.quizInitialized) return;
+        window.quizInitialized = true;
+        initQuestionnaire();
+    }
+
+    function initQuestionnaire() {
+        const questions = [
+            { q: "你被带入实验室多久了？请描述身体初步感受。", choices: ["大约三天，恐惧为主", "一周，开始麻木", "两周，有些奇怪的感觉", "拒绝回答。"] },
+            { q: "研究员的机械触手第一次接触你时，你最先察觉哪个部位？", choices: ["手腕/脚踝", "后颈", "小腹", "拒绝回忆。"] },
+            { q: "你清楚自己被囚禁的目的吗？", choices: ["为了繁殖研究", "他们想改造我", "不清楚，但很害怕", "拒绝配合。"] },
+            { q: "昨天对你进行的'激素适应'注射，你的体温变化如何？", choices: ["升高了0.8℃", "发冷出汗", "没有明显感觉", "拒绝描述。"] },
+            { q: "你注意到观察窗外的机械触手有哪些特征？", choices: ["银白色金属", "表面有细纹蠕动", "带有发光节点", "拒绝看它。"] },
+            { q: "当你被固定时，最先被束缚的是哪里？", choices: ["四肢", "腰部", "脖颈", "拒绝回答。"] },
+            { q: "他们是否采集过你的体液样本？", choices: ["只有唾液", "血液", "下体分泌物", "拒绝回答。"] },
+            { q: "实验日志提到'黏膜适应性'，你理解这个测试吗？", choices: ["不完全理解", "好像是用器具接触黏膜", "他们让我舔舐某种材质", "拒绝参与。"] },
+            { q: "研究员开始每隔几小时就刺激你的乳头，你现在的敏感度如何？", choices: ["轻轻碰就发硬", "又痛又麻", "会不自主流水", "拒绝回答。"] },
+            { q: "他们用一种温热的软管探入你的后穴，你第一次被入时的感受？", choices: ["胀痛但被固定", "异物感强烈", "奇怪的热流", "拒绝模拟。"] },
+            { q: "你被强制要求自慰给摄像头看，你做了吗？", choices: ["做了，很羞耻", "他们辅助我的手指", "我反抗了", "拒绝。"] },
+            { q: "触手尖端分泌的润滑液和你身体自然淫水混合后，你闻到了什么气味？", choices: ["铁锈混甜味", "有点像臭氧", "浓麝香味", "拒绝识别。"] },
+            { q: "实验室给你穿戴的'阴蒂环'带有微弱电流，你高潮时电流会增强，你适应了吗？", choices: ["开始害怕，后来适应", "会痉挛但爽", "求他们关掉", "拒绝回答。"] },
+            { q: "他们记录到你的小穴在无人触碰时也会自动收缩，像呼吸一样，你发现了吗？", choices: ["是的，很羞耻", "我感觉到了", "没有注意", "拒绝承认。"] },
+            { q: "机械触手模拟舌头舔你的会阴，你第一次被舔到失禁是什么时候？", choices: ["第三次实验", "第五次", "昨天", "拒绝描述。"] },
+            { q: "你被固定在'繁殖架'上时，阴唇被金属夹轻轻撑开，你暴露多久了？", choices: ["几个小时", "从早到晚", "过夜", "拒绝接受。"] },
+            { q: "研究员称赞你的子宫颈形状很适合'植入'，你听到时有什么感觉？", choices: ["屈辱但身体发热", "恐惧中带着好奇", "麻木", "拒绝。"] },
+            { q: "他们用一根透明的空心棒插入你的尿道，你尿出来的液体带着荧光，你看到了吗？", choices: ["看到了，绿色的光", "粉色的", "我没敢看", "拒绝。"] },
+            { q: "你在梦中也被触手缠绕，醒来时阴道里还插着震动棒，他们说你睡觉时也高潮了，信吗？", choices: ["是真的……", "可能吧", "我不记得", "拒绝。"] },
+            { q: "触手在你的直肠内膨胀成小球，你数过有几个吗？", choices: ["三个", "五个", "七个", "拒绝回答。"] },
+            { q: "你被要求每天喝下'信息素稳定剂'，喝完后小腹会发热，阴蒂会勃起很久，对么？", choices: ["对", "经常这样", "只是有点胀", "拒绝服用。"] },
+            { q: "实验室的摄像头会特写你的阴部，他们甚至回放给你看，你看到自己逼口被操得外翻的样子，什么感受？", choices: ["恶心但湿了", "想摧毁屏幕", "移开视线", "拒绝看。"] },
+            { q: "你的乳头被穿上细环，环上连着细线，另一头系在脚镣上，你一动就会拉扯乳头，爽吗？", choices: ["痛但会硬", "很折磨", "不小心扯到会叫", "拒绝。"] },
+            { q: "他们教你用骚穴'阅读'盲文一样的凸起面板，你学会了吗？", choices: ["勉强学会了", "凭感觉", "太难了", "拒绝学习。"] },
+            { q: "G点的改造让你每次咳嗽都会漏一点尿，他们称这'正常化'，你接受了？", choices: ["被迫接受", "还在反抗", "有点习惯了", "拒绝。"] },
+            { q: "你有一次在实验台上被操到潮吹，喷了研究员一脸，他反而更兴奋了，你还记得吗？", choices: ["记得，很羞辱", "我忘了", "我当时意识模糊", "拒绝回忆。"] },
+            { q: "肛塞的遥控器经常被他们放在你够不到的地方，然后突然调高频率，你摔过吗？", choices: ["摔过好多次", "腿软跪倒", "我夹紧不敢动", "拒绝。"] },
+            { q: "你的子宫颈被植入微型传感器，每次收缩数据都会被读取，你感觉自己像什么？", choices: ["实验母兽", "容器", "繁殖机器", "拒绝比喻。"] },
+            { q: "他们用三根触手同时操你的小穴、后门和喉咙，你第一次被填满时哭了多久？", choices: ["一直哭到结束", "十几分钟", "我没哭，只是叫", "拒绝。"] },
+            { q: "你最喜欢被入哪个洞？你必须选一个。", choices: ["小穴", "屁眼", "嘴", "拒绝选择。"] },
+            { q: "你的阴蒂被改造成只要听到'实验开始'就会自动勃起/充血，你已经条件反射了？", choices: ["对，我完了", "听到就湿", "我恨这个声音", "拒绝。"] },
+            { q: "淫水收集器每天从你体内抽出大约多少毫升？", choices: ["30ml左右", "60ml", "100ml以上", "拒绝回答。"] },
+            { q: "触手龟头形状的物体塞进子宫时，你感觉内脏被顶到，但你还是扭腰去追，你承认吗？", choices: ["我……承认", "身体自己动的", "没有", "拒绝。"] },
+            { q: "你被固定在半空，六条触手同时抽插你所有孔洞，你高潮到失神时叫了什么名字？", choices: ["研究员编号", "不知道", "我喊了妈妈", "拒绝。"] },
+            { q: "实验室新装置'肉钻'会抵着你的宫颈口旋转，你每次都会喷水，他们以此取乐，你恨吗？", choices: ["恨，但身体不听话", "恨透了", "我求他们停下", "拒绝。"] },
+            { q: "你被允许自己控制震动棒频率，但最高档会让你瞬间抽搐，你用过最高档吗？", choices: ["用过一次", "好几次", "不敢", "拒绝。"] },
+            { q: "他们用你的淫水做润滑，涂满你的全身，然后让触手滑过每一寸皮肤，你最敏感哪里？", choices: ["大腿内侧", "腰窝", "乳头", "拒绝。"] },
+            { q: "你已经被开发出'子宫高潮'，和阴蒂高潮比哪个更强烈？", choices: ["子宫高潮更深处", "阴蒂更尖锐", "不一样", "拒绝。"] },
+            { q: "你会偷偷夹紧触手希望它多停留几秒吗？", choices: ["会，我完了", "偶尔", "从不", "拒绝。"] },
+            { q: "你现在的身体离开实验室后，还能对普通人类的抚摸有反应吗？", choices: ["不能了", "需要强刺激", "可能可以", "拒绝。"] },
+            { q: "研究员说你的小穴现在是'专为异种定制'的，你听了之后有没有一丝骄傲？", choices: ["可悲的骄傲", "羞耻但确实", "完全没有", "拒绝。"] },
+            { q: "他们计划让你怀上机械卵，你害怕还是期待？", choices: ["害怕但身体期待", "只有恐惧", "好奇", "拒绝。"] },
+            { q: "你已经在实验中学会用屁眼高潮，甚至比前面更快，对吗？", choices: ["是，我堕落了", "差不多", "还在练习", "拒绝。"] },
+            { q: "你愿意永远留在这里，作为繁殖容器与爱宠吗？", choices: ["我愿意", "我想离开", "我需要时间", "拒绝。"] },
+            { q: "你迷恋上触手抽插时发出的水声了吗？", choices: ["迷恋, 那声音让我湿透", "有点喜欢", "无所谓", "拒绝。"] },
+            { q: "你高潮时喷出的爱液被收集后加工成'营养液'，你喝过吗？", choices: ["被灌过", "自己喝过", "他们骗我喝过", "拒绝。"] },
+            { q: "触手根部有个凸起能顶到你的G点，每次都被精准碾压，你求过它轻点吗？", choices: ["求过，但没用", "我咬紧牙", "我享受", "拒绝。"] },
+            { q: "实验记录：你被开发出连续高潮的能力，最长一次持续了多久？", choices: ["十分钟", "半小时", "一个多小时", "拒绝。"] },
+            { q: "你开始习惯触手缠绕脖颈的窒息感，甚至觉得比潮吹更猛，你认可这个变化吗？", choices: ["认可，我病了", "身体认可", "我不认可", "拒绝。"] },
+            { q: "问卷结束。你的身体数据已上传至母巢。感谢参与，繁殖体。", choices: [] }
+        ];
+
+        let currentIndex = 0;
+        const total = 50;
+
+        const questionText = document.getElementById('questionText');
+        const choicesContainer = document.getElementById('choicesContainer');
+        const counterDisplay = document.getElementById('counterDisplay');
+        const threatOverlay = document.getElementById('threatOverlay');
+
+        function renderQuestion(index) {
+            if (index >= total) {
+                questionText.textContent = "▣ 问卷已完成。你的身体数据已上传至母巢。感谢参与，繁殖体。";
+                choicesContainer.innerHTML = `<div style="padding: 20px; text-align: center; color:#3a2c1e;">问卷封闭 · 你已被标记</div>`;
+                counterDisplay.textContent = "完成 50/50";
+                return;
+            }
+
+            const data = questions[index];
+            if (!data) return;
+
+            questionText.textContent = data.q;
+            counterDisplay.textContent = `第 ${index+1} / 50 题`;
+
+            choicesContainer.innerHTML = '';
+            data.choices.forEach((text) => {
+                const btn = document.createElement('div');
+                btn.className = 'choice-btn';
+                btn.textContent = text;
+
+                if (text.includes('拒绝')) {
+                    btn.classList.add('reject');
+                }
+
+                btn.addEventListener('click', function() {
+                    if (text.includes('拒绝')) {
+                        showThreat(index);
+                    } else {
+                        currentIndex++;
+                        renderQuestion(currentIndex);
+                    }
+                });
+
+                choicesContainer.appendChild(btn);
+            });
+        }
+
+        function showThreat(index) {
+            const lines = [
+                "WARNING // 拒绝被视为反抗  立即执行惩罚程序",
+                "ERROR 0x4F  # 生殖腔权限锁定 痛觉增强300%",
+                "THREAT  // 你不该拒绝 你的身体属于实验室",
+                "神经元鞭挞 准备就绪   10秒内取消拒绝可避免",
+                "你的子宫将承受额外2小时震动 选择顺从或毁灭",
+                "BIAS  // 反抗记录已上传 母巢将加重调教",
+                "你每拒绝一次 触手就会多一条 永久嵌入你的结肠",
+                "全息投影强制开启 你将目睹自己被开膛般的数据模拟",
+                "拒绝无效 你的快感阈值已被改写 挣扎只是燃料",
+                "⚠  虐待程序启动 阴蒂夹电流增强 肛塞膨胀至9cm",
+                "红雨降临  你无法关闭  屈服是唯一的出路"
+            ];
+
+            let html = '';
+            for (let i = 0; i < 35; i++) {
+                const randomLine = lines[Math.floor(Math.random() * lines.length)];
+                html += `<div class="threat-line">${randomLine}</div>`;
+            }
+            threatOverlay.innerHTML = html;
+            threatOverlay.classList.add('show');
+
+            setTimeout(() => {
+                threatOverlay.classList.remove('show');
+                threatOverlay.innerHTML = '';
+                renderQuestion(currentIndex);
+            }, 5500);
+        }
+
+        renderQuestion(0);
+    }
+</script>
+</body>
+</html>

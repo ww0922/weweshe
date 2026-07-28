@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <title>综合癖好测试 · 味味舍</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, 'PingFang SC', 'Helvetica Neue', sans-serif;
+            background: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 0 0 20px;
+        }
+        .phone {
+            width: 100%;
+            max-width: 460px;
+            background: #ffffff;
+            min-height: 100vh;
+            position: relative;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.06);
+        }
+
+        /* ===== 返回按钮 ===== */
+        .back-to-home {
+            position: fixed;
+            top: 16px;
+            left: 16px;
+            z-index: 3000;
+            background: rgba(255,255,255,0.9);
+            border: 1px solid #e8d5ce;
+            border-radius: 30px;
+            padding: 8px 18px;
+            font-size: 14px;
+            color: #c49a92;
+            cursor: pointer;
+            font-family: 'Georgia', serif;
+            letter-spacing: 1px;
+            text-decoration: none;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+            backdrop-filter: blur(4px);
+            transition: 0.2s;
+        }
+        .back-to-home:hover {
+            background: #fdece8;
+        }
+
+        /* ===== 封面 ===== */
+        .cover {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            padding: 40px 30px;
+            text-align: center;
+            background: #fff;
+        }
+        .cover small {
+            font-size: 13px;
+            color: #aaa;
+            letter-spacing: 4px;
+            font-weight: 300;
+            margin-bottom: 28px;
+        }
+        .cover h1 {
+            font-size: 30px;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+        }
+        .cover .sub {
+            font-size: 14px;
+            color: #888;
+            line-height: 1.8;
+            max-width: 280px;
+            margin-bottom: 40px;
+        }
+        .cover-btns {
+            display: flex;
+            gap: 18px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .cover-btn {
+            padding: 14px 44px;
+            border-radius: 40px;
+            border: 1.5px solid #1a1a1a;
+            background: #fff;
+            font-size: 17px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: 0.12s;
+            color: #1a1a1a;
+            min-width: 120px;
+        }
+        .cover-btn.primary {
+            background: #1a1a1a;
+            color: #fff;
+            border-color: #1a1a1a;
+        }
+        .cover-btn:active {
+            transform: scale(0.95);
+            opacity: 0.7;
+        }
+
+        /* ===== 问卷 ===== */
+        .quiz {
+            display: none;
+            flex-direction: column;
+            min-height: 100vh;
+            background: #fafafa;
+        }
+        .quiz-top {
+            padding: 60px 22px 8px;
+            background: #fff;
+            border-bottom: 1px solid #eee;
+        }
+        .quiz-progress {
+            height: 4px;
+            background: #e9e9e9;
+            border-radius: 6px;
+            margin: 6px 22px 14px;
+        }
+        .quiz-progress .bar {
+            height: 4px;
+            background: #1a1a1a;
+            border-radius: 6px;
+            width: 0%;
+            transition: width 0.3s;
+        }
+        .quiz-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 22px 6px;
+            font-size: 15px;
+            color: #555;
+        }
+        .quiz-header .idx {
+            font-weight: 600;
+            color: #1a1a1a;
+        }
+        .question {
+            padding: 24px 24px 16px;
+            font-size: 21px;
+            font-weight: 500;
+            line-height: 1.5;
+            color: #111;
+            min-height: 80px;
+            background: #fafafa;
+        }
+        .options {
+            padding: 0 20px 24px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            background: #fafafa;
+        }
+        .opt {
+            background: #ffffff;
+            padding: 18px 22px;
+            border-radius: 18px;
+            border: 1px solid #ececec;
+            font-size: 16px;
+            color: #1a1a1a;
+            cursor: pointer;
+            transition: 0.1s;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.03);
+            line-height: 1.4;
+        }
+        .opt:active {
+            background: #f3f0f0;
+            border-color: #d6d6d6;
+            transform: scale(0.98);
+        }
+        .opt.reject {
+            color: #b00000;
+            border-color: #f0d0d0;
+        }
+        .opt.reject:active {
+            background: #ffe8e8;
+        }
+
+        /* ===== 遮罩（惩罚 & 奖励） ===== */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            pointer-events: none;
+        }
+        .overlay-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.88);
+        }
+        .overlay-content {
+            position: relative;
+            z-index: 2001;
+            max-width: 360px;
+            width: 85%;
+            padding: 32px 28px;
+            border-radius: 28px;
+            text-align: center;
+            pointer-events: auto;
+            background: rgba(20, 0, 0, 0.7);
+            backdrop-filter: blur(6px);
+            border: 1px solid rgba(200, 0, 0, 0.25);
+            color: #f0e0e0;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+        }
+        .overlay-content.punish {
+            background: rgba(20, 0, 0, 0.8);
+            border-color: #8b0000;
+        }
+        .overlay-content.reward {
+            background: rgba(0, 20, 10, 0.75);
+            border-color: #2a7a5a;
+        }
+        .overlay-content h2 {
+            font-size: 26px;
+            margin-bottom: 14px;
+            letter-spacing: 2px;
+        }
+        .overlay-content.punish h2 {
+            color: #e04040;
+            text-shadow: 0 0 20px #aa0000;
+        }
+        .overlay-content.reward h2 {
+            color: #7ae0b0;
+            text-shadow: 0 0 20px #2a8a5a;
+        }
+        .overlay-content p {
+            font-size: 18px;
+            line-height: 1.7;
+            color: #f0e8e8;
+            margin-bottom: 10px;
+        }
+        .overlay-content.reward p {
+            color: #d8f0e8;
+        }
+        .overlay-btn {
+            margin-top: 18px;
+            padding: 10px 32px;
+            border: none;
+            border-radius: 30px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            pointer-events: auto;
+            transition: 0.1s;
+        }
+        .overlay-btn.punish-btn {
+            background: #6a1a1a;
+            color: #f0d0d0;
+        }
+        .overlay-btn.reward-btn {
+            background: #1a6a4a;
+            color: #e0f0e8;
+        }
+        .overlay-btn:active {
+            transform: scale(0.94);
+        }
+
+        /* ===== 弹幕 ===== */
+        .danmaku-wrapper {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1999;
+            overflow: hidden;
+            pointer-events: none;
+            display: none;
+            background: #0a0000;
+        }
+        .danmaku {
+            position: absolute;
+            white-space: nowrap;
+            font-weight: 700;
+            opacity: 0.75;
+            text-shadow: 0 0 12px #aa0000;
+            color: #cc1111;
+            font-size: 22px;
+            animation: scrollLeft 6s linear infinite;
+        }
+        @keyframes scrollLeft {
+            0% { transform: translateX(110vw); }
+            100% { transform: translateX(-110vw); }
+        }
+
+        /* ===== 结果页 ===== */
+        .result-screen {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 24px;
+            min-height: 100vh;
+            background: #fafafa;
+        }
+        .result-screen h2 {
+            font-size: 28px;
+            font-weight: 700;
+            margin: 30px 0 16px;
+            color: #1a1a1a;
+        }
+        .result-screen .sub {
+            color: #777;
+            margin-bottom: 30px;
+        }
+        .radar-container {
+            width: 100%;
+            max-width: 320px;
+            margin: 20px 0;
+            background: #fff;
+            border-radius: 24px;
+            padding: 20px;
+            box-shadow: 0 2px 16px rgba(0, 0, 0, 0.04);
+        }
+        .radar-container canvas {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        .keyword-list {
+            width: 100%;
+            max-width: 320px;
+            background: #fff;
+            border-radius: 24px;
+            padding: 24px 22px;
+            box-shadow: 0 2px 16px rgba(0, 0, 0, 0.04);
+            margin: 16px 0 24px;
+        }
+        .keyword-list h3 {
+            font-size: 18px;
+            color: #1a1a1a;
+            margin-bottom: 14px;
+        }
+        .keyword-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .keyword-tag {
+            background: #f0ecec;
+            padding: 6px 16px;
+            border-radius: 30px;
+            font-size: 14px;
+            color: #333;
+        }
+        .keyword-tag.high {
+            background: #1a1a1a;
+            color: #fff;
+        }
+        .result-footer {
+            color: #aaa;
+            font-size: 14px;
+            margin-top: 20px;
+        }
+        .reset-btn {
+            margin-top: 16px;
+            padding: 14px 44px;
+            border: 1.5px solid #1a1a1a;
+            background: #fff;
+            border-radius: 40px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        @media (max-width: 460px) {
+            .phone {
+                max-width: 100%;
+                box-shadow: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="phone">
+
+        <!-- 返回首页按钮 -->
+        <a class="back-to-home" href="index.html">← 返回</a>
+
+        <!-- ===== 封面 ===== -->
+        <div class="cover" id="cover">
+            <small>· 匿名  ·</small>
+            <h1>癖好测试</h1>
+            <div class="sub">
+                60道题，6个维度<br>
+                你的答案只属于你自己
+            </div>
+            <div class="cover-btns">
+                <button class="cover-btn primary" id="startBtn">开始</button>
+                <button class="cover-btn" id="refuseBtn">拒绝</button>
+            </div>
+        </div>
+
+        <!-- ===== 问卷 ===== -->
+        <div class="quiz" id="quiz">
+            <div class="quiz-top">
+                <div class="quiz-header">
+                    <span class="idx" id="qIdx">1</span>
+                    <span>/ 60</span>
+                </div>
+                <div class="quiz-progress"><div class="bar" id="progressBar"></div></div>
+            </div>
+            <div class="question" id="questionText">加载中…</div>
+            <div class="options" id="optionsContainer"></div>
+        </div>
+
+        <!-- ===== 弹幕池 ===== -->
+        <div class="danmaku-wrapper" id="danmakuWrapper"></div>
+
+        <!-- ===== 遮罩 ===== -->
+        <div class="overlay" id="overlay">
+            <div class="overlay-bg"></div>
+            <div class="overlay-content" id="overlayContent">
+                <h2 id="overlayTitle"></h2>
+                <p id="overlayText"></p>
+                <button class="overlay-btn" id="overlayBtn">继续</button>
+            </div>
+        </div>
+
+        <!-- ===== 结果页 ===== -->
+        <div class="result-screen" id="resultScreen">
+            <h2>你的癖好大全</h2>
+            <div class="sub">根据你的诚实回答生成</div>
+            <div class="radar-container">
+                <canvas id="radarCanvas" width="300" height="300"></canvas>
+            </div>
+            <div class="keyword-list">
+                <h3>核心关键词</h3>
+                <div class="keyword-tags" id="keywordTags"></div>
+            </div>
+            <div class="result-footer">— 你已经看见了自己 —</div>
+            <button class="reset-btn" id="resetBtn">重新开始</button>
+        </div>
+
+    </div>
+
+    <script>
+        (function() {
+            // ---------- 60题数据 ----------
+            const questions = [
+                // 性取向 (1-10)
+                { q: '你对同性产生过性幻想吗？', opts: ['从未有过', '偶尔闪过', '有过且享受', '这是主要幻想对象', '拒绝回答'] },
+                { q: '你对双性恋怎么看？', opts: ['与我无关', '可以理解', '我自己就是', '双性才是最完整的', '拒绝回答'] },
+                { q: '你愿意和跨性别者发生关系吗？', opts: ['完全不愿意', '看情况', '愿意', '非常渴望', '拒绝回答'] },
+                { q: '你觉得自己在性取向更偏向什么？', opts: ['纯粹异性', '偏异性但好奇', '偏同性', '流动/无法定义', '拒绝回答'] },
+                { q: '四爱（女攻男受）让你有感觉吗？', opts: ['没感觉', '有点好奇', '挺喜欢的', '这是核心癖好', '拒绝回答'] },
+                { q: '你能接受无性恋的恋爱关系吗？', opts: ['不能接受', '可以试试', '完全可以', '我就是无性恋', '拒绝回答'] },
+                { q: '你对泛性恋怎么看？', opts: ['不理解', '可以接受', '我觉得我就是', '这是最理想的', '拒绝回答'] },
+                { q: '你幻想过和多人同时发生关系吗？', opts: ['从未', '偶尔想过', '幻想过多次', '这是日常幻想', '拒绝回答'] },
+                { q: '你更倾向一对一还是开放式关系？', opts: ['绝对一对一', '倾向一对一但不排斥开放', '可以开放', '开放关系更自由', '拒绝回答'] },
+                { q: '你觉得自己在性关系里更像什么角色？', opts: ['主导方', '顺从方', '两者皆可', '视对象而定', '拒绝回答'] },
+                // 关系模式 (11-20)
+                { q: '你能接受伴侣心里有别人吗？', opts: ['绝对不能', '精神出轨不行，肉体可以', '可以商量', '完全不介意', '拒绝回答'] },
+                { q: '柏拉图式恋爱你能坚持多久？', opts: ['一个月不到', '几个月', '一年以上', '可以一直柏拉图', '拒绝回答'] },
+                { q: '你更喜欢被照顾还是照顾对方？', opts: ['照顾对方', '被照顾', '互相照顾', '极端依赖对方', '拒绝回答'] },
+                { q: '你希望伴侣对你忠诚到哪种程度？', opts: ['身心都必须忠诚', '身体忠诚即可', '精神忠诚即可', '不需要忠诚', '拒绝回答'] },
+                { q: '你能接受和伴侣的朋友上床吗？', opts: ['绝对不行', '需要伴侣同意', '偷偷可以', '我觉得很刺激', '拒绝回答'] },
+                { q: '你更享受被追求还是追求别人？', opts: ['被追求', '追求别人', '互相拉扯', '我只享受征服', '拒绝回答'] },
+                { q: '你愿意和伴侣一起探索新的性癖吗？', opts: ['不愿意', '可以试试', '非常愿意', '我必须不断探索新东西', '拒绝回答'] },
+                { q: '你希望伴侣在床上叫你什么？', opts: ['名字', '宝贝/亲爱的', '主人/爸爸/妈妈', '狗/奴隶/母狗', '拒绝回答'] },
+                { q: '你更喜欢温柔的性爱还是粗暴的？', opts: ['温柔', '偏温柔', '粗暴', '越粗暴越好', '拒绝回答'] },
+                { q: '你能接受伴侣不洗澡直接做吗？', opts: ['完全不能', '有点介意但可以忍', '不介意', '我更喜欢有汗味体味', '拒绝回答'] },
+                // BDSM (21-35)
+                { q: '你想被绑起来吗？', opts: ['完全不想', '有点好奇', '想试试', '这是核心癖好', '拒绝回答'] },
+                { q: '你想绑别人吗？', opts: ['没兴趣', '有点想', '非常想', '这是我的本能', '拒绝回答'] },
+                { q: '你享受被羞辱吗？', opts: ['不享受', '偶尔可以', '很享受', '越羞辱越兴奋', '拒绝回答'] },
+                { q: '你享受羞辱别人吗？', opts: ['完全不', '看对象', '很享受', '这是我最擅长的', '拒绝回答'] },
+                { q: '你想被当作宠物对待吗？', opts: ['不想', '有点想', '想', '我就是宠物', '拒绝回答'] },
+                { q: '你想养一个宠物奴吗？', opts: ['不想', '好奇', '想养', '这是我的梦想', '拒绝回答'] },
+                { q: '你对支配与臣服（D/s）感兴趣吗？', opts: ['没兴趣', '有点兴趣', '很感兴趣', '这是我需要的', '拒绝回答'] },
+                { q: '你想完全交出控制权吗？（TPE）', opts: ['绝对不要', '部分可以', '想', '我想完全属于谁', '拒绝回答'] },
+                { q: '你想完全控制另一个人吗？', opts: ['不想', '有点想', '非常想', '控制是我的本能', '拒绝回答'] },
+                { q: '你享受被打屁股吗？', opts: ['不享受', '有点舒服', '很享受', '越重越好', '拒绝回答'] },
+                { q: '你享受打别人屁股吗？', opts: ['没兴趣', '有点意思', '很爽', '这是主要癖好', '拒绝回答'] },
+                { q: '你对年龄扮演感兴趣吗？', opts: ['完全不', '有点好奇', '感兴趣', '这是我经常幻想的', '拒绝回答'] },
+                { q: '你享受感官剥夺吗？', opts: ['害怕', '有点好奇', '享受', '完全沉溺', '拒绝回答'] },
+                { q: '你想被电击或尝试痛感play吗？', opts: ['绝对不要', '轻微可以', '想试试', '痛感让我兴奋', '拒绝回答'] },
+                { q: '你对贞操锁感兴趣吗？', opts: ['没兴趣', '有点好奇', '想尝试', '这是我需要的', '拒绝回答'] },
+                // 物化与器官 (36-45)
+                { q: '你对足有兴趣吗？', opts: ['毫无兴趣', '偶尔会注意', '挺喜欢的', '足是我的核心癖好', '拒绝回答'] },
+                { q: '你喜欢精液的味道吗？', opts: ['没尝过/不想尝', '尝过，还行', '喜欢', '必须吞下去', '拒绝回答'] },
+                { q: '你对肛门感兴趣吗？', opts: ['没兴趣', '有点好奇', '喜欢被玩', '喜欢玩别人', '拒绝回答'] },
+                { q: '你喜欢胸部/乳房吗？', opts: ['一般', '挺喜欢的', '非常喜欢', '这是我最在意的部位', '拒绝回答'] },
+                { q: '你对大腿和臀部有特殊兴趣吗？', opts: ['没有', '有点在意', '很喜欢', '这是我最迷恋的部位', '拒绝回答'] },
+                { q: '你喜欢口腔/喉咙的感觉吗？', opts: ['无感', '有点感觉', '喜欢深喉', '喉咙的压迫感让我兴奋', '拒绝回答'] },
+                { q: '你对汗水或体液有兴趣吗？', opts: ['觉得脏', '不介意', '有点兴奋', '体液让我疯狂', '拒绝回答'] },
+                { q: '你喜欢对方的味道吗？', opts: ['不喜欢', '偶尔闻一下', '喜欢', '味道是最强的催化剂', '拒绝回答'] },
+                { q: '你对制服有性趣吗？', opts: ['没兴趣', '有点感觉', '很喜欢', '制服就是我的开关', '拒绝回答'] },
+                { q: '你对乳胶或皮革材质有感觉吗？', opts: ['没感觉', '有点好奇', '喜欢', '材质本身就能让我高潮', '拒绝回答'] },
+                // 情境与角色 (46-55)
+                { q: '你想在公共场合做爱吗？', opts: ['完全不想', '有点刺激但害怕', '想试试', '被发现的危险让我兴奋', '拒绝回答'] },
+                { q: '你对角色扮演感兴趣吗？', opts: ['没兴趣', '偶尔玩玩', '很喜欢', '角色本身就是我的癖好', '拒绝回答'] },
+                { q: '你幻想过被强迫吗？（CNC）', opts: ['从未', '偷偷想过', '经常幻想', '这是我最主要的幻想', '拒绝回答'] },
+                { q: '你幻想过强迫别人吗？', opts: ['从未', '一闪而过', '想过多次', '这是核心幻想', '拒绝回答'] },
+                { q: '你对偷窥或窥视感兴趣吗？', opts: ['没兴趣', '有点好奇', '喜欢看别人', '被发现也可以', '拒绝回答'] },
+                { q: '你想被偷窥吗？', opts: ['不想', '有点刺激', '想被看', '被注视让我兴奋', '拒绝回答'] },
+                { q: '你对多人做爱感兴趣吗？', opts: ['完全没兴趣', '有点好奇', '想试试', '这是梦想', '拒绝回答'] },
+                { q: '你想在镜头前做爱吗？', opts: ['不想', '可能可以', '想', '必须录下来', '拒绝回答'] },
+                { q: '你对主人/奴隶关系感兴趣吗？', opts: ['没兴趣', '有点兴趣', '想尝试', '这是我需要的', '拒绝回答'] },
+                { q: '你更想当顽主还是顽宝？', opts: ['顽主', '顽宝', '都可以', '看对象切换', '拒绝回答'] },
+                // 极端癖好 (56-60)
+                { q: '你对血液有兴趣吗？', opts: ['完全无感', '有点好奇', '有点兴奋', '血腥让我兴奋', '拒绝回答'] },
+                { q: '你对窒息感有兴趣吗？', opts: ['害怕', '有点好奇', '喜欢被掐', '窒息是我的核心癖好', '拒绝回答'] },
+                { q: '你对非人/怪物/人外有兴趣吗？', opts: ['完全没有', '有点奇怪但好奇', '有感觉', '非人比人更吸引我', '拒绝回答'] },
+                { q: '你对针或穿刺有兴趣吗？', opts: ['恐惧', '轻微好奇', '想试试', '穿刺让我兴奋', '拒绝回答'] },
+                { q: '你对原始兽性play有兴趣吗？', opts: ['没兴趣', '有点意思', '想做', '兽性是我的本能', '拒绝回答'] },
+            ];
+
+            // ---------- 状态 ----------
+            let idx = 0;
+            let answers = [];
+            let isLocked = false;
+            let isOverlay = false;
+            let rewardTriggeredThisQuestion = false;
+
+            // DOM
+            const cover = document.getElementById('cover');
+            const quiz = document.getElementById('quiz');
+            const resultScreen = document.getElementById('resultScreen');
+            const questionText = document.getElementById('questionText');
+            const optionsContainer = document.getElementById('optionsContainer');
+            const qIdx = document.getElementById('qIdx');
+            const progressBar = document.getElementById('progressBar');
+            const overlay = document.getElementById('overlay');
+            const overlayContent = document.getElementById('overlayContent');
+            const overlayTitle = document.getElementById('overlayTitle');
+            const overlayText = document.getElementById('overlayText');
+            const overlayBtn = document.getElementById('overlayBtn');
+            const danmakuWrapper = document.getElementById('danmakuWrapper');
+
+            // ---------- 惩罚词库 ----------
+            const punishLines = [
+                '就这？你也配叫有癖好？','你躲什么？连面对自己都不敢？','我还以为你有多大胆子，结果就这水平。',
+                '无感？你是真的无感还是在装？','撒谎的样子真可怜。','你选这个的时候不觉得可悲吗？',
+                '你到底是在答题还是在逃避？','连承认都不敢，你还能做什么？','别装了，我看着你呢。',
+                '你的身体可比你诚实多了。','无趣。你是我见过最无趣的人。','你觉得自己骗得了谁？',
+                '继续躲，我看你能躲到第几题。','这么保守的话，你来这里干什么？','你选无感的时候，手有没有抖？',
+                '废物才什么都无感。','你是来答题的还是来当圣人的？','无感？你确定不是不敢选？',
+                '你越躲我越想把你扒开。','你这种态度，连被调教的资格都没有。','无感就是懦弱，懦弱就是欠教训。',
+                '你到底在怕什么？说出来让我笑笑。'
+            ];
+
+            // ---------- 奖励词库 ----------
+            const rewardLines = [
+                '你很诚实，这比什么都重要。','你比你自己想象的勇敢。','愿意面对自己，你已经赢了。',
+                '你很棒，继续下去。','你让我意外——在好的方面。','你真实的样子，比伪装好看得多。',
+                '很好，我喜欢你的坦诚。','你做得很好，真的。','看到你这样我很欣慰。','一步步来，你已经很了不起了。',
+                '你值得被肯定。','你的诚实是一种力量。','继续这样，你会在终点看到自己。','你远比你以为的有魅力。',
+                '真实的你，很有吸引力。','你的坦诚让我想靠近你。','你已经比大多数人都勇敢了。','你每诚实地回答一题，都在更自由。',
+                '我为你感到骄傲。','你正在成为更完整的自己。','保持这样，你是值得被爱的。','你不需要完美，你已经足够好了。'
+            ];
+
+            // ---------- 惩罚触发 ----------
+            function triggerPunish(callback) {
+                if (isLocked) return;
+                isLocked = true;
+                danmakuWrapper.style.display = 'block';
+                danmakuWrapper.innerHTML = '';
+                for (let i = 0; i < 25; i++) {
+                    const span = document.createElement('span');
+                    span.className = 'danmaku';
+                    span.innerText = punishLines[Math.floor(Math.random() * punishLines.length)] + '　';
+                    span.style.top = (2 + Math.random() * 94) + '%';
+                    span.style.fontSize = (16 + Math.random() * 12) + 'px';
+                    span.style.animationDuration = (5 + Math.random() * 3) + 's';
+                    span.style.animationDelay = (Math.random() * 3) + 's';
+                    danmakuWrapper.appendChild(span);
+                }
+                overlayContent.className = 'overlay-content punish';
+                overlayTitle.textContent = '你在躲什么？';
+                overlayText.textContent = punishLines[Math.floor(Math.random() * punishLines.length)];
+                overlayBtn.className = 'overlay-btn punish-btn';
+                overlayBtn.textContent = '继续';
+                overlay.style.display = 'flex';
+                isOverlay = true;
+
+                const duration = 5000 + Math.floor(Math.random() * 1200);
+                setTimeout(() => {
+                    danmakuWrapper.style.display = 'none';
+                    danmakuWrapper.innerHTML = '';
+                }, duration);
+                overlayBtn.onclick = function() {
+                    overlay.style.display = 'none';
+                    isOverlay = false;
+                    isLocked = false;
+                    if (callback) callback();
+                };
+            }
+
+            // ---------- 奖励触发 ----------
+            function triggerReward() {
+                if (isLocked || isOverlay) return;
+                isLocked = true;
+                overlayContent.className = 'overlay-content reward';
+                overlayTitle.textContent = '很乖 ^_^';
+                overlayText.textContent = rewardLines[Math.floor(Math.random() * rewardLines.length)];
+                overlayBtn.className = 'overlay-btn reward-btn';
+                overlayBtn.textContent = '继续保持哦^';
+                overlay.style.display = 'flex';
+                isOverlay = true;
+                overlayBtn.onclick = function() {
+                    overlay.style.display = 'none';
+                    isOverlay = false;
+                    isLocked = false;
+                };
+            }
+
+            // ---------- 渲染题目 ----------
+            function renderQuestion(index) {
+                if (index >= questions.length) {
+                    showResult();
+                    return;
+                }
+                const data = questions[index];
+                questionText.textContent = data.q;
+                qIdx.textContent = index + 1;
+                progressBar.style.width = ((index + 1) / questions.length * 100) + '%';
+                optionsContainer.innerHTML = '';
+                rewardTriggeredThisQuestion = false;
+
+                data.opts.forEach((optText, optIdx) => {
+                    const div = document.createElement('div');
+                    div.className = 'opt';
+                    const isReject = (optIdx === data.opts.length - 1);
+                    if (isReject) {
+                        div.classList.add('reject');
+                    }
+                    div.textContent = optText;
+                    div.addEventListener('click', function() {
+                        if (isLocked || isOverlay) return;
+                        if (isReject) {
+                            triggerPunish(function() {
+                                renderQuestion(index);
+                            });
+                            return;
+                        }
+                        answers.push({ idx: index, answer: optIdx, text: optText });
+                        const rewardProb = 0.15;
+                        if (!rewardTriggeredThisQuestion && Math.random() < rewardProb) {
+                            rewardTriggeredThisQuestion = true;
+                            triggerReward();
+                            overlayBtn.onclick = function() {
+                                overlay.style.display = 'none';
+                                isOverlay = false;
+                                isLocked = false;
+                                idx = index + 1;
+                                renderQuestion(idx);
+                            };
+                            return;
+                        }
+                        idx = index + 1;
+                        renderQuestion(idx);
+                    });
+                    optionsContainer.appendChild(div);
+                });
+            }
+
+            // ---------- 结果 ----------
+            function showResult() {
+                quiz.style.display = 'none';
+                resultScreen.style.display = 'flex';
+                drawRadar();
+                generateKeywords();
+            }
+
+            function drawRadar() {
+                const canvas = document.getElementById('radarCanvas');
+                const ctx = canvas.getContext('2d');
+                const w = 300, h = 300;
+                const cx = 150, cy = 150, r = 110;
+                const dims = ['性取向', '关系模式', 'BDSM', '物化器官', '情境角色', '极端癖好'];
+                const scores = [0, 0, 0, 0, 0, 0];
+                const counts = [0, 0, 0, 0, 0, 0];
+                const ranges = [[0,9],[10,19],[20,34],[35,44],[45,54],[55,59]];
+
+                answers.forEach(a => {
+                    const qIdx = a.idx;
+                    let dim = -1;
+                    for (let d = 0; d < ranges.length; d++) {
+                        if (qIdx >= ranges[d][0] && qIdx <= ranges[d][1]) { dim = d; break; }
+                    }
+                    if (dim >= 0) {
+                        scores[dim] += a.answer;
+                        counts[dim]++;
+                    }
+                });
+                const avg = scores.map((s, i) => counts[i] ? (s / counts[i]) : 0);
+                const maxScore = 3;
+                const values = avg.map(v => v / maxScore);
+
+                ctx.clearRect(0, 0, w, h);
+                ctx.strokeStyle = '#ddd';
+                ctx.lineWidth = 1;
+                for (let ring = 1; ring <= 4; ring++) {
+                    ctx.beginPath();
+                    const radius = r * ring / 4;
+                    for (let i = 0; i < 6; i++) {
+                        const angle = Math.PI / 2 * 3 + i * 2 * Math.PI / 6;
+                        const x = cx + radius * Math.cos(angle);
+                        const y = cy + radius * Math.sin(angle);
+                        if (i === 0) ctx.moveTo(x, y);
+                        else ctx.lineTo(x, y);
+                    }
+                    ctx.closePath();
+                    ctx.stroke();
+                }
+                ctx.strokeStyle = '#ccc';
+                for (let i = 0; i < 6; i++) {
+                    const angle = Math.PI / 2 * 3 + i * 2 * Math.PI / 6;
+                    ctx.beginPath();
+                    ctx.moveTo(cx, cy);
+                    ctx.lineTo(cx + r * Math.cos(angle), cy + r * Math.sin(angle));
+                    ctx.stroke();
+                }
+                ctx.fillStyle = 'rgba(26,26,26,0.2)';
+                ctx.strokeStyle = '#1a1a1a';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                for (let i = 0; i < 6; i++) {
+                    const angle = Math.PI / 2 * 3 + i * 2 * Math.PI / 6;
+                    const val = Math.min(Math.max(values[i] || 0, 0), 1);
+                    const radius = r * val;
+                    const x = cx + radius * Math.cos(angle);
+                    const y = cy + radius * Math.sin(angle);
+                    if (i === 0) ctx.moveTo(x, y);
+                    else ctx.lineTo(x, y);
+                }
+                ctx.closePath();
+                ctx.fill();
+                ctx.stroke();
+
+                ctx.fillStyle = '#333';
+                ctx.font = '12px sans-serif';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                for (let i = 0; i < 6; i++) {
+                    const angle = Math.PI / 2 * 3 + i * 2 * Math.PI / 6;
+                    const lx = cx + (r + 22) * Math.cos(angle);
+                    const ly = cy + (r + 22) * Math.sin(angle);
+                    ctx.fillText(dims[i], lx, ly);
+                }
+                ctx.fillStyle = '#1a1a1a';
+                ctx.font = 'bold 11px sans-serif';
+                for (let i = 0; i < 6; i++) {
+                    const angle = Math.PI / 2 * 3 + i * 2 * Math.PI / 6;
+                    const val = Math.min(Math.max(values[i] || 0, 0), 1);
+                    const radius = r * val;
+                    const x = cx + radius * Math.cos(angle);
+                    const y = cy + radius * Math.sin(angle);
+                    if (val > 0.1) {
+                        ctx.fillText((avg[i] || 0).toFixed(1), x, y - 12);
+                    }
+                }
+            }
+
+            // ---------- 关键词生成 ----------
+            function generateKeywords() {
+                const tagsContainer = document.getElementById('keywordTags');
+                tagsContainer.innerHTML = '';
+                const dAnswers = answers.filter(a => a.answer === 3);
+                const keywordMap = {
+                    '性取向': ['同性', '双性', '泛性', '四爱', '跨性别', '流动'],
+                    '关系模式': ['开放式', '多重', '柏拉图', '依赖', '征服', '忠诚'],
+                    'BDSM': ['束缚', '支配', '臣服', '羞辱', '犬奴', '宠物', 'TPE', '年龄扮演', '感官剥夺', '电击', '贞操', '打屁股', 'D/s', '主奴'],
+                    '物化器官': ['足', '精液', '肛门', '胸部', '大腿', '口腔', '体液', '气味', '制服', '乳胶'],
+                    '情境角色': ['公共场合', '角色扮演', 'CNC', '偷窥', '多人', '镜头', '主人奴隶', '顽主顽宝'],
+                    '极端癖好': ['血腥', '窒息', '人外', '穿刺', '原始兽性']
+                };
+                const dimRanges = [[0,9],[10,19],[20,34],[35,44],[45,54],[55,59]];
+                const dimNames = ['性取向', '关系模式', 'BDSM', '物化器官', '情境角色', '极端癖好'];
+                let tags = [];
+                dAnswers.forEach(a => {
+                    const qIdx = a.idx;
+                    for (let d = 0; d < dimRanges.length; d++) {
+                        if (qIdx >= dimRanges[d][0] && qIdx <= dimRanges[d][1]) {
+                            const pool = keywordMap[dimNames[d]] || [];
+                            if (pool.length > 0) {
+                                const pick = pool[Math.floor(Math.random() * pool.length)];
+                                if (!tags.includes(pick)) tags.push(pick);
+                            }
+                            break;
+                        }
+                    }
+                });
+                if (tags.length < 3) {
+                    const fallback = ['探索者', '潜在特质', '未完全觉醒'];
+                    tags = tags.concat(fallback.slice(0, 3 - tags.length));
+                }
+                tags.slice(0, 8).forEach(t => {
+                    const span = document.createElement('span');
+                    span.className = 'keyword-tag high';
+                    span.textContent = t;
+                    tagsContainer.appendChild(span);
+                });
+                const bAnswers = answers.filter(a => a.answer === 2);
+                if (bAnswers.length > 0 && tags.length < 6) {
+                    const lightTags = ['好奇', '可开发', '有潜力'];
+                    lightTags.forEach(t => {
+                        const span = document.createElement('span');
+                        span.className = 'keyword-tag';
+                        span.textContent = t;
+                        tagsContainer.appendChild(span);
+                    });
+                }
+            }
+
+            // ---------- 重置 ----------
+            document.getElementById('resetBtn').addEventListener('click', function() {
+                resultScreen.style.display = 'none';
+                cover.style.display = 'flex';
+                idx = 0;
+                answers = [];
+                isLocked = false;
+                isOverlay = false;
+                rewardTriggeredThisQuestion = false;
+                danmakuWrapper.style.display = 'none';
+                danmakuWrapper.innerHTML = '';
+                overlay.style.display = 'none';
+            });
+
+            // ---------- 开始 / 拒绝 ----------
+            document.getElementById('startBtn').addEventListener('click', function() {
+                cover.style.display = 'none';
+                quiz.style.display = 'flex';
+                idx = 0;
+                answers = [];
+                isLocked = false;
+                isOverlay = false;
+                renderQuestion(0);
+            });
+
+            document.getElementById('refuseBtn').addEventListener('click', function() {
+                if (isLocked) return;
+                isLocked = true;
+                danmakuWrapper.style.display = 'block';
+                danmakuWrapper.innerHTML = '';
+                for (let i = 0; i < 25; i++) {
+                    const span = document.createElement('span');
+                    span.className = 'danmaku';
+                    span.innerText = punishLines[Math.floor(Math.random() * punishLines.length)] + '　';
+                    span.style.top = (2 + Math.random() * 94) + '%';
+                    span.style.fontSize = (16 + Math.random() * 12) + 'px';
+                    span.style.animationDuration = (5 + Math.random() * 3) + 's';
+                    span.style.animationDelay = (Math.random() * 3) + 's';
+                    danmakuWrapper.appendChild(span);
+                }
+                overlayContent.className = 'overlay-content punish';
+                overlayTitle.textContent = '你以为逃得掉？';
+                overlayText.textContent = punishLines[Math.floor(Math.random() * punishLines.length)];
+                overlayBtn.className = 'overlay-btn punish-btn';
+                overlayBtn.textContent = '开始';
+                overlay.style.display = 'flex';
+                isOverlay = true;
+                const duration = 5000 + Math.floor(Math.random() * 1200);
+                setTimeout(() => {
+                    danmakuWrapper.style.display = 'none';
+                    danmakuWrapper.innerHTML = '';
+                }, duration);
+                overlayBtn.onclick = function() {
+                    overlay.style.display = 'none';
+                    isOverlay = false;
+                    isLocked = false;
+                    cover.style.display = 'none';
+                    quiz.style.display = 'flex';
+                    idx = 0;
+                    answers = [];
+                    renderQuestion(0);
+                };
+            });
+
+            // ---------- 初始状态 ----------
+            cover.style.display = 'flex';
+            quiz.style.display = 'none';
+            resultScreen.style.display = 'none';
+            overlay.style.display = 'none';
+            danmakuWrapper.style.display = 'none';
+
+        })();
+    </script>
+</body>
+</html>

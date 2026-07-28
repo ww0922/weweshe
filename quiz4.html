@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>继弟问卷 · 味味舍</title>
+  <style>
+    /* 返回按钮 */
+    .back-to-home {
+      position: fixed;
+      top: 12px;
+      left: 12px;
+      z-index: 99999;
+      background: rgba(255,255,255,0.92);
+      border: 1px solid #e8d5ce;
+      border-radius: 30px;
+      padding: 6px 16px;
+      font-size: 13px;
+      color: #c49a92;
+      cursor: pointer;
+      font-family: 'Georgia', serif;
+      letter-spacing: 1px;
+      text-decoration: none;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+      backdrop-filter: blur(4px);
+      transition: 0.2s;
+    }
+    .back-to-home:hover { background: #fdece8; }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, 'PingFang SC', 'Helvetica Neue', system-ui, sans-serif;
+      background: #ffffff;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 0;
+    }
+    .phone {
+      width: 100%;
+      max-width: 430px;
+      min-height: 100vh;
+      background: #ffffff;
+      position: relative;
+      box-shadow: 0 0 40px rgba(0,0,0,0.04);
+      margin: 0 auto;
+      overflow: hidden;
+    }
+    .cover {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      padding: 40px 30px;
+      text-align: center;
+      background: #ffffff;
+    }
+    .cover small {
+      font-size: 12px;
+      color: #cccccc;
+      letter-spacing: 2px;
+      margin-bottom: 30px;
+      font-weight: 300;
+    }
+    .cover h1 {
+      font-size: 26px;
+      font-weight: 600;
+      color: #1a1a1a;
+      margin-bottom: 24px;
+    }
+    .cover .hint {
+      font-size: 13px;
+      color: #888888;
+      line-height: 1.8;
+      max-width: 300px;
+      margin-bottom: 40px;
+    }
+    .cover .hint span {
+      color: #aaaaaa;
+      font-weight: 300;
+    }
+    .cover-btns {
+      display: flex;
+      gap: 24px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .cover-btn {
+      padding: 14px 40px;
+      border-radius: 40px;
+      border: 1.5px solid #1a1a1a;
+      background: #ffffff;
+      font-size: 17px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.15s;
+      color: #1a1a1a;
+      min-width: 130px;
+    }
+    .cover-btn.primary {
+      background: #1a1a1a;
+      color: white;
+      border-color: #1a1a1a;
+    }
+    .cover-btn:active { opacity: 0.6; transform: scale(0.96); }
+
+    .quiz-screen {
+      display: none;
+      flex-direction: column;
+      height: 100vh;
+      background: #fafafa;
+    }
+    .quiz-header {
+      padding: 60px 20px 12px;
+      background: #ffffff;
+      border-bottom: 1px solid #efefef;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 15px;
+      color: #333;
+    }
+    .quiz-header .idx { font-weight: 600; color: #1a1a1a; }
+    .quiz-header .total { color: #aaa; }
+    .quiz-progress {
+      height: 3px;
+      background: #eeeeee;
+      border-radius: 6px;
+      margin: 0 20px 16px;
+      margin-top: 6px;
+    }
+    .quiz-progress .bar {
+      height: 3px;
+      background: #1a1a1a;
+      border-radius: 6px;
+      width: 0%;
+      transition: width 0.3s;
+    }
+    .quiz-question {
+      padding: 20px 24px 12px;
+      font-size: 20px;
+      font-weight: 500;
+      color: #111;
+      line-height: 1.5;
+      min-height: 80px;
+      flex-shrink: 0;
+    }
+    .quiz-options {
+      padding: 0 20px 20px;
+      flex: 1;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .quiz-opt {
+      background: #ffffff;
+      padding: 18px 22px;
+      border-radius: 18px;
+      border: 1px solid #eaeaea;
+      font-size: 16px;
+      color: #1a1a1a;
+      cursor: pointer;
+      transition: 0.12s;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.02);
+    }
+    .quiz-opt:active { background: #f5f0f0; border-color: #d4c5c5; transform: scale(0.98); }
+    .quiz-opt.reject { color: #b00000; border-color: #f0d0d0; }
+    .quiz-opt.reject:active { background: #ffe8e8; }
+
+    .punish-overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: #0a0000;
+      z-index: 2000;
+      overflow: hidden;
+      pointer-events: none;
+      display: none;
+    }
+    .danmaku {
+      position: absolute;
+      color: #cc0000;
+      font-weight: 800;
+      white-space: nowrap;
+      text-shadow: 0 0 12px #aa0000, 0 0 30px #660000;
+      opacity: 0.85;
+      will-change: transform;
+      font-size: 28px;
+    }
+    .d0 { animation: scrollLeft 4s linear infinite; }
+    .d1 { animation: scrollLeft 5s linear infinite; }
+    .d2 { animation: scrollLeft 6s linear infinite; }
+    .d3 { animation: scrollLeft 4.5s linear infinite; }
+    .d4 { animation: scrollLeft 5.5s linear infinite; }
+    .d5 { animation: scrollLeft 3.8s linear infinite; }
+    @keyframes scrollLeft {
+      0% { transform: translateX(110vw); }
+      100% { transform: translateX(-110vw); }
+    }
+    .blood-drop {
+      position: absolute;
+      width: 6px; height: 14px;
+      background: #8b0000;
+      border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+      opacity: 0.5;
+      animation: drip 2.4s ease-in infinite;
+    }
+    @keyframes drip {
+      0% { transform: translateY(-20px); opacity: 0.7; }
+      80% { opacity: 0.3; }
+      100% { transform: translateY(100vh); opacity: 0; }
+    }
+    .punish-text {
+      position: fixed;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      color: #cc0000;
+      font-size: 32px;
+      font-weight: 700;
+      text-align: center;
+      line-height: 1.6;
+      text-shadow: 0 0 40px #990000;
+      z-index: 2100;
+      pointer-events: none;
+      background: rgba(0,0,0,0.3);
+      padding: 30px 50px;
+      border-radius: 24px;
+      backdrop-filter: blur(2px);
+      letter-spacing: 2px;
+      white-space: pre-line;
+    }
+
+    .end-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.5);
+      z-index: 3000;
+      justify-content: center;
+      align-items: center;
+    }
+    .end-card {
+      background: #ffffff;
+      max-width: 320px;
+      width: 85%;
+      padding: 40px 24px 32px;
+      border-radius: 32px;
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    }
+    .end-card h3 { font-size: 22px; color: #1a1a1a; margin-bottom: 10px; }
+    .end-card p { font-size: 16px; color: #444; margin-bottom: 28px; line-height: 1.5; }
+    .end-card button {
+      padding: 12px 36px;
+      border: none;
+      background: #1a1a1a;
+      color: white;
+      border-radius: 40px;
+      font-size: 16px;
+      cursor: pointer;
+      font-weight: 500;
+    }
+    .end-card button:active { opacity: 0.7; }
+
+    @media (max-width: 430px) {
+      .phone { max-width: 100%; box-shadow: none; }
+    }
+  </style>
+</head>
+<body>
+<a class="back-to-home" href="index.html">← 返回</a>
+<div class="phone">
+
+  <div class="cover" id="appCover">
+    <small>✦ 警告 ✦</small>
+    <h1>🐾 弟弟的坦白</h1>
+    <div class="hint">
+      一些关于占有、依赖与渴望的陈述。<br>
+      请按你真实的感受选择。<br>
+      <span>—— 拒绝也是回答的一种 ——</span>
+    </div>
+    <div class="cover-btns">
+      <button class="cover-btn primary" id="startQuiz">开始作答</button>
+      <button class="cover-btn" id="refuseStart">我不想</button>
+    </div>
+  </div>
+
+  <div class="quiz-screen" id="quizScreen">
+    <div class="quiz-header">
+      <span class="idx" id="qIdx">1</span>
+      <span class="total">/ 50</span>
+    </div>
+    <div class="quiz-progress"><div class="bar" id="progressBar"></div></div>
+    <div class="quiz-question" id="questionText">加载中…</div>
+    <div class="quiz-options" id="optionsContainer"></div>
+  </div>
+
+  <div class="punish-overlay" id="punishOverlay"></div>
+
+  <div class="end-overlay" id="endOverlay">
+    <div class="end-card">
+      <h3>💌 我收到了</h3>
+      <p id="endMessage">姐姐……你会喜欢我的，对吧？。<br>我会好好珍惜你的。</p>
+      <button id="closeEndBtn">关闭</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+(function() {
+  const questions = [
+    { q: '第一次见我，你心里的感觉是？', opts: ['有点在意', '想靠近你', '想照顾你', '不想理你'] },
+    { q: '你更喜欢我怎么称呼你？', opts: ['姐姐', '名字就好', '随便', '别那样叫'] },
+    { q: '如果我靠你太近，你会？', opts: ['心跳加速', '装作没事', '躲开', '推开我'] },
+    { q: '你允许我偶尔撒娇吗？', opts: ['可以', '看情况', '不太喜欢', '不行'] },
+    { q: '你觉得我们之间的关系应该？', opts: ['更亲密些', '就这样', '保持距离', '别越界'] },
+    { q: '你会在意我和别人亲近吗？', opts: ['很在意', '有一点', '无所谓', '关你什么事'] },
+    { q: '如果我低声喊你姐姐，你会？', opts: ['心软', '有点烦', '没感觉', '让我闭嘴'] },
+    { q: '你愿意让我依赖你吗？', opts: ['愿意', '一点点', '看情况', '不愿意'] },
+    { q: '你更喜欢掌控还是被照顾？', opts: ['掌控', '被照顾', '一半一半', '都不想'] },
+    { q: '如果我偷偷闻你的头发，你会？', opts: ['假装不知道', '脸红', '制止你', '生气'] },
+    { q: '你允许我幻想你吗？', opts: ['可以', '别太过分', '不行', '恶心'] },
+    { q: '你更喜欢我叫你姐姐还是主人？', opts: ['姐姐', '主人', '都可以', '都不要'] },
+    { q: '如果我犯了错，你希望我怎么做？', opts: ['坦白', '撒娇认错', '惩罚你', '滚远点'] },
+    { q: '你享受我对你的渴望吗？', opts: ['享受', '有点压力', '不讨厌', '厌恶'] },
+    { q: '你愿意给我一个拥抱吗？', opts: ['现在就可以', '也许以后', '不太想', '别碰我'] },
+    { q: '你知不知道每次你靠近，我都硬得发疼？', opts: ['知道', '感觉到了', '别胡说', '滚'] },
+    { q: '如果你发现我偷偷自慰想着你，你会？', opts: ['继续看', '骂你一句', '转身离开', '恶心'] },
+    { q: '你愿意让我闻你的内衣吗？', opts: ['你疯了', '……可以', '不行', '报警了'] },
+    { q: '我想跪在你腿边，可以吗姐姐？', opts: ['过来', '随便你', '别这样', '滚开'] },
+    { q: '你知不知道你的脖子让我发狂？', opts: ['知道', '你太夸张', '离我远点', '闭嘴'] },
+    { q: '你能允许我一边喊你姐姐一边内射吗？', opts: ['允许', '别喊我', '你试试', '不准'] },
+    { q: '如果我舔你的手指，你会？', opts: ['插进我嘴', '抽走', '愣住', '打我'] },
+    { q: '你骂我的时候……我下面会硬', opts: ['你真是m呢？！', '继续骂你？…', '变态', '别说了'] },
+    { q: '我想把脸埋在你胸口听你的心跳，姐姐。', opts: ['来吧', '一下下', '不行', '变态'] },
+    { q: '你喜欢夹着腿磨吗？', opts: ['偶尔', '经常', '关你屁事', '没有'] },
+    { q: '如果我当着你的面喘给你听，你会？', opts: ['更兴奋', '脸红', '制止我', '无感'] },
+    { q: '你愿意让我用嘴帮你解开内裤吗？', opts: ['你试试', '……嗯', '不行', '滚'] },
+    { q: '我想让你骑在我脸上，姐姐。', opts: ['现在就要', '下次', '别说了', '疯了吗'] },
+    { q: '你享受我看着你自慰的样子吗？', opts: ['享受', '害羞', '别看我', '不准看'] },
+    { q: '允许我把精液涂在你腿上吗？', opts: ['涂吧', '别太过分', '不行', '恶心'] },
+    { q: '你更喜欢我舔你的手心还是脚心？', opts: ['手心', '脚心', '都不要', '变态'] },
+    { q: '我想让你骑在我腰上，我自己动。', opts: ['上来', '下次', '想得美', '滚'] },
+    { q: '如果我一边操你一边哭着喊姐姐，你会？', opts: ['更用力', '心软', '停下', '扇我'] },
+    { q: '你允许我在你体内射精吗？', opts: ['允许', '戴套可以', '不行', '想死吗'] },
+    { q: '你爱我吗？哪怕只有一点点。', opts: ['爱', '有一点', '不知道', '不爱'] },
+    { q: '姐姐……我鸡巴好胀，你帮我含一下好不好？', opts: ['咬你', '试试看', '你疯了', '滚'] },
+    { q: '你下面的水是不是为我流的？', opts: ['是', '少自作多情', '不知道', '不是'] },
+    { q: '我想把舌头伸进你喉咙里操你。', opts: ['来', '你轻点', '不行', '恶心'] },
+    { q: '我想让你掐着我脖子边操你，边操边骂我。', opts: ['骂死你', '轻点掐', '不行', '有病'] },
+    { q: '哈…姐姐……妈咪……让我射在你脸上好不好？', opts: ['射吧', '擦掉就行', '不行', '我报警'] },
+    { q: '我想让你用高跟鞋踩我鸡巴，踩到哭。', opts: ['踩断你', '轻轻踩', '不行', '小变态'] },
+    { q: '唔…你舔我马眼的时候……眼睛还在看我，好涩。', opts: ['因为爱你啊', '别说了', '不行', '疯子'] },
+    { q: '嗯哈…你的小穴在咬我……它好贪吃。', opts: ['它只贪吃你的', '那你就喂饱它', '别说了…好羞', '闭嘴'] },
+    { q: '我想让你坐我脸上，让我舔到窒息。', opts: ['坐死你', '你试试', '不行', '救命'] },
+    { q: '啊…你被我干的时候叫得像猫叫春……好骚。', opts: ['那你也一起叫', '你才骚', '我只对你骚', '你闭嘴…'] },
+    { q: '你被我干到失神的时候……最美。', opts: ['那你多干我几次', '我只对你失神', '别说了…', '疯子'] },
+    { q: '啊哈~姐姐……主人……求求你让我射……我快疯了。', opts: ['射吧', '再忍忍', '不准射', '滚'] },
+    { q: '我想把你绑起来，从后面操到天亮。', opts: ['绑吧', '你轻点', '不行', '你试试'] },
+    { q: '哈~嗯啊…你高潮的时候里面一缩一缩的……像在榨精。', opts: ['那你就全射给我', '我被你榨干了', '好舒服…', '别说了'] },
+    { q: '说你爱我，说你是我的小母狗。姐姐……我要你永远当我的妈咪、我的爱人、我的小狗。', opts: ['我愿意…永远', '我是你的母狗', '你才是我的狗', '滚'] }
+  ];
+
+  let quizIdx = 0;
+  let answers = [];
+  let isPunishing = false;
+  let answerLock = false;
+  let punishTimer = null;
+
+  const cover = document.getElementById('appCover');
+  const quizScreen = document.getElementById('quizScreen');
+  const punishOverlay = document.getElementById('punishOverlay');
+  const endOverlay = document.getElementById('endOverlay');
+  const questionText = document.getElementById('questionText');
+  const optionsContainer = document.getElementById('optionsContainer');
+  const progressBar = document.getElementById('progressBar');
+  const qIdxSpan = document.getElementById('qIdx');
+  const startBtn = document.getElementById('startQuiz');
+  const refuseBtn = document.getElementById('refuseStart');
+  const closeEndBtn = document.getElementById('closeEndBtn');
+  const endMessage = document.getElementById('endMessage');
+
+  const punishLines = [
+    '姐姐…别不要我…', '我是你的狗…永远都是…', '求你…看看我…', '我什么都愿意做…',
+    '主人…别抛弃我…', '我爱你爱到发疯…', '你是我活着的意义…', '我错了…让我跪着爱你好不好…',
+    '没有你我会死…', '你踩我…骂我…只要别离开…', '我是你的所有物…永远…', '姐姐…妈咪…主人…求你…',
+    '我的一切都属于你…', '你闻闻我…我全是你的味道…', '让我做你的狗…求你…', '我硬得好疼…但你不允许我就不碰…',
+    '你越拒绝我越兴奋…我是不是疯了…', '我想把你的名字刻在肉棒上…', '你流的每一滴我都想舔干净…',
+    '我射了多少次都想着你…', '姐姐…让我死在你身上…', '你是我唯一的主人…', '求你…爱我…哪怕一点点…',
+    '我会跪着等你回头…', '我永远是你的…永远…'
+  ];
+
+  function triggerPunish(callback) {
+    if (isPunishing) return;
+    isPunishing = true;
+    answerLock = true;
+    if (punishTimer) { clearTimeout(punishTimer); punishTimer = null; }
+    punishOverlay.innerHTML = '';
+    punishOverlay.style.display = 'block';
+
+    const words = [];
+    for (let i = 0; i < 60; i++) {
+      words.push(punishLines[Math.floor(Math.random() * punishLines.length)]);
+    }
+    const dirs = ['d0','d1','d2','d3','d4','d5'];
+    for (let i = 0; i < words.length; i++) {
+      const span = document.createElement('span');
+      span.className = 'danmaku ' + dirs[i % dirs.length];
+      span.innerText = words[i] + '  ';
+      span.style.top = (1 + Math.floor(Math.random() * 96)) + '%';
+      span.style.fontSize = (20 + Math.floor(Math.random() * 30)) + 'px';
+      span.style.animationDuration = (3 + Math.random() * 3) + 's';
+      span.style.animationDelay = (Math.random() * 2) + 's';
+      punishOverlay.appendChild(span);
+    }
+    for (let i = 0; i < 40; i++) {
+      const drop = document.createElement('div');
+      drop.className = 'blood-drop';
+      drop.style.left = (Math.random() * 98) + '%';
+      drop.style.top = '-10px';
+      drop.style.width = (4 + Math.random() * 8) + 'px';
+      drop.style.height = (8 + Math.random() * 18) + 'px';
+      drop.style.animationDuration = (1.8 + Math.random() * 2) + 's';
+      drop.style.animationDelay = (Math.random() * 3) + 's';
+      punishOverlay.appendChild(drop);
+    }
+
+    const txtDiv = document.createElement('div');
+    txtDiv.className = 'punish-text';
+    txtDiv.innerText = punishLines[Math.floor(Math.random() * punishLines.length)] + '\n' +
+                        punishLines[Math.floor(Math.random() * punishLines.length)];
+    document.body.appendChild(txtDiv);
+
+    const duration = 5000 + Math.floor(Math.random() * 1000);
+    punishTimer = setTimeout(() => {
+      punishOverlay.style.display = 'none';
+      punishOverlay.innerHTML = '';
+      if (txtDiv.parentNode) txtDiv.parentNode.removeChild(txtDiv);
+      isPunishing = false;
+      answerLock = false;
+      punishTimer = null;
+      if (callback) callback();
+    }, duration);
+  }
+
+  function renderQuiz(index) {
+    if (index >= questions.length) {
+      endMessage.innerText = '姐姐，这辈子都只能有我一只狗哦 ต\n—— 你的弟弟';
+      endOverlay.style.display = 'flex';
+      return;
+    }
+    const data = questions[index];
+    questionText.innerText = data.q;
+    qIdxSpan.innerText = index + 1;
+    progressBar.style.width = ((index + 1) / questions.length * 100) + '%';
+    optionsContainer.innerHTML = '';
+    data.opts.forEach((opt, optIdx) => {
+      const div = document.createElement('div');
+      div.className = 'quiz-opt';
+      if (optIdx === data.opts.length - 1) {
+        div.classList.add('reject');
+      }
+      div.innerText = opt;
+      div.addEventListener('click', function() {
+        if (answerLock || isPunishing) return;
+        const isReject = (optIdx === data.opts.length - 1);
+        if (isReject) {
+          triggerPunish(function() {
+            renderQuiz(quizIdx);
+          });
+          return;
+        }
+        answers.push({ idx: index, answer: optIdx });
+        quizIdx = index + 1;
+        renderQuiz(quizIdx);
+      });
+      optionsContainer.appendChild(div);
+    });
+  }
+
+  startBtn.addEventListener('click', function() {
+    cover.style.display = 'none';
+    quizScreen.style.display = 'flex';
+    quizIdx = 0;
+    answers = [];
+    isPunishing = false;
+    answerLock = false;
+    renderQuiz(0);
+  });
+
+  refuseBtn.addEventListener('click', function() {
+    triggerPunish(function() {
+      cover.style.display = 'none';
+      quizScreen.style.display = 'flex';
+      quizIdx = 0;
+      answers = [];
+      isPunishing = false;
+      answerLock = false;
+      renderQuiz(0);
+    });
+  });
+
+  closeEndBtn.addEventListener('click', function() {
+    endOverlay.style.display = 'none';
+    cover.style.display = 'flex';
+    quizScreen.style.display = 'none';
+  });
+
+  cover.style.display = 'flex';
+  quizScreen.style.display = 'none';
+})();
+</script>
+</body>
+</html>

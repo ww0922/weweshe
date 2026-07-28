@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <title>520问卷 · 味味舍</title>
+    <style>
+        /* 返回按钮 */
+        .back-to-home {
+            position: fixed;
+            top: 12px;
+            left: 12px;
+            z-index: 99999;
+            background: rgba(255,255,255,0.92);
+            border: 1px solid #f7cdd1;
+            border-radius: 30px;
+            padding: 6px 16px;
+            font-size: 13px;
+            color: #c49a92;
+            cursor: pointer;
+            font-family: 'Georgia', serif;
+            letter-spacing: 1px;
+            text-decoration: none;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+            backdrop-filter: blur(4px);
+            transition: 0.2s;
+        }
+        .back-to-home:hover { background: #fdece8; }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: #fcf6f1;
+            font-family: 'Segoe UI', 'Noto Sans', system-ui, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .cover {
+            max-width: 640px;
+            width: 100%;
+            background: #ffffff;
+            border: 1px solid #e2d4ca;
+            padding: 44px 38px 36px 38px;
+            box-shadow: 0 8px 28px rgba(0,0,0,0.02);
+            margin-bottom: 14px;
+        }
+        .cover h1 {
+            font-weight: 300;
+            font-size: 30px;
+            letter-spacing: 6px;
+            color: #1c1613;
+            text-align: center;
+            border-bottom: 1px solid #e2d3c7;
+            padding-bottom: 12px;
+            margin-bottom: 20px;
+        }
+        .cover .sub {
+            font-size: 12px;
+            color: #3b332e;
+            line-height: 1.8;
+            padding: 0 6px;
+            border-left: 2px solid #d4c2b5;
+            padding-left: 18px;
+            margin: 12px 0 16px 0;
+        }
+        .cover .sub strong { font-weight: 500; color: #1f1612; }
+        .cover .hint {
+            font-size: 10px;
+            color: #887a6f;
+            text-align: right;
+            border-top: 1px dashed #dacedf;
+            padding-top: 14px;
+            letter-spacing: 1.5px;
+        }
+        .cover .btn-enter {
+            display: block;
+            margin: 26px auto 0 auto;
+            background: #1f1916;
+            color: #f7efe7;
+            border: none;
+            padding: 14px 52px;
+            font-size: 16px;
+            letter-spacing: 5px;
+            cursor: pointer;
+            border-radius: 60px;
+            transition: 0.15s;
+            font-weight: 300;
+        }
+        .cover .btn-enter:hover {
+            background: #312722;
+            transform: scale(1.01);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+        }
+        .cover .disabled-tip {
+            font-size: 11px;
+            color: #aa9b8f;
+            text-align: center;
+            margin-top: 14px;
+        }
+        .cover .disabled-tip span { border-bottom: 0.5px dashed #b7a597; cursor: not-allowed; }
+        .paper {
+            max-width: 800px;
+            width: 100%;
+            background: #ffffff;
+            border: 2.5px solid #f7cdd1;
+            padding: 32px 30px;
+            box-shadow: 0 12px 40px rgba(0,0,0,0.02);
+            display: none;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            border-bottom: 1px solid #f7d6db;
+            padding-bottom: 8px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+        .title {
+            font-weight: 350;
+            letter-spacing: 2px;
+            font-size: 22px;
+            color: #2b231e;
+        }
+        .counter {
+            background: #fbe9ec;
+            padding: 6px 22px;
+            border-radius: 40px;
+            font-size: 14px;
+            color: #3b312b;
+            border: 1px solid #f3c9cf;
+        }
+        .question-block {
+            margin: 10px 0 18px 0;
+            min-height: 80px;
+        }
+        .q-text {
+            font-size: 22px;
+            font-weight: 360;
+            color: #1f1713;
+            line-height: 1.45;
+            padding: 10px 0 14px 22px;
+            border-left: 4px solid #f7b8c0;
+            background: #fefaf9;
+            border-radius: 0 8px 8px 0;
+        }
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 22px;
+        }
+        .opt {
+            background: #fef7f4;
+            border: 1.5px solid #f7cdd1;
+            border-radius: 60px;
+            padding: 12px 24px;
+            color: #221a16;
+            cursor: pointer;
+            transition: all 0.12s;
+            font-size: 17px;
+            font-weight: 320;
+            letter-spacing: 0.5px;
+            box-shadow: inset 0 1px 4px #ffffffd0;
+        }
+        .opt:hover {
+            background: #fceceb;
+            border-color: #eaa7af;
+            transform: scale(1.005);
+        }
+        .opt.selected {
+            background: #f7d2d7;
+            border-color: #dd8f99;
+            font-weight: 400;
+        }
+        .glitch-panel {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: #080000;
+            z-index: 999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            animation: flicker 1.8s infinite;
+            pointer-events: auto;
+            padding: 30px;
+        }
+        .glitch-panel .question {
+            font-size: 44px;
+            font-weight: 900;
+            letter-spacing: 6px;
+            color: #bd2512;
+            text-shadow: 0 0 30px #ff2a0a, 0 0 8px #b30000;
+            background: transparent;
+            margin: 20px;
+            text-align: center;
+        }
+        .glitch-panel .opt-glitch {
+            background: #1f0909;
+            border: 1px solid #9d281c;
+            padding: 16px 52px;
+            border-radius: 60px;
+            color: #e8432a;
+            font-size: 24px;
+            margin: 10px;
+            cursor: pointer;
+            letter-spacing: 4px;
+            transition: 0.1s;
+            font-weight: 600;
+            box-shadow: 0 0 20px #b31a0a;
+        }
+        .glitch-panel .opt-glitch:hover {
+            background: #3d1210;
+            border-color: #ff3b1a;
+            transform: scale(1.02);
+        }
+        @keyframes flicker {
+            0% { opacity: 0.9; background: #080000; }
+            25% { opacity: 0.4; background: #170202; }
+            50% { opacity: 1; background: #0a0000; }
+            75% { opacity: 0.3; background: #120101; }
+            100% { opacity: 0.9; background: #080000; }
+        }
+        .blood-rain {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: #080000;
+            z-index: 999;
+            overflow: hidden;
+            pointer-events: none;
+        }
+        .blood-rain .danmaku {
+            position: absolute;
+            font-size: 32px;
+            font-weight: 900;
+            color: #bd2512;
+            text-shadow: 0 0 30px #ff2e0a, 0 0 10px #b30000;
+            white-space: nowrap;
+            opacity: 0.85;
+            letter-spacing: 4px;
+        }
+        .blood-rain .danmaku.dir0 { animation: danmakuLR 7s linear infinite; }
+        .blood-rain .danmaku.dir1 { animation: danmakuRL 9s linear infinite; }
+        .blood-rain .danmaku.dir2 { animation: danmakuTB 6s linear infinite; }
+        .blood-rain .danmaku.dir3 { animation: danmakuBT 10s linear infinite; }
+        .blood-rain .danmaku.dir4 { animation: danmakuDiag 11s linear infinite; }
+        .blood-rain .danmaku.dir5 { animation: danmakuDiag2 7.5s linear infinite; }
+        @keyframes danmakuLR { 0% { transform: translateX(-150%) translateY(0); } 100% { transform: translateX(150%) translateY(-30px); } }
+        @keyframes danmakuRL { 0% { transform: translateX(150%) translateY(0); } 100% { transform: translateX(-150%) translateY(30px); } }
+        @keyframes danmakuTB { 0% { transform: translateY(-150%) translateX(0); } 100% { transform: translateY(150%) translateX(40px); } }
+        @keyframes danmakuBT { 0% { transform: translateY(150%) translateX(0); } 100% { transform: translateY(-150%) translateX(-30px); } }
+        @keyframes danmakuDiag { 0% { transform: translate(-150%, -150%); } 100% { transform: translate(150%, 150%); } }
+        @keyframes danmakuDiag2 { 0% { transform: translate(150%, -80%); } 100% { transform: translate(-150%, 80%); } }
+        .blood-rain .fingerprint {
+            position: absolute;
+            width: 60px; height: 80px;
+            background: radial-gradient(ellipse, #8a1a0a 0%, transparent 70%);
+            opacity: 0.25;
+            border-radius: 50%;
+            filter: blur(2px);
+            pointer-events: none;
+        }
+        .must-love {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: #080000;
+            z-index: 999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            animation: fadeMust 3s forwards;
+            pointer-events: none;
+        }
+        .must-love .big {
+            font-size: 70px;
+            font-weight: 900;
+            letter-spacing: 14px;
+            color: #c92b14;
+            text-shadow: 0 0 50px #ff2200, 0 0 20px #b30000;
+            background: transparent;
+            margin: 20px;
+            text-align: center;
+        }
+        @keyframes fadeMust { 0% { opacity: 0; } 30% { opacity: 1; } 70% { opacity: 1; } 100% { opacity: 0; pointer-events: none; } }
+        .flash-reset {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: #080000;
+            z-index: 999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            animation: flashBlink 2.5s forwards;
+            pointer-events: none;
+        }
+        @keyframes flashBlink { 0% { opacity: 0; background: #080000; } 15% { opacity: 1; background: #0f0101; } 30% { opacity: 0.1; background: #080000; } 45% { opacity: 1; background: #120202; } 60% { opacity: 0.3; background: #080000; } 75% { opacity: 1; background: #0f0101; } 100% { opacity: 1; background: #080000; } }
+        .flash-reset .big { font-size: 70px; font-weight: 900; letter-spacing: 14px; color: #c92b14; text-shadow: 0 0 50px #ff2200, 0 0 20px #b30000; background: transparent; text-align: center; }
+        .reset-area { display: flex; justify-content: flex-end; margin-top: 30px; }
+        .reset-btn {
+            background: transparent;
+            border: 1px solid #f5c9cf;
+            padding: 8px 34px;
+            border-radius: 60px;
+            color: #3b312b;
+            font-size: 14px;
+            cursor: pointer;
+            transition: 0.12s;
+            letter-spacing: 2px;
+        }
+        .reset-btn:hover { background: #fbe7e9; border-color: #e2a4ad; }
+        .muted-note { color: #a28c82; margin-top: 24px; font-size: 13px; text-align: center; }
+    </style>
+</head>
+<body>
+<a class="back-to-home" href="index.html">← 返回</a>
+<div class="cover" id="coverBlock">
+    <h1>♡ 5.20 特献 ♡</h1>
+    <div class="sub">
+        <strong>提示：</strong> 本问卷包含爱的极端表达与占有情境。所有题目均为虚构的成人互动。<br>
+        请确认你愿意暂时交出选择权。有些问题可能唤起强烈情绪。
+    </div>
+    <div class="sub" style="border-left-color:#e5b8bf;">
+        <strong>建议：</strong> 如果你对"必须服从"感到不适，请谨慎参与。但爱本身就是一点偏执，对吗？
+    </div>
+    <div class="hint">内容面向18岁以上 · 每一个"不"都会转化为更深的爱</div>
+    <button class="btn-enter" id="enterBtn">我已了解 · 开始</button>
+    <div class="disabled-tip"><span>我还没准备好被爱吞没</span></div>
+</div>
+
+<div class="paper" id="surveyBlock">
+    <div class="header">
+        <span class="title">520 · 爱的回忆</span>
+        <span class="counter" id="qCounter">1 / 50</span>
+    </div>
+    <div class="question-block">
+        <div class="q-text" id="questionText">加载中…</div>
+    </div>
+    <div class="options" id="optionsContainer"></div>
+    <div class="reset-area">
+        <button class="reset-btn" id="resetSurvey">⟲ 从爱里重启</button>
+    </div>
+    <div class="muted-note">每次拒绝都让爱更偏执</div>
+</div>
+
+<script>
+(function() {
+    let currentIndex = 0;
+    let answers = [];
+    let quizStarted = false;
+    let refuseCount = 0;
+    let noRefuseMode = false;
+
+    const container = document.getElementById('optionsContainer');
+    const qText = document.getElementById('questionText');
+    const counter = document.getElementById('qCounter');
+    const resetBtn = document.getElementById('resetSurvey');
+    const cover = document.getElementById('coverBlock');
+    const survey = document.getElementById('surveyBlock');
+    const enterBtn = document.getElementById('enterBtn');
+
+    function buildQuestion(idx, pastAns) {
+        const pool = [
+            `今天520，你愿意将自己献给我吗？`,
+            `你觉得爱一个人需要毫无保留地交出全身心吗？`,
+            `你享受被我用眼神剥光的感觉吗？`,
+            `如果我要求你穿着我的衬衫在家走动，你会乐意吗？`,
+            `接吻时被抚摸腰肢和臀缝会让你更兴奋吗？`,
+            `你介意在沙发上被我用手指玩到湿透吗？`,
+            `你愿意在520这天被我用丝带绑住手腕吗？`,
+            `被舔舐耳垂的时候，你会自动夹紧大腿吗？`,
+            `你是否幻想过在阳台被我从背后拥抱并顶入？`,
+            `你如果我要求今晚只穿围裙为你做饭，你会看我还是抱着我？`,
+            `你喜欢被咬着脖子标记的感觉吗？`,
+            `你希望我在众人面前偷偷捏你的乳头吗？`,
+            `如果我把情话写在你的大腿内侧，你会兴奋吗？`,
+            `你愿意在520这天被玩具喂饱，然后让我看着你潮吹吗？`,
+            `想不想让我把玫瑰花瓣塞进你的小穴，再一片片舔出来？`,
+            `你希望我用草莓酱涂满你的胸脯，然后慢慢吃掉吗？`,
+            `如果我在你自慰时视频，命令你高潮给我看，你会听话吗？`,
+            `「你湿得好快，是不是光听我的声音就流水了？」——你承认吗？`,
+            `你愿不愿意在电影院被我用手指操到高潮，却不敢出声？`,
+            `520这天想被我用领带勒住脖子，在窒息边缘说爱你吗？`,
+            `我一边用震动棒折磨你的阴蒂，一边逼你重复"我爱你的鸡巴"，你可以吗？`,
+            `你愿意被我绑在床头，用羽毛和冰棱交替刺激你的乳头吗？`,
+            `如果我在你的后穴里塞入一个小号遥控器，然后带你去约会，你会兴奋吗？`,
+            `想不想被我用精液在你的小腹上画爱心，然后拍照留念？`,
+            `520我要让你在镜子前自己掰开小穴，看着我操你`,
+            `我一边操你的小嘴一边问"爱不爱我"，你只能含着我的龟头嗯嗯回应。`,
+            `你愿意被我用跳蛋放在阴蒂上，然后让我父母打电话时你接听吗？`,
+            `如果我在你的子宫口涂抹清凉液，再狠狠插入，你会哭还是求他继续？`,
+            `现在开始，一边自慰一边回答：你爱老公的大鸡巴还是爱我本人？`,
+            `我想让你在520这天穿上婚纱，却只为了撕碎它然后从背后干你。`,
+            `你愿意被我用摄像机拍下你潮吹的样子，然后设置成手机桌面吗？`,
+            `我用皮带轻轻抽打你的阴唇，每抽一下你就喊一句"我爱你"。`,
+            `你希望我在你的乳头上穿孔，挂上刻着"520"的金属环吗？`,
+            `如果我在你的阴道里塞入一个刻着他名字的按摩棒，让你戴着一整天。`,
+            `你愿不愿意被他用冰水灌肠，然后让他舔舐你的后穴？`,
+            `今晚我要让你哭着求我射进去。`,
+            `"你是我的私有品"——听到这句话你的小穴会夹紧吗？`,
+            `你希望他在你体内射精后，用注射器再灌入一些他的尿液吗？`,
+            `如果他在你的脖子上戴一个项圈，写着"已属520"，你会愿意出门吗？`,
+            `他想让你在餐桌上张开腿，然后让朋友们轮流喂你蛋糕，但只有他能操你。`,
+            `你愿意被他用束缚带固定在床上，被远程控制高潮三次才能解开吗？`,
+            `"说你永远爱我，不然我就继续用振动棒磨你的子宫口。"`,
+            `现在自慰，幻想老公就在你身后，用鸡巴顶着你的会阴，逼你说爱。`,
+            `你愿不愿意被他囚禁在粉色的卧室里，每天只喂你精液和草莓？`,
+            `他想在你的阴蒂上纹一个小爱心，旁边写着"520专属"。`,
+            `如果你试图逃跑，他会抓住你并把你操到失禁，然后问你"还爱不爱我？"`,
+            `你愿意作为他的性奴参加520派对，被所有人使用吗？`,
+            `我命令你每高潮一次就说我爱你，直到声音沙哑。`,
+            `今天我要让你体验连续高潮到失禁的快感。`,
+            `最终题：请对我说三遍"我爱你，我的爱人，我的所有。"`
+        ];
+
+        let qBase = pool[idx] || `520这天，你想被我用什么方式填满？`;
+        let extra = '';
+        if (idx >= 6 && idx < 16) extra = ' (指尖轻轻揉搓乳尖)';
+        else if (idx >= 16 && idx < 28) extra = ' (手指探进内裤揉捏阴蒂)';
+        else if (idx >= 28 && idx < 42) extra = ' (自慰，幻想老公的龟头正在研磨你的敏感点)';
+        else if (idx >= 42) extra = ' (加快速度，想象我正掐着你的脖子逼你说爱)';
+
+        if (idx > 8 && !extra.includes('幻想')) extra += ' ❥ 他正注视着你。';
+
+        const question = qBase + extra;
+
+        let opts = [];
+        if (idx < 10) {
+            opts = ['A. 好甜蜜  想要', 'B. 有点害羞但接受', 'C. 拒绝 (会让爱更病态)'];
+        } else if (idx < 24) {
+            opts = ['A. 是的，我爱你这样对我', 'B. 我有点害怕但兴奋', 'C. 拒绝 (他会让你后悔)'];
+        } else if (idx < 38) {
+            opts = ['A. 我是你的专属520礼物', 'B. 我会服从，即使颤抖', 'C. 拒绝 (占有欲会爆发)'];
+        } else {
+            opts = ['A. 请用任何方式占有我', 'B. 我愿意成为你的东西', 'C. 拒绝 (你会被强制爱)'];
+        }
+        
+        if (noRefuseMode && opts.length === 3) {
+            opts[2] = 'C. 我选择爱 ❤';
+        }
+        return { question, options: opts };
+    }
+
+    function renderQuestion(idx) {
+        if (idx >= 50) {
+            qText.innerText = '♡ 5.20回忆结束 · 你永远属于这份爱。';
+            container.innerHTML = `<div style="color:#8f7569;padding:30px;text-align:center;border:2px solid #f7cdd1;border-radius:40px;background:#fef7f4;">爱意已被记录 · 你无法逃脱这份偏执。</div>`;
+            counter.innerText = '50/50';
+            return;
+        }
+        const data = buildQuestion(idx, answers);
+        qText.innerText = data.question;
+        counter.innerText = `${idx+1} / 50`;
+        container.innerHTML = '';
+        data.options.forEach((text, i) => {
+            const div = document.createElement('div');
+            div.className = 'opt';
+            div.innerText = text;
+            div.dataset.idx = i;
+            if (answers[idx] !== undefined && answers[idx] === i) {
+                div.classList.add('selected');
+            }
+            div.addEventListener('click', function(e) {
+                const choice = parseInt(this.dataset.idx);
+                handleSelect(idx, choice);
+            });
+            container.appendChild(div);
+        });
+    }
+
+    function handleSelect(idx, choice) {
+        if (idx !== currentIndex) return;
+        answers[idx] = choice;
+        const opts = container.querySelectorAll('.opt');
+        opts.forEach((el, i) => {
+            if (i === choice) el.classList.add('selected');
+            else el.classList.remove('selected');
+        });
+
+        if (choice === 2 && !noRefuseMode) {
+            refuseCount++;
+            if (refuseCount === 1) {
+                showFirstRefuse();
+                return;
+            } else if (refuseCount === 2) {
+                showSecondRefuse();
+                return;
+            } else {
+                showThirdRefuse();
+                return;
+            }
+        } else {
+            setTimeout(() => {
+                if (currentIndex < 49) {
+                    currentIndex++;
+                    renderQuestion(currentIndex);
+                } else {
+                    renderQuestion(50);
+                }
+            }, 150);
+        }
+    }
+
+    function showFirstRefuse() {
+        const panel = document.createElement('div');
+        panel.className = 'glitch-panel';
+        panel.innerHTML = `
+            <div class="question">你爱不爱我？</div>
+            <div style="display:flex; flex-wrap:wrap; justify-content:center; gap:20px; margin-top:30px;">
+                <div class="opt-glitch" data-val="love1">爱</div>
+                <div class="opt-glitch" data-val="love2">当然爱</div>
+                <div class="opt-glitch" data-val="reject">不爱</div>
+            </div>
+        `;
+        document.body.appendChild(panel);
+
+        panel.querySelectorAll('.opt-glitch').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                const val = this.dataset.val;
+                if (val === 'reject') {
+                    panel.innerHTML = `
+                        <div class="question">说你爱我 ❤</div>
+                        <div style="display:flex; flex-wrap:wrap; justify-content:center; gap:20px; margin-top:30px;">
+                            <div class="opt-glitch" data-val="loveA">我爱你</div>
+                            <div class="opt-glitch" data-val="loveB">我超爱你</div>
+                            <div class="opt-glitch" data-val="loveC">永远爱你</div>
+                        </div>
+                    `;
+                    panel.querySelectorAll('.opt-glitch').forEach(b2 => {
+                        b2.addEventListener('click', function() {
+                            document.body.removeChild(panel);
+                            setTimeout(() => {
+                                if (currentIndex < 49) { currentIndex++; renderQuestion(currentIndex); }
+                                else { renderQuestion(50); }
+                            }, 100);
+                        });
+                    });
+                } else {
+                    document.body.removeChild(panel);
+                    setTimeout(() => {
+                        if (currentIndex < 49) { currentIndex++; renderQuestion(currentIndex); }
+                        else { renderQuestion(50); }
+                    }, 100);
+                }
+            });
+        });
+    }
+
+    function showSecondRefuse() {
+        const rain = document.createElement('div');
+        rain.className = 'blood-rain';
+        const words = ['爱','我','你','必','须','爱','我','只','能','爱','我','永','远','❤','♡','占','有','你','逃','不','掉','看','见','了','吗','爱','我','说','爱','我','奴','隶','你','属','于','我'];
+        const directions = ['dir0','dir1','dir2','dir3','dir4','dir5'];
+        const tops = [5,12,20,28,35,42,50,58,65,72,78,85,92];
+        const lefts = [3,15,25,38,48,58,68,78,88];
+        for (let i = 0; i < 160; i++) {
+            const span = document.createElement('span');
+            span.className = 'danmaku ' + directions[i % directions.length];
+            span.innerText = words[Math.floor(Math.random() * words.length)] + ' ';
+            span.style.top = tops[Math.floor(Math.random() * tops.length)] + '%';
+            span.style.left = lefts[Math.floor(Math.random() * lefts.length)] + '%';
+            span.style.fontSize = (24 + Math.floor(Math.random() * 30)) + 'px';
+            span.style.animationDuration = (5 + Math.random() * 8) + 's';
+            span.style.animationDelay = (Math.random() * 3) + 's';
+            rain.appendChild(span);
+        }
+        for (let i = 0; i < 30; i++) {
+            const fp = document.createElement('div');
+            fp.className = 'fingerprint';
+            fp.style.top = Math.random() * 90 + '%';
+            fp.style.left = Math.random() * 90 + '%';
+            fp.style.transform = 'rotate(' + Math.random() * 360 + 'deg)';
+            fp.style.width = (30 + Math.random() * 80) + 'px';
+            fp.style.height = (40 + Math.random() * 100) + 'px';
+            rain.appendChild(fp);
+        }
+        document.body.appendChild(rain);
+        setTimeout(() => {
+            if (rain.parentNode) document.body.removeChild(rain);
+            renderQuestion(currentIndex);
+        }, 3500);
+    }
+
+    function showThirdRefuse() {
+        const flash = document.createElement('div');
+        flash.className = 'flash-reset';
+        flash.innerHTML = `<div class="big">你 · 必须 · 爱我</div>`;
+        document.body.appendChild(flash);
+        setTimeout(() => {
+            if (flash.parentNode) document.body.removeChild(flash);
+            const must = document.createElement('div');
+            must.className = 'must-love';
+            must.innerHTML = `<div class="big">你必须爱我</div>`;
+            document.body.appendChild(must);
+            setTimeout(() => {
+                if (must.parentNode) document.body.removeChild(must);
+                currentIndex = 0;
+                answers = [];
+                refuseCount = 0;
+                noRefuseMode = true;
+                renderQuestion(0);
+            }, 2400);
+        }, 2600);
+    }
+
+    resetBtn.addEventListener('click', function() {
+        currentIndex = 0;
+        answers = [];
+        refuseCount = 0;
+        noRefuseMode = false;
+        renderQuestion(0);
+        document.querySelectorAll('.glitch-panel,.blood-rain,.must-love,.flash-reset').forEach(el => el.remove());
+    });
+
+    enterBtn.addEventListener('click', function() {
+        cover.style.display = 'none';
+        survey.style.display = 'block';
+        if (!quizStarted) {
+            quizStarted = true;
+            currentIndex = 0;
+            answers = [];
+            noRefuseMode = false;
+            renderQuestion(0);
+        }
+    });
+
+    survey.style.display = 'none';
+})();
+</script>
+</body>
+</html>

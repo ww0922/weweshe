@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XP问卷 · 味味舍</title>
+    <style>
+        /* 返回按钮 */
+        .back-to-home {
+            position: fixed;
+            top: 12px;
+            left: 12px;
+            z-index: 99999;
+            background: rgba(255,255,255,0.92);
+            border: 1px solid #ddd8d0;
+            border-radius: 30px;
+            padding: 6px 16px;
+            font-size: 13px;
+            color: #6f6762;
+            cursor: pointer;
+            font-family: 'Georgia', serif;
+            letter-spacing: 1px;
+            text-decoration: none;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+            backdrop-filter: blur(4px);
+            transition: 0.2s;
+        }
+        .back-to-home:hover { background: #ede5dc; }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: #faf8f5;
+            font-family: 'Segoe UI', 'Noto Sans', system-ui, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .cover {
+            max-width: 640px;
+            width: 100%;
+            background: #ffffff;
+            border: 1px solid #ddd8d0;
+            padding: 48px 44px 40px 44px;
+            box-shadow: 0 8px 28px rgba(0,0,0,0.02);
+            margin-bottom: 20px;
+        }
+        .cover h1 {
+            font-weight: 350;
+            font-size: 32px;
+            letter-spacing: 6px;
+            color: #1f1b18;
+            text-align: center;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #e1d9d2;
+            padding-bottom: 18px;
+        }
+        .cover .sub {
+            font-size: 13px;
+            color: #3c3a37;
+            line-height: 1.7;
+            margin: 18px 0 20px 0;
+            padding: 0 6px;
+            text-align: left;
+            border-left: 2px solid #cfc3ba;
+            padding-left: 18px;
+        }
+        .cover .sub strong { font-weight: 500; color: #1f1a16; }
+        .cover .hint {
+            font-size: 10px;
+            color: #6f6762;
+            letter-spacing: 1.2px;
+            text-align: right;
+            margin-top: 24px;
+            border-top: 1px dashed #d8cfc7;
+            padding-top: 16px;
+        }
+        .cover .btn-agree {
+            display: block;
+            width: fit-content;
+            margin: 26px auto 6px auto;
+            background: #1f1b18;
+            color: #f2ede8;
+            border: none;
+            padding: 14px 52px;
+            font-size: 16px;
+            letter-spacing: 4px;
+            cursor: pointer;
+            border-radius: 48px;
+            transition: all 0.15s;
+            font-weight: 300;
+        }
+        .cover .btn-agree:hover { background: #2f2824; transform: scale(1.01); }
+        .cover .tiny-refuse { font-size: 12px; color: #928882; text-align: center; margin-top: 16px; }
+        .cover .tiny-refuse span { border-bottom: 0.5px dashed #b1a69d; cursor: not-allowed; }
+        .paper {
+            max-width: 800px;
+            width: 100%;
+            background: #ffffff;
+            border: 1px solid #e3dbd2;
+            padding: 36px 32px;
+            box-shadow: 0 12px 40px rgba(0,0,0,0.02);
+            display: none;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            border-bottom: 1px solid #ded2c9;
+            padding-bottom: 10px;
+            margin-bottom: 28px;
+            flex-wrap: wrap;
+        }
+        .title { font-weight: 350; letter-spacing: 3px; font-size: 22px; color: #2b2521; }
+        .counter {
+            background: #f1e9e2;
+            padding: 6px 20px;
+            border-radius: 40px;
+            font-size: 14px;
+            color: #3b312b;
+            border: 1px solid #d8cbc1;
+        }
+        .question-block { margin: 10px 0 18px 0; min-height: 80px; }
+        .q-text {
+            font-size: 22px;
+            font-weight: 380;
+            color: #1f1915;
+            line-height: 1.4;
+            padding: 8px 0 16px 0;
+            border-left: 3px solid #b2907c;
+            padding-left: 22px;
+            background: #fcf8f4;
+            border-radius: 0 8px 8px 0;
+        }
+        .options { display: flex; flex-direction: column; gap: 7px; margin-top: 18px; }
+        .opt {
+            background: #f6f2ed;
+            border: 1px solid #d6cdc3;
+            border-radius: 50px;
+            padding: 12px 24px;
+            color: #221d19;
+            cursor: pointer;
+            transition: all 0.12s;
+            font-size: 17px;
+            font-weight: 340;
+            box-shadow: inset 0 1px 2px #ffffffaa;
+        }
+        .opt:hover { background: #ede5dc; border-color: #ac9385; transform: scale(1.005); }
+        .opt.selected { background: #d9cbc0; border-color: #8d7567; color: #16110e; font-weight: 400; }
+        .red-mist {
+            position: fixed; top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: #0a0000;
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+            z-index: 999; pointer-events: none;
+            animation: bloodFlash 1.4s forwards;
+            text-align: center; padding: 40px;
+        }
+        .red-mist p, .red-mist h2, .red-mist div { color: #cb3f2a; text-shadow: 0 0 30px #ff4d2e, 0 0 10px #b30000; font-weight: 800; background: transparent; line-height: 1.6; }
+        .red-mist .big { font-size: 76px; margin: 10px 0; font-weight: 900; letter-spacing: 8px; }
+        .red-mist .sub { font-size: 22px; font-weight: 300; color: #ed6a4e; }
+        .red-mist .scatter { font-size: 20px; max-width: 70%; margin: 25px auto; }
+        @keyframes bloodFlash { 0% { opacity: 0; background: #050000; } 8% { opacity: 1; background: #160202; } 80% { opacity: 1; background: #0f0101; } 100% { opacity: 0; pointer-events: none; } }
+        .reset-area { display: flex; justify-content: flex-end; margin-top: 32px; }
+        .reset-btn {
+            background: transparent; border: 1px solid #cbc0b6;
+            padding: 8px 32px; border-radius: 60px;
+            color: #3b322c; font-size: 14px; cursor: pointer; transition: 0.12s; letter-spacing: 2px;
+        }
+        .reset-btn:hover { background: #e7ddd3; border-color: #9d8b7d; }
+        .muted-note { color: #9b8e84; margin-top: 22px; font-size: 13px; text-align: center; }
+    </style>
+</head>
+<body>
+<a class="back-to-home" href="index.html">← 返回</a>
+<div class="cover" id="coverBlock">
+    <h1>✦ 警告 ✦</h1>
+    <div class="sub">
+        <strong>说明：</strong> 本问卷包含一系列关于偏好与幻想的情境描述。有些可能会唤起不适或兴奋，请根据你的真实感受作答。<br>
+        所有题目均为虚构成人内容，请确保你已具备足够的心理承受力。
+    </div>
+    <div class="sub" style="border-left-color:#b7a392; margin-top:6px;">
+        <strong>建议：</strong> 如果你容易产生强烈的生理或心理反应，请谨慎参与。部分题目包含支配、轻度疼痛、体液暗示。
+    </div>
+    <div class="hint">内容面向18岁以上 · 请依照内心选择</div>
+    <button class="btn-agree" id="enterSurvey">我已了解 · 进入问卷</button>
+    <div class="tiny-refuse"><span>我还未准备好</span> (暂时不可用)</div>
+</div>
+
+<div class="paper" id="surveyBlock">
+    <div class="header">
+        <span class="title">✎ 深度XP映射</span>
+        <span class="counter" id="qCounter">1 / 50</span>
+    </div>
+    <div class="question-block" id="questionBlock">
+        <div class="q-text" id="questionText">加载中...</div>
+    </div>
+    <div class="options" id="optionsContainer"></div>
+    <div class="reset-area">
+        <button class="reset-btn" id="resetSurvey">⟲ 重新开始</button>
+    </div>
+    <div class="muted-note">选择「拒绝」也会留下痕迹 · 每一题都塑造着路径</div>
+</div>
+
+<script>
+(function() {
+    let currentIndex = 0;
+    let answers = [];
+    let surveyStarted = false;
+
+    const container = document.getElementById('optionsContainer');
+    const qText = document.getElementById('questionText');
+    const counter = document.getElementById('qCounter');
+    const resetBtn = document.getElementById('resetSurvey');
+    const coverBlock = document.getElementById('coverBlock');
+    const surveyBlock = document.getElementById('surveyBlock');
+    const enterBtn = document.getElementById('enterSurvey');
+
+    function buildQuestion(index, pastAns) {
+        const pool = [
+            `你是否曾幻想被伴侣在公众场合用手探入裙底？`,
+            `你对于被控制高潮时间有什么看法？`,
+            `你能否接受在亲密时被轻微掌掴臀部？`,
+            `你希望对方用命令的语气指导你的动作吗？`,
+            `你介意体液沾在脸上吗？`,
+            `你是否喜欢对方在接吻时轻轻咬住你的下唇？`,
+            `你愿意尝试被蒙住眼睛进行前戏吗？`,
+            `你对于"被占有"这个概念感到兴奋还是抗拒？`,
+            `你是否幻想过被掐住脖子（适度）进入？`,
+            `你能否接受被要求重复某些淫秽的词句？`,
+            `你想被舔遍全身包括脚趾吗？`,
+            `你对于被绑在椅子上的情趣玩法怎么看？`,
+            `你是否幻想过被从背后捂住嘴强行进入？`,
+            `你现在是否愿意一边回答问题一边用指尖揉搓阴蒂？`,
+            `你希望我用龟头摩擦你的阴唇但不插入，直到你哀求吗？`,
+            `如果我命令你趴在地上舔我的鞋面，你会感到屈辱还是兴奋？`,
+            `你是否幻想过被内射后精液顺着大腿流下的场景？`,
+            `你愿意让我用皮带轻轻抽打你的乳房直到泛红吗？`,
+            `如果我说"把腿掰开让我看看你的小穴有多湿"，你会照做吗？`,
+            `你是否希望我在你洗澡时闯入，用花洒头抵着你的阴蒂冲水？`,
+            `你能否接受连续一小时被震动棒刺激阴蒂不准高潮？`,
+            `如果我让你用内衣塞住自己的嘴，你愿意吗？`,
+            `你想让我用冰镇后的按摩棒插入你的后穴吗？`,
+            `你愿不愿意被要求穿着我的精液出门一整天？`,
+            `如果你自慰的时候我忽然视频连线，你会展示给我看吗？`,
+            `你想被我固定在落地镜前操干，让你看着自己失态的样子吗？`,
+            `你是否幻想过被操到失禁？`,
+            `现在，把手伸进内裤里揉捏阴阜，一边揉一边回答：你想不想被我用狗链拴着脖子操？`,
+            `你愿意被我掐着阴蒂直到肿起来吗？`,
+            `如果我让你在家庭聚餐时偷偷开着跳蛋，你能忍住不呻吟吗？`,
+            `你是否幻想过被陌生人注视着手淫？`,
+            `你用假阳具自慰的时候，脑子里想的是我的鸡巴吗？`,
+            `如果我在你的子宫口画上淫纹，并让所有人都看到，你会兴奋吗？`,
+            `你希望我用针尖轻刺你的乳头吗？(不会出血)`,
+            `你愿不愿意在我面前自己用手指扩张后穴，然后让我闻？`,
+            `如果我让你含着我的龟头入睡，你愿意吗？`,
+            `你能否接受我尿在你身上作为一种标记？`,
+            `你想被我在阳台上从背后进入，让楼下的人隐约看见吗？`,
+            `你希望我用振动棒震你的阴蒂，同时用皮带勒住你的脖子制造窒息感吗？`,
+            `你愿意被我绑在废弃建筑里，等待我随机回来操你吗？`,
+            `现在开始，一边自慰一边回答：你幻想过被我囚禁在地下室只用来泄欲吗？`,
+            `你是否愿意让我在你的阴唇上烙印字母？`,
+            `如果我让你和陌生人换妻，你在旁边观看，你会兴奋吗？`,
+            `你想被我用警棍一样粗的假阳具干到宫颈口吗？`,
+            `你愿不愿意让我在你的阴道里塞入一个摄像头直播给暗网？`,
+            `如果我让你吞下我的尿液，你会听话照做吗？`,
+            `你希望我用刀子在你大腿根部刻上你的新名字"肉便器"吗？`,
+            `你愿不愿意被卖给我最下贱的朋友，连续被操三天？`,
+            `如果我让你在葬礼上躲在角落自慰直到高潮，你敢吗？`,
+            `最终题：你愿意成为我永远的性奴，连排泄都被我控制吗？`
+        ];
+
+        let qBase = pool[index] || `你是否愿意让我现在就用鸡巴堵住你的嘴？`;
+        let extra = '';
+        if (index >= 8 && index < 18) extra = '  (一边想一边摸自己的乳头)';
+        else if (index >= 18 && index < 30) extra = '  (手指揉搓阴蒂，幻想是我的指尖)';
+        else if (index >= 30 && index < 42) extra = '  (把手指插入小穴，幻想是我的鸡巴在抽插)';
+        else if (index >= 42) extra = '  (加快自慰速度，想象我正用龟头顶着你的子宫口研磨)';
+        if (index > 10 && !extra.includes('鸡巴') && !extra.includes('龟头')) extra += '  ⤷ 想象我粗硬发烫的鸡巴就在你唇边。';
+        const question = qBase + extra;
+
+        let optA, optB, optC, optD;
+        if (index < 10) { optA = 'A. 非常愿意 / 兴奋'; optB = 'B. 有点好奇 / 可接受'; optC = 'C. 不确定 / 略微排斥'; optD = 'D. 拒绝 · 越界'; }
+        else if (index < 22) { optA = 'A. 是的，小穴已经湿了，想要'; optB = 'B. 虽然羞耻但想尝试'; optC = 'C. 我有点怕，但如果是你……'; optD = 'D. 拒绝 (但我不会放过你)'; }
+        else if (index < 38) { optA = 'A. 我是你的母狗 / 请随意使用'; optB = 'B. 我会服从，即使双腿发抖'; optC = 'C. 内心抗拒但身体会有反应'; optD = 'D. 绝不 (你会后悔)'; }
+        else { optA = 'A. 请用最下流的方式占有我'; optB = 'B. 我愿意被折磨/被支配'; optC = 'C. 我勉强接受… 但别太狠'; optD = 'D. 停下！(你会被强行按在原地)'; }
+        return { question, options: [optA, optB, optC, optD] };
+    }
+
+    function renderQuestion(idx) {
+        if (idx >= 50) {
+            qText.innerText = '✓ 问卷终结 · 你所有的欲望都被记录在案。';
+            container.innerHTML = `<div style="color:#7f6e62;padding:32px;text-align:center;border:1px solid #dbcec2;border-radius:40px;background:#f6f0ea;">你已完全暴露 · 随时可以重新献祭自己</div>`;
+            counter.innerText = '50/50'; return;
+        }
+        const data = buildQuestion(idx, answers);
+        qText.innerText = data.question;
+        counter.innerText = `${idx+1} / 50`;
+        container.innerHTML = '';
+        data.options.forEach((text, i) => {
+            const div = document.createElement('div');
+            div.className = 'opt'; div.innerText = text; div.dataset.idx = i;
+            if (answers[idx] !== undefined && answers[idx] === i) div.classList.add('selected');
+            div.addEventListener('click', function(e) { handleSelection(idx, parseInt(this.dataset.idx)); });
+            container.appendChild(div);
+        });
+    }
+
+    function handleSelection(index, choice) {
+        if (index !== currentIndex) return;
+        answers[index] = choice;
+        container.querySelectorAll('.opt').forEach((el, i) => { if (i === choice) el.classList.add('selected'); else el.classList.remove('selected'); });
+        if (choice === 3) { showRedFlash(index); }
+        else { setTimeout(() => { if (currentIndex < 49) { currentIndex++; renderQuestion(currentIndex); } else { renderQuestion(50); } }, 150); }
+    }
+
+    function showRedFlash(index) {
+        const mist = document.createElement('div');
+        mist.className = 'red-mist';
+        const phrases = [
+            `<div class="big">✖ 拒绝无效 ✖</div><div class="sub">你的身体已经被我编程</div><div class="scatter">今晚梦里你会自己掰开骚穴<br>哭着求我插入</div>`,
+            `<div style="font-size:70px;color:#d1341e;">⛓️ 你属于我</div><div style="font-size:30px; margin:20px;">小穴会记住谁才是主人</div><div style="font-size:22px;">即使拒绝，明天你也会湿着内裤来找我</div>`,
+            `<div style="font-size:90px;">🖤</div><div style="font-size:36px; letter-spacing:6px;">你逃不掉</div><div style="font-size:22px;">我依然会在你体内留下精液<br>让你含着入睡</div>`,
+            `<div style="font-size:74px;">舔</div><div style="font-size:34px;">你的阴蒂永远属于我</div><div style="font-size:20px;">下次再拒绝，就绑在椅子上用跳蛋惩罚到天亮</div>`
+        ];
+        mist.innerHTML = phrases[Math.floor(Math.random() * phrases.length)];
+        document.body.appendChild(mist);
+        setTimeout(() => {
+            if (mist.parentNode) mist.parentNode.removeChild(mist);
+            if (currentIndex < 49) { currentIndex++; renderQuestion(currentIndex); } else { renderQuestion(50); }
+        }, 1350);
+    }
+
+    resetBtn.addEventListener('click', function() {
+        currentIndex = 0; answers = []; renderQuestion(0);
+        document.querySelectorAll('.red-mist').forEach(el => el.remove());
+    });
+
+    enterBtn.addEventListener('click', function() {
+        coverBlock.style.display = 'none'; surveyBlock.style.display = 'block';
+        if (!surveyStarted) { surveyStarted = true; currentIndex = 0; answers = []; renderQuestion(0); }
+    });
+
+    surveyBlock.style.display = 'none';
+})();
+</script>
+</body>
+</html>
