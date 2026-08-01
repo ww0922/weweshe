@@ -110,6 +110,42 @@
         .loading-crew .highlight {
             color: #c49a92;
         }
+        /* 宇宙级称号：每个字不同颜色+闪烁 */
+        .cosmic-name {
+            display: inline-block;
+            font-weight: 600;
+            letter-spacing: 2px;
+        }
+        .cosmic-name .char {
+            display: inline-block;
+            animation: cosmicFlicker 1.8s infinite alternate;
+        }
+        .cosmic-name .char:nth-child(1) { color: #ff6b6b; animation-delay: 0.0s; }
+        .cosmic-name .char:nth-child(2) { color: #feca57; animation-delay: 0.15s; }
+        .cosmic-name .char:nth-child(3) { color: #48dbfb; animation-delay: 0.3s; }
+        .cosmic-name .char:nth-child(4) { color: #ff9ff3; animation-delay: 0.45s; }
+        .cosmic-name .char:nth-child(5) { color: #54a0ff; animation-delay: 0.6s; }
+        .cosmic-name .char:nth-child(6) { color: #5f27cd; animation-delay: 0.75s; }
+        .cosmic-name .char:nth-child(7) { color: #ff6b6b; animation-delay: 0.9s; }
+        .cosmic-name .char:nth-child(8) { color: #feca57; animation-delay: 1.05s; }
+        .cosmic-name .char:nth-child(9) { color: #48dbfb; animation-delay: 1.2s; }
+        .cosmic-name .char:nth-child(10) { color: #ff9ff3; animation-delay: 1.35s; }
+        .cosmic-name .char:nth-child(11) { color: #54a0ff; animation-delay: 1.5s; }
+        .cosmic-name .char:nth-child(12) { color: #5f27cd; animation-delay: 1.65s; }
+        .cosmic-name .char:nth-child(13) { color: #ff6b6b; animation-delay: 1.8s; }
+        .cosmic-name .char:nth-child(14) { color: #feca57; animation-delay: 1.95s; }
+        .cosmic-name .char:nth-child(15) { color: #48dbfb; animation-delay: 2.1s; }
+        .cosmic-name .char:nth-child(16) { color: #ff9ff3; animation-delay: 2.25s; }
+        .cosmic-name .char:nth-child(17) { color: #54a0ff; animation-delay: 2.4s; }
+        .cosmic-name .char:nth-child(18) { color: #5f27cd; animation-delay: 2.55s; }
+        .cosmic-name .char:nth-child(19) { color: #ff6b6b; animation-delay: 2.7s; }
+        .cosmic-name .char:nth-child(20) { color: #feca57; animation-delay: 2.85s; }
+
+        @keyframes cosmicFlicker {
+            0% { opacity: 0.6; transform: scale(0.95); }
+            100% { opacity: 1; transform: scale(1.05); }
+        }
+
         .loading-footer {
             font-size: 12px;
             color: #dbb5ae;
@@ -130,9 +166,7 @@
             margin: 6px auto 18px auto;
         }
         @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
+            to { transform: rotate(360deg); }
         }
         .enter-btn {
             background: #fff6f3;
@@ -473,14 +507,8 @@
             align-items: flex-start;
         }
         @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(6px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .msg-row {
@@ -528,47 +556,24 @@
             box-shadow: 0 2px 12px rgba(196, 154, 146, 0.15);
         }
 
-        .msg-more-btn {
-            position: absolute;
-            bottom: 4px;
-            right: 8px;
-            background: none;
-            border: none;
-            color: #dbb5ae;
-            font-size: 14px;
-            cursor: pointer;
-            padding: 0 4px;
-            opacity: 0;
-            transition: opacity 0.2s;
-            line-height: 1;
-        }
-        .msg-bubble:hover .msg-more-btn {
-            opacity: 0.6;
-        }
-        .msg-more-btn:hover {
-            opacity: 1 !important;
-        }
-
         /* ========================================================== */
         /*  角色扮演专属样式：上小下大、上浅下深、上下有间隔          */
         /* ========================================================== */
         .msg-bubble .rp-structure {
             display: flex;
             flex-direction: column;
-            gap: 12px; /* 描述和对话之间的间距 */
+            gap: 12px;
         }
-
         .msg-bubble .rp-desc {
-            font-size: 0.8em;      /* 缩小字号 */
-            color: #b5a09a;        /* 浅灰色 */
+            font-size: 0.8em;
+            color: #b5a09a;
             display: block;
             line-height: 1.6;
             white-space: pre-wrap;
         }
-
         .msg-bubble .rp-dialogue {
-            font-size: 1em;        /* 正常/大字号 */
-            color: #5d4a46;        /* 深色实体字 */
+            font-size: 1em;
+            color: #5d4a46;
             display: block;
             line-height: 1.7;
             white-space: pre-wrap;
@@ -638,6 +643,21 @@
             font-feature-settings: "tnum";
             min-width: 20px;
             text-align: center;
+        }
+        /* 三个点放在msg-footer里 */
+        .msg-more-btn {
+            background: none;
+            border: none;
+            color: #c49a92;
+            font-size: 14px;
+            cursor: pointer;
+            padding: 0 4px;
+            opacity: 0.5;
+            line-height: 1;
+            margin-left: 2px;
+        }
+        .msg-more-btn:hover {
+            opacity: 1;
         }
 
         .msg-edit-area {
@@ -1310,108 +1330,35 @@
 
         /* 响应式 */
         @media (max-width: 600px) {
-            .index-grid {
-                gap: 24px;
-            }
-            .index-item {
-                width: 100px;
-            }
-            .index-icon {
-                width: 62px;
-                height: 62px;
-            }
-            .index-icon svg {
-                width: 26px;
-                height: 26px;
-            }
-            .topbar {
-                padding: 10px 14px;
-                min-height: 56px;
-            }
-            .topbar-title {
-                font-size: 14px;
-                min-width: 40px;
-            }
-            .chat-area {
-                padding: 14px 16px;
-            }
-            .msg-row {
-                max-width: 92%;
-            }
-            .msg-bubble {
-                font-size: 13px;
-                padding: 10px 16px;
-            }
-            .msg-wrapper.user .msg-footer {
-                padding-right: 44px;
-            }
-            .msg-wrapper.ai .msg-footer {
-                padding-left: 44px;
-            }
-            .msg-footer {
-                font-size: 10px;
-                gap: 4px;
-            }
-            .input-area {
-                padding: 10px 16px 16px 16px;
-            }
-            .settings-panel {
-                padding: 24px 20px;
-            }
-            .menu-panel {
-                width: 240px;
-            }
-            .loading-title {
-                font-size: 28px;
-                letter-spacing: 8px;
-            }
-            .loading-welcome {
-                font-size: 14px;
-            }
-            .loading-notice {
-                font-size: 13px;
-                padding: 10px 16px;
-            }
-            .loading-crew {
-                font-size: 13px;
-            }
-            .enter-btn {
-                padding: 10px 30px;
-                font-size: 14px;
-            }
-            .mode-selector {
-                font-size: 11px;
-                gap: 10px;
-                padding: 6px 0 2px 0;
-                min-height: 28px;
-            }
-            .bubble-color-simple {
-                gap: 12px;
-            }
-            .bubble-color-simple .color-group .color-circle-btn {
-                width: 32px;
-                height: 32px;
-            }
-            .color-picker-popup .popup-inner {
-                max-width: 320px;
-                padding: 16px 18px;
-            }
-            .color-picker-popup .palette-grid .swatch {
-                width: 26px;
-                height: 26px;
-            }
+            .index-grid { gap: 24px; }
+            .index-item { width: 100px; }
+            .index-icon { width: 62px; height: 62px; }
+            .index-icon svg { width: 26px; height: 26px; }
+            .topbar { padding: 10px 14px; min-height: 56px; }
+            .topbar-title { font-size: 14px; min-width: 40px; }
+            .chat-area { padding: 14px 16px; }
+            .msg-row { max-width: 92%; }
+            .msg-bubble { font-size: 13px; padding: 10px 16px; }
+            .msg-wrapper.user .msg-footer { padding-right: 44px; }
+            .msg-wrapper.ai .msg-footer { padding-left: 44px; }
+            .msg-footer { font-size: 10px; gap: 4px; }
+            .input-area { padding: 10px 16px 16px 16px; }
+            .settings-panel { padding: 24px 20px; }
+            .menu-panel { width: 240px; }
+            .loading-title { font-size: 28px; letter-spacing: 8px; }
+            .loading-welcome { font-size: 14px; }
+            .loading-notice { font-size: 13px; padding: 10px 16px; }
+            .loading-crew { font-size: 13px; }
+            .enter-btn { padding: 10px 30px; font-size: 14px; }
+            .mode-selector { font-size: 11px; gap: 10px; padding: 6px 0 2px 0; min-height: 28px; }
+            .bubble-color-simple { gap: 12px; }
+            .bubble-color-simple .color-group .color-circle-btn { width: 32px; height: 32px; }
+            .color-picker-popup .popup-inner { max-width: 320px; padding: 16px 18px; }
+            .color-picker-popup .palette-grid .swatch { width: 26px; height: 26px; }
         }
-
-        ::-webkit-scrollbar {
-            width: 4px;
-        }
-        ::-webkit-scrollbar-track {
-            background: transparent;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #e8d5ce;
-            border-radius: 10px;
-        }
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #e8d5ce; border-radius: 10px; }
     </style>
 </head>
 <body>
@@ -1420,7 +1367,7 @@
         <!-- LOADING -->
         <div id="page-loading">
             <div class="loading-title">味 味 舍</div>
-            <div class="loading-version">✦ 内测版 · v1.3.0 ✦</div>
+            <div class="loading-version">✦ 内测版 · v1.4.0 ✦</div>
             <div class="loading-divider"></div>
             <div class="loading-welcome">
                 欢迎来到本站<br />
@@ -1432,9 +1379,12 @@
                 <span class="label">作者：</span><span class="highlight">ww</span><br />
                 <span class="label">抖音号：</span><span class="highlight">60998104595</span><br />
                 <span class="label">内测 · 管理员：</span><span class="highlight">栩轩妤en（和en合照版）、南山</span><br />
-                <span class="label">宇宙最忧郁之人：</span><span class="highlight">痞帅高颜值（鱼鱼）</span><br />
-                <span class="label">宇宙最痞之人：</span><span class="highlight">姜笙</span><br />
-                <span class="label">宇宙最恶俗之人：</span><span class="highlight">🐟· :.·</span>
+                <span class="label">宇宙最忧郁之人：</span>
+                <span class="cosmic-name" id="cosmicName1">痞帅高颜值（鱼鱼）</span><br />
+                <span class="label">宇宙最痞之人：</span>
+                <span class="cosmic-name" id="cosmicName2">姜笙</span><br />
+                <span class="label">宇宙最恶俗之人：</span>
+                <span class="cosmic-name" id="cosmicName3">🐟· :.·</span>
             </div>
             <div class="loading-footer"><span class="copy">✦ 一切版权均归作者所有 ✦</span></div>
             <button class="enter-btn" onclick="enterApp()">✦ 进入味味舍 ✦</button>
@@ -1504,7 +1454,7 @@
                 <a class="sub-list-item" href="setting-侯府攻略.html" style="text-decoration:none;color:inherit;display:flex;align-items:center;justify-content:space-between;width:100%;"><span class="item-name">侯府攻略设定</span><span class="item-arrow">→</span></a>
                 <a class="sub-list-item" href="setting-双主共感.html" style="text-decoration:none;color:inherit;display:flex;align-items:center;justify-content:space-between;width:100%;"><span class="item-name">双主共感设定</span><span class="item-arrow">→</span></a>
                 <a class="sub-list-item" href="setting-网黄男主播.html" style="text-decoration:none;color:inherit;display:flex;align-items:center;justify-content:space-between;width:100%;"><span class="item-name">网黄男主播设定</span><span class="item-arrow">→</span></a>
-                <a class="sub-list-item" href="setting-沈砚.html" style="text-decoration:none;color:inherit;display:flex;align-items:center;justify-content:space-between;width:100%;"><span class="item-name">医生设定</span><span class="item-arrow">→</span></a>
+                <a class="sub-list-item" href="setting-沈砚.html" style="text-decoration:none;color:inherit;display:flex;align-items:center;justify-content:space-between;width:100%;"><span class="item-name">沈砚医生设定</span><span class="item-arrow">→</span></a>
             </div>
         </div>
 
@@ -1718,7 +1668,6 @@
         //  工具函数
         // ============================================================
         function generateId() { return 'conv_' + Date.now() + '_' + Math.random().toString(36).slice(2, 6); }
-
         function escapeHtml(text) {
             const d = document.createElement('div');
             d.textContent = text;
@@ -1736,11 +1685,8 @@
         }
 
         function getGlobalApiKey() { return localStorage.getItem('ww_global_api_key') || ''; }
-
         function setGlobalApiKey(key) { localStorage.setItem('ww_global_api_key', key); }
-
         function getMsgTokenDisplay() { return localStorage.getItem('ww_show_msg_token') === '1'; }
-
         function setMsgTokenDisplay(val) { localStorage.setItem('ww_show_msg_token', val ? '1' : '0'); }
 
         function getBubbleColor(role) {
@@ -1751,13 +1697,10 @@
 
         function setBubbleColor(role, color) {
             localStorage.setItem('ww_bubble_color_' + role, color);
-            // 更新按钮颜色
             const btn = document.getElementById(role + 'ColorBtn');
             if (btn) btn.style.backgroundColor = color;
-            // 重新渲染
             const conv = getCurrentConv();
             if (conv) renderMessages(conv.messages);
-            // 更新头像边框
             updateAvatarBorders();
         }
 
@@ -1772,7 +1715,6 @@
             const el = document.querySelector('input[name="thinkMode"]:checked');
             return el ? el.value : 'medium';
         }
-
         function setThinkMode(val) {
             const el = document.querySelector('input[name="thinkMode"][value="' + val + '"]');
             if (el) el.checked = true;
@@ -1780,7 +1722,6 @@
 
         // ---- 色图弹窗 ----
         let pickerTargetRole = 'user';
-
         function generate224Colors() {
             const colors = [];
             const saturations = [40, 60, 80];
@@ -1817,7 +1758,6 @@
                 };
                 grid.appendChild(swatch);
             });
-            // 设置自定义颜色
             document.getElementById('customColorInput').value = current;
             popup.classList.add('active');
         }
@@ -1830,11 +1770,10 @@
             const input = document.getElementById('customColorInput');
             if (input) {
                 setBubbleColor(pickerTargetRole, input.value);
-                closeColorPicker();
+                // 不关闭弹窗，让用户继续选
             }
         }
 
-        // 点击弹窗外部关闭
         document.getElementById('colorPickerPopup').addEventListener('click', function(e) {
             if (e.target === this) closeColorPicker();
         });
@@ -1885,11 +1824,11 @@
         let currentId = null;
         let currentMode = 'normal';
         let isRpMode = false;
-        let rpFirstMessage = true; // 标记是否是角色扮演的第一条消息
+        let rpFirstMessage = true;
 
         function loadConversations() {
             try {
-                const raw = localStorage.getItem('ww_conversations_v9');
+                const raw = localStorage.getItem('ww_conversations_v10');
                 if (raw) {
                     conversations = JSON.parse(raw);
                 } else {
@@ -1910,7 +1849,6 @@
             saveConversations();
             renderConversationList();
             loadCurrentConversation();
-            // 恢复气泡颜色预览
             const userColor = getBubbleColor('user');
             const aiColor = getBubbleColor('ai');
             document.getElementById('userColorBtn').style.backgroundColor = userColor;
@@ -1918,7 +1856,7 @@
         }
 
         function saveConversations() {
-            try { localStorage.setItem('ww_conversations_v9', JSON.stringify(conversations)); } catch (e) {}
+            try { localStorage.setItem('ww_conversations_v10', JSON.stringify(conversations)); } catch (e) {}
         }
 
         function getCurrentConv() {
@@ -2091,53 +2029,36 @@
 
                 let displayContent = msg.content || '';
 
-                // ================================================================
-                //  【核心重写】智能拆分描述与对话（上小下大，上浅下深，不露标签）
-                // ================================================================
-                if (msg.role === 'ai' && displayContent && displayContent !== '…' && displayContent !== '思考中 …') {
-                    
-                    // 1. 把 AI 回复的文本按换行符切割成数组
+                // 角色扮演渲染（AI消息，RP模式）
+                if (msg.role === 'ai' && isRpMode && displayContent && displayContent !== '…' && displayContent !== '思考中 …') {
                     let lines = displayContent.split('\n');
                     let descLines = [];
                     let dialogueLines = [];
-
-                    // 2. 过滤空行，并判断哪些是描述行（带【】的），哪些是对话行
                     lines.forEach(line => {
                         let trimmed = line.trim();
-                        if (!trimmed) return; // 跳过空行
-
-                        // 只要是以 【 开头的，都算描述（场景/动作/旁白）
+                        if (!trimmed) return;
                         if (trimmed.startsWith('【')) {
-                            // 把 【场景】 这种标签直接替换掉，只留内容
                             let cleanDesc = trimmed.replace(/^【[^】]*】\s*/, '');
                             if (cleanDesc) descLines.push(cleanDesc);
                         } else {
-                            // 只要不是以 【 开头的，就视为角色说的话（对话）
                             if (trimmed) dialogueLines.push(trimmed);
                         }
                     });
-
-                    // 3. 组装最终显示的 HTML 结构
                     let htmlContent = '';
                     if (descLines.length > 0 || dialogueLines.length > 0) {
                         htmlContent += `<div class="rp-structure">`;
-                        // 如果有描述，小字、浅色、放上面
                         if (descLines.length > 0) {
                             htmlContent += `<div class="rp-desc">${descLines.join('<br />')}</div>`;
                         }
-                        // 如果有对话，大字、深色、放下面
                         if (dialogueLines.length > 0) {
                             htmlContent += `<div class="rp-dialogue">${dialogueLines.join('<br />')}</div>`;
                         }
                         htmlContent += `</div>`;
                         bubble.innerHTML = htmlContent;
                     } else {
-                        // 兜底：如果什么标签都没识别到，就按普通文本显示
                         bubble.textContent = displayContent;
                     }
-
                 } else {
-                    // 普通渲染（用户发的消息，或者AI还在思考中）
                     let contentText = displayContent;
                     if (msg.role === 'ai' && displayContent === '…') {
                         contentText = '思考中 …';
@@ -2145,22 +2066,11 @@
                     bubble.textContent = contentText;
                 }
 
-                // ================================================================
-                //  底部加个“…”按钮
-                // ================================================================
-                const moreBtn = document.createElement('button');
-                moreBtn.className = 'msg-more-btn';
-                moreBtn.textContent = '⋯';
-                moreBtn.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    showMsgActions(e, idx, msg.role);
-                });
-                bubble.appendChild(moreBtn);
-
                 row.appendChild(avatarImg);
                 row.appendChild(bubble);
                 wrapper.appendChild(row);
 
+                // 构建 footer，把三个点放在 footer 里
                 const footer = buildFooter(msg, idx, lang, showToken);
                 wrapper.appendChild(footer);
                 area.appendChild(wrapper);
@@ -2171,6 +2081,7 @@
             updateAvatarBorders();
         }
 
+        // ---- 构建 footer（含三个点） ----
         function buildFooter(msg, idx, lang, showToken) {
             const footer = document.createElement('div');
             footer.className = 'msg-footer';
@@ -2189,6 +2100,27 @@
             timeSpan.textContent = timeStr;
             footer.appendChild(timeSpan);
 
+            // ---- 三个点按钮放在时间标签旁边 ----
+            const moreBtn = document.createElement('button');
+            moreBtn.className = 'msg-more-btn';
+            moreBtn.textContent = '⋯';
+            moreBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                // 需要找到这条消息在 messages 中的索引
+                const conv = getCurrentConv();
+                if (!conv) return;
+                // 用 data-msg-index 来找
+                const wrapper = e.target.closest('.msg-wrapper');
+                if (!wrapper) return;
+                const index = parseInt(wrapper.dataset.msgIndex);
+                if (isNaN(index)) return;
+                const role = conv.messages[index]?.role;
+                if (!role) return;
+                showMsgActions(e, index, role);
+            });
+            footer.appendChild(moreBtn);
+
+            // Token 显示
             if (msg.role === 'ai' && showToken) {
                 let tokens = 0;
                 if (msg.regenerateHistory && msg.regenerateHistory.length > 0) {
@@ -2205,6 +2137,7 @@
                 }
             }
 
+            // 历史版本导航
             const history = msg.regenerateHistory || [];
             if (history.length > 1) {
                 const curIdx = msg.currentHistoryIndex !== undefined ? msg.currentHistoryIndex : 0;
@@ -2264,19 +2197,19 @@
             actions.innerHTML = '';
 
             const copyBtn = document.createElement('button');
-            copyBtn.textContent = ' 复制';
+            copyBtn.textContent = '复制';
             copyBtn.onclick = function() { hideMsgActions();
                 copyMessage(msgIndex); };
             actions.appendChild(copyBtn);
 
             if (role === 'user') {
                 const editBtn = document.createElement('button');
-                editBtn.textContent = '✎ 修改';
+                editBtn.textContent = ' 修改';
                 editBtn.onclick = function() { hideMsgActions();
                     startEditMessage(msgIndex); };
                 actions.appendChild(editBtn);
                 const delBtn = document.createElement('button');
-                delBtn.textContent = '✕ 删除';
+                delBtn.textContent = ' 删除';
                 delBtn.className = 'delete-action';
                 delBtn.onclick = function() { hideMsgActions();
                     deleteMessage(msgIndex); };
@@ -2295,12 +2228,12 @@
                 actions.appendChild(delBtn);
             }
 
-            const bubble = event.target.closest('.msg-bubble');
-            if (!bubble) return;
-            const rect = bubble.getBoundingClientRect();
+            // 定位到点击位置
+            const target = event.target;
+            const rect = target.getBoundingClientRect();
             const appRect = document.getElementById('app').getBoundingClientRect();
-            let top = rect.top - appRect.top;
-            let left = rect.right - appRect.left + 8;
+            let top = rect.top - appRect.top + 20;
+            let left = rect.left - appRect.left;
             if (role === 'user') {
                 left = rect.left - appRect.left - 100;
             }
@@ -2515,7 +2448,6 @@
             else if (thinkMode === 'high') thinkPrompt = '深入思考，详细推理后再回答。';
             else thinkPrompt = '保持适中的思考深度，清晰有条理地回答。';
 
-            // ====== 彻底重写的结构化提示词 ======
             let sysPrompt = '你是 DeepSeek，一个由深度求索公司开发的 AI 助手。' + thinkPrompt;
             if (isRpMode) {
                 sysPrompt += `
@@ -2537,7 +2469,6 @@
                 }
             }
 
-            // 长窗模式：限制回复为1-2句
             if (currentMode === 'long') {
                 sysPrompt += ' 当前为长窗模式，每条回复请限制在1-2句话内，不要重复之前说过的内容或相近的表述。';
             }
@@ -2638,7 +2569,7 @@
 
             saveCurrentConversationState();
 
-            if (checkRpTrigger(text)) {
+            if (checkRpTrigger(text) && !isRpMode) {
                 isRpMode = true;
                 rpFirstMessage = true;
             }
@@ -2900,6 +2831,15 @@
         document.getElementById('sub-page-games').classList.remove('active');
 
         loadConversations();
+
+        // 给宇宙级称号每个字套上span
+        document.querySelectorAll('.cosmic-name').forEach(el => {
+            const text = el.textContent;
+            el.innerHTML = text.split('').map(char => {
+                if (char.trim() === '') return ' ';
+                return `<span class="char">${char}</span>`;
+            }).join('');
+        });
     </script>
 </body>
 </html>
