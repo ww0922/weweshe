@@ -35,8 +35,8 @@
         }
 
         /* ============================================================
-               LOADING 页面
-               ============================================================ */
+           LOADING 页面
+           ============================================================ */
         #page-loading {
             display: flex;
             flex-direction: column;
@@ -130,7 +130,6 @@
             color: #c49a92;
         }
 
-        /* 加载动画：简约旋转圈 */
         .loader {
             width: 32px;
             height: 32px;
@@ -169,8 +168,8 @@
         }
 
         /* ============================================================
-               首页 (原 index)
-               ============================================================ */
+           首页 (原 index)
+           ============================================================ */
         #page-index {
             display: none;
             flex-direction: column;
@@ -282,8 +281,8 @@
         }
 
         /* ============================================================
-               子页面 (问卷 / 设定 / 小游戏)
-               ============================================================ */
+           子页面 (问卷 / 设定 / 小游戏)
+           ============================================================ */
         .sub-page {
             display: none;
             flex-direction: column;
@@ -353,8 +352,8 @@
         }
 
         /* ============================================================
-               AI 聊天室 (完整功能)
-               ============================================================ */
+           AI 聊天室 (完整功能 + 新增)
+           ============================================================ */
         #page-chat {
             display: none;
             flex-direction: column;
@@ -440,6 +439,43 @@
             flex-shrink: 0;
         }
 
+        /* ---- 模式切换 (新对话时显示) ---- */
+        .mode-selector {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            padding: 8px 0 4px 0;
+            font-size: 12px;
+            color: #dbb5ae;
+            letter-spacing: 1px;
+            background: #ffffff;
+            border-bottom: 1px solid #f0e6e2;
+            flex-shrink: 0;
+            min-height: 32px;
+        }
+
+        .mode-selector span {
+            cursor: pointer;
+            padding: 2px 10px;
+            border-radius: 12px;
+            transition: 0.2s;
+            color: #dbb5ae;
+        }
+
+        .mode-selector span.active {
+            color: #c49a92;
+            background: #fff6f3;
+        }
+
+        .mode-selector span:hover {
+            color: #b58a82;
+        }
+
+        .mode-selector .mode-divider {
+            color: #e8d5ce;
+        }
+
         .menu-btn {
             background: none;
             border: none;
@@ -490,6 +526,7 @@
             display: flex;
             flex-direction: column;
             animation: fadeIn 0.25s ease;
+            position: relative;
         }
 
         .msg-wrapper.user {
@@ -549,16 +586,56 @@
             cursor: pointer;
             transition: box-shadow 0.2s;
             flex: 1;
+            position: relative;
         }
 
         .msg-bubble:hover {
             box-shadow: 0 2px 12px rgba(196, 154, 146, 0.15);
         }
 
-        .msg-wrapper.user .msg-bubble {
-            background: #f5efec;
-            border-color: #e8d5ce;
-            color: #5d4a46;
+        /* 气泡颜色由 JS 动态设置，这里留空 */
+
+        .msg-more-btn {
+            position: absolute;
+            bottom: 4px;
+            right: 8px;
+            background: none;
+            border: none;
+            color: #dbb5ae;
+            font-size: 14px;
+            cursor: pointer;
+            padding: 0 4px;
+            opacity: 0;
+            transition: opacity 0.2s;
+            line-height: 1;
+        }
+
+        .msg-bubble:hover .msg-more-btn {
+            opacity: 0.6;
+        }
+        .msg-more-btn:hover {
+            opacity: 1 !important;
+        }
+
+        /* 角色扮演：描述（小字浅色）+ 对话（正常） */
+        .msg-bubble .rp-desc {
+            font-size: 0.8em;
+            color: #b5a09a;
+            display: block;
+            line-height: 1.5;
+        }
+
+        .msg-bubble .rp-dialogue {
+            font-size: 1em;
+            color: inherit;
+            display: block;
+            line-height: 1.7;
+        }
+
+        .msg-bubble .rp-divider {
+            display: block;
+            margin: 4px 0;
+            color: #e0d0ca;
         }
 
         .msg-footer {
@@ -654,7 +731,8 @@
             outline: none;
             resize: vertical;
             line-height: 1.6;
-            min-height: 60px;
+            min-height: 120px;
+            /* 6-7行 */
         }
 
         .msg-edit-btns {
@@ -1098,6 +1176,50 @@
             background: #ffffff;
         }
 
+        /* 气泡颜色设置 */
+        .bubble-color-row {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .bubble-color-row .color-label {
+            font-size: 13px;
+            color: #5d4a46;
+            letter-spacing: 1px;
+            min-width: 30px;
+        }
+
+        .color-picker-wrap {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .color-picker-wrap .color-circle {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 2px solid #e8d5ce;
+            cursor: pointer;
+            transition: 0.2s;
+            flex-shrink: 0;
+        }
+
+        .color-picker-wrap .color-circle:hover {
+            transform: scale(1.05);
+            border-color: #dbb5ae;
+        }
+
+        .color-picker-wrap input[type="color"] {
+            width: 0;
+            height: 0;
+            opacity: 0;
+            position: absolute;
+            pointer-events: none;
+        }
+
         .toggle-switch {
             position: relative;
             display: inline-block;
@@ -1172,6 +1294,68 @@
             background: #f8f0ed;
         }
 
+        /* API 检查状态 */
+        .api-check-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .api-check-btn {
+            padding: 8px 20px;
+            border: 1px solid #e8d5ce;
+            border-radius: 24px;
+            background: #fff6f3;
+            color: #6b4f4b;
+            cursor: pointer;
+            font-family: 'Georgia', serif;
+            font-size: 13px;
+            letter-spacing: 1px;
+            transition: 0.2s;
+        }
+
+        .api-check-btn:hover {
+            background: #f8f0ed;
+        }
+
+        .api-check-status {
+            font-size: 20px;
+            line-height: 1;
+        }
+
+        .api-check-status .check-success {
+            color: #7abf8a;
+        }
+
+        .api-check-status .check-fail {
+            color: #d4877a;
+        }
+
+        /* 思考模式单选 */
+        .think-mode-group {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .think-mode-group label {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 13px;
+            color: #5d4a46;
+            cursor: pointer;
+            letter-spacing: 1px;
+        }
+
+        .think-mode-group input[type="radio"] {
+            accent-color: #c49a92;
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+        }
+
         /* ===== 响应式 ===== */
         @media (max-width: 600px) {
             .index-grid {
@@ -1244,6 +1428,15 @@
                 padding: 10px 30px;
                 font-size: 14px;
             }
+            .mode-selector {
+                font-size: 11px;
+                gap: 10px;
+                padding: 6px 0 2px 0;
+                min-height: 28px;
+            }
+            .bubble-color-row {
+                gap: 10px;
+            }
         }
     </style>
 </head>
@@ -1255,7 +1448,7 @@
         ============================================================ -->
         <div id="page-loading">
             <div class="loading-title">味 味 舍</div>
-            <div class="loading-version">✦ 内测版 · v1.0.0 ✦</div>
+            <div class="loading-version">✦ 内测版 · v1.1.0 ✦</div>
             <div class="loading-divider"></div>
 
             <div class="loading-welcome">
@@ -1267,7 +1460,6 @@
                 若页面存在 bug、排版错误，欢迎在群内随时反馈 ~
             </div>
 
-            <!-- 加载动画 -->
             <div class="loader"></div>
 
             <div class="loading-crew">
@@ -1287,7 +1479,7 @@
         </div>
 
         <!-- ============================================================
-        首页 (原 index)
+        首页
         ============================================================ -->
         <div id="page-index">
             <div class="index-header">
@@ -1380,12 +1572,12 @@
             </div>
             <div class="sub-list">
                 <a class="sub-list-item" href="game-能量条.html" style="text-decoration:none;color:inherit;display:flex;align-items:center;justify-content:space-between;width:100%;"><span class="item-name">能量条1.0</span><span class="item-arrow">→</span></a>
-                
-            </div><a class="sub-list-item" href="game-能量条2.0.html" style="text-decoration:none;color:inherit;display:flex;align-items:center;justify-content:space-between;width:100%;"><span class="item-name">能量条2.0</span><span class="item-arrow">→</span></a>
+                <a class="sub-list-item" href="game-能量条2.0.html" style="text-decoration:none;color:inherit;display:flex;align-items:center;justify-content:space-between;width:100%;"><span class="item-name">能量条2.0</span><span class="item-arrow">→</span></a>
+            </div>
         </div>
 
         <!-- ============================================================
-        AI 聊天室 (完整功能)
+        AI 聊天室
         ============================================================ -->
         <div id="page-chat">
             <div class="topbar">
@@ -1398,6 +1590,13 @@
                         <svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
                     </button>
                 </div>
+            </div>
+
+            <!-- 模式选择器（仅新对话时显示） -->
+            <div class="mode-selector" id="modeSelector">
+                <span class="active" data-mode="normal" onclick="selectMode('normal')">普通模式</span>
+                <span class="mode-divider">|</span>
+                <span data-mode="long" onclick="selectMode('long')">长窗模式</span>
             </div>
 
             <div class="chat-area" id="chatArea"></div>
@@ -1419,7 +1618,7 @@
                     </div>
                     <button class="menu-new-btn" onclick="newConversation()">＋ 新建对话</button>
                     <button class="menu-settings-btn" onclick="openSettingsFromMenu()">
-                        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09A1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09A1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l-.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
                         设 置
                     </button>
                     <div class="conversation-list" id="conversationList"></div>
@@ -1434,10 +1633,16 @@
                         <button class="settings-tab" data-tab="appearance" onclick="switchTab('appearance')">外观</button>
                         <button class="settings-tab" data-tab="models" onclick="switchTab('models')">模型</button>
                     </div>
+
+                    <!-- 聊天设置 -->
                     <div class="settings-content active" id="tab-chat">
                         <div class="setting-item">
                             <label>API 密钥（全局保存）</label>
-                            <input type="password" id="apiKeyInput" placeholder="输入你的 DeepSeek API Key" />
+                            <div class="api-check-row">
+                                <input type="password" id="apiKeyInput" placeholder="输入你的 DeepSeek API Key" style="flex:1;" />
+                                <button class="api-check-btn" onclick="checkApiConnection()">检查</button>
+                                <span class="api-check-status" id="apiCheckStatus"></span>
+                            </div>
                         </div>
                         <div class="setting-item">
                             <label>对话语言</label>
@@ -1464,6 +1669,8 @@
                             </div>
                         </div>
                     </div>
+
+                    <!-- 外观设置 -->
                     <div class="settings-content" id="tab-appearance">
                         <div class="setting-item">
                             <label>聊天背景图</label>
@@ -1484,7 +1691,24 @@
                                 <input type="file" accept="image/*" id="userAvatarInput" onchange="changeAvatar(event, 'user')" />
                             </div>
                         </div>
+                        <div class="setting-item">
+                            <label>气泡设置</label>
+                            <div class="bubble-color-row">
+                                <span class="color-label">用户：</span>
+                                <div class="color-picker-wrap">
+                                    <div class="color-circle" id="userBubbleColorPreview" style="background-color:#f5efec;" onclick="document.getElementById('userBubbleColorInput').click();"></div>
+                                    <input type="color" id="userBubbleColorInput" value="#f5efec" onchange="setBubbleColor('user', this.value)" />
+                                </div>
+                                <span class="color-label" style="margin-left:8px;">AI：</span>
+                                <div class="color-picker-wrap">
+                                    <div class="color-circle" id="aiBubbleColorPreview" style="background-color:#ffffff;" onclick="document.getElementById('aiBubbleColorInput').click();"></div>
+                                    <input type="color" id="aiBubbleColorInput" value="#ffffff" onchange="setBubbleColor('ai', this.value)" />
+                                </div>
+                            </div>
+                        </div>
                     </div>
+
+                    <!-- 模型设置 -->
                     <div class="settings-content" id="tab-models">
                         <div class="setting-item">
                             <label>当前模型</label>
@@ -1496,6 +1720,14 @@
                             </select>
                         </div>
                         <div class="setting-item">
+                            <label>思考模式</label>
+                            <div class="think-mode-group">
+                                <label><input type="radio" name="thinkMode" value="low" /> 低</label>
+                                <label><input type="radio" name="thinkMode" value="medium" checked /> 中</label>
+                                <label><input type="radio" name="thinkMode" value="high" /> 高</label>
+                            </div>
+                        </div>
+                        <div class="setting-item">
                             <label>温度 (Temperature)</label>
                             <input type="range" id="tempSlider" min="0" max="2" step="0.1" value="0.7" />
                             <div class="range-label" style="display:flex;justify-content:space-between;font-size:12px;color:#dbb5ae;">
@@ -1505,7 +1737,7 @@
                             </div>
                         </div>
                         <div class="setting-item">
-                            <label>思考程度 (Top P)</label>
+                            <label>Top P</label>
                             <input type="range" id="toppSlider" min="0" max="1" step="0.05" value="0.9" />
                             <div class="range-label" style="display:flex;justify-content:space-between;font-size:12px;color:#dbb5ae;">
                                 <span>直接</span>
@@ -1529,10 +1761,8 @@
         }
 
         // ============================================================
-        //  以下为原 AI 聊天及子页面功能（完整保留）
+        //  工具函数
         // ============================================================
-
-        // ---- 工具 ----
         function generateId() { return 'conv_' + Date.now() + '_' + Math.random().toString(36).slice(2, 6); }
 
         function escapeHtml(text) {
@@ -1558,6 +1788,31 @@
         function getMsgTokenDisplay() { return localStorage.getItem('ww_show_msg_token') === '1'; }
 
         function setMsgTokenDisplay(val) { localStorage.setItem('ww_show_msg_token', val ? '1' : '0'); }
+
+        function getBubbleColor(role) {
+            const key = 'ww_bubble_color_' + role;
+            const defaults = { user: '#f5efec', ai: '#ffffff' };
+            return localStorage.getItem(key) || defaults[role] || '#ffffff';
+        }
+
+        function setBubbleColor(role, color) {
+            localStorage.setItem('ww_bubble_color_' + role, color);
+            const preview = document.getElementById(role + 'BubbleColorPreview');
+            if (preview) preview.style.backgroundColor = color;
+            // 重新渲染当前对话
+            const conv = getCurrentConv();
+            if (conv) renderMessages(conv.messages);
+        }
+
+        function getThinkMode() {
+            const el = document.querySelector('input[name="thinkMode"]:checked');
+            return el ? el.value : 'medium';
+        }
+
+        function setThinkMode(val) {
+            const el = document.querySelector('input[name="thinkMode"][value="' + val + '"]');
+            if (el) el.checked = true;
+        }
 
         // ---- 时区 ----
         const LANG_TIMEZONE = {
@@ -1603,15 +1858,17 @@
         // ---- 对话管理 ----
         let conversations = [];
         let currentId = null;
+        let currentMode = 'normal'; // 'normal' | 'long'
+        let isRpMode = false; // 角色扮演模式（用户触发）
 
         function loadConversations() {
             try {
-                const raw = localStorage.getItem('ww_conversations_v6');
+                const raw = localStorage.getItem('ww_conversations_v7');
                 if (raw) {
                     conversations = JSON.parse(raw);
                 } else {
                     conversations = [{ id: generateId(), title: '新对话', messages: [], model: 'deepseek-chat',
-                        lang: 'zh', temperature: 0.7, topP: 0.9 }];
+                        lang: 'zh', temperature: 0.7, topP: 0.9, mode: 'normal', thinkMode: 'medium' }];
                 }
                 if (!conversations.find(c => c.id === currentId)) {
                     currentId = conversations[0]?.id || null;
@@ -1621,7 +1878,7 @@
                 }
             } catch (e) {
                 conversations = [{ id: generateId(), title: '新对话', messages: [], model: 'deepseek-chat',
-                    lang: 'zh', temperature: 0.7, topP: 0.9 }];
+                    lang: 'zh', temperature: 0.7, topP: 0.9, mode: 'normal', thinkMode: 'medium' }];
                 currentId = conversations[0].id;
             }
             saveConversations();
@@ -1630,7 +1887,7 @@
         }
 
         function saveConversations() {
-            try { localStorage.setItem('ww_conversations_v6', JSON.stringify(conversations)); } catch (e) {}
+            try { localStorage.setItem('ww_conversations_v7', JSON.stringify(conversations)); } catch (e) {}
         }
 
         function getCurrentConv() {
@@ -1660,6 +1917,9 @@
         }
 
         function newConversation() {
+            const modeEl = document.querySelector('.mode-selector .active');
+            const mode = modeEl ? modeEl.dataset.mode : 'normal';
+
             const conv = {
                 id: generateId(),
                 title: '新对话',
@@ -1667,11 +1927,19 @@
                 model: document.getElementById('modelSelect')?.value || 'deepseek-chat',
                 lang: document.getElementById('langSelect')?.value || 'zh',
                 temperature: parseFloat(document.getElementById('tempSlider')?.value) || 0.7,
-                topP: parseFloat(document.getElementById('toppSlider')?.value) || 0.9
+                topP: parseFloat(document.getElementById('toppSlider')?.value) || 0.9,
+                mode: mode,
+                thinkMode: getThinkMode()
             };
             conversations.push(conv);
             saveConversations();
             switchConversation(conv.id);
+            // 重置模式选择器高亮
+            document.querySelectorAll('.mode-selector span').forEach(el => el.classList.remove('active'));
+            const target = document.querySelector('.mode-selector span[data-mode="' + mode + '"]');
+            if (target) target.classList.add('active');
+            currentMode = mode;
+            isRpMode = false;
         }
 
         function deleteConversation(id) {
@@ -1695,7 +1963,28 @@
             document.getElementById('tempValue').textContent = conv.temperature || 0.7;
             document.getElementById('toppValue').textContent = conv.topP || 0.9;
             document.getElementById('showMsgTokenToggle').checked = getMsgTokenDisplay();
+
+            // 恢复模式
+            const mode = conv.mode || 'normal';
+            currentMode = mode;
+            document.querySelectorAll('.mode-selector span').forEach(el => el.classList.remove('active'));
+            const target = document.querySelector('.mode-selector span[data-mode="' + mode + '"]');
+            if (target) target.classList.add('active');
+
+            // 恢复思考模式
+            if (conv.thinkMode) setThinkMode(conv.thinkMode);
+
+            // 恢复气泡颜色预览
+            const userColor = getBubbleColor('user');
+            const aiColor = getBubbleColor('ai');
+            document.getElementById('userBubbleColorPreview').style.backgroundColor = userColor;
+            document.getElementById('aiBubbleColorPreview').style.backgroundColor = aiColor;
+            document.getElementById('userBubbleColorInput').value = userColor;
+            document.getElementById('aiBubbleColorInput').value = aiColor;
+
+            // 检查是否有消息，若无则显示欢迎语
             renderMessages(conv.messages || []);
+            isRpMode = false; // 重置角色扮演标记
         }
 
         function saveCurrentConversationState() {
@@ -1706,10 +1995,29 @@
             conv.model = document.getElementById('modelSelect').value || 'deepseek-chat';
             conv.temperature = parseFloat(document.getElementById('tempSlider').value) || 0.7;
             conv.topP = parseFloat(document.getElementById('toppSlider').value) || 0.9;
+            conv.mode = currentMode;
+            conv.thinkMode = getThinkMode();
             saveConversations();
         }
 
-        // ---- 消息渲染 ----
+        // ---- 模式选择 ----
+        function selectMode(mode) {
+            const conv = getCurrentConv();
+            if (!conv) return;
+            // 如果对话已有消息，禁止切换
+            if (conv.messages && conv.messages.length > 0) {
+                alert('当前对话已有消息，无法切换模式。请新建对话。');
+                return;
+            }
+            currentMode = mode;
+            document.querySelectorAll('.mode-selector span').forEach(el => el.classList.remove('active'));
+            const target = document.querySelector('.mode-selector span[data-mode="' + mode + '"]');
+            if (target) target.classList.add('active');
+            conv.mode = mode;
+            saveConversations();
+        }
+
+        // ---- 消息渲染（含角色扮演识别） ----
         function renderMessages(messages) {
             const area = document.getElementById('chatArea');
             area.innerHTML = '';
@@ -1718,9 +2026,8 @@
             const showToken = getMsgTokenDisplay();
 
             if (!messages || messages.length === 0) {
-                // 重置为最原始的欢迎语，无任何铺垫
                 area.innerHTML =
-                    `<div class="msg-wrapper ai"><div class="msg-row"><img class="msg-avatar" src="${getAiAvatarSrc()}" alt="AI" /><div class="msg-bubble">你好，我是 DeepSeek，有什么可以帮你的？</div></div></div>`;
+                    `<div class="msg-wrapper ai"><div class="msg-row"><img class="msg-avatar" src="${getAiAvatarSrc()}" alt="AI" /><div class="msg-bubble" style="background-color:${getBubbleColor('ai')};">你好，我是 DeepSeek，有什么可以帮你的？</div></div></div>`;
                 return;
             }
 
@@ -1741,81 +2048,153 @@
 
                 const bubble = document.createElement('div');
                 bubble.className = 'msg-bubble';
-                bubble.addEventListener('click', function(e) {
+                const bubbleColor = msg.role === 'user' ? getBubbleColor('user') : getBubbleColor('ai');
+                bubble.style.backgroundColor = bubbleColor;
+
+                // 角色扮演渲染（仅AI消息，且是RP模式）
+                let displayContent = msg.content || '';
+                if (msg.role === 'ai' && isRpMode && displayContent && displayContent !== '…' && displayContent !==
+                    '⋯思考中 …') {
+                    // 检测是否有引号内容
+                    const parts = splitRpContent(displayContent);
+                    if (parts.hasDialogue) {
+                        bubble.innerHTML = '';
+                        if (parts.desc) {
+                            const descSpan = document.createElement('span');
+                            descSpan.className = 'rp-desc';
+                            descSpan.textContent = parts.desc;
+                            bubble.appendChild(descSpan);
+                        }
+                        if (parts.desc && parts.dialogue) {
+                            const div = document.createElement('span');
+                            div.className = 'rp-divider';
+                            div.textContent = '—';
+                            bubble.appendChild(div);
+                        }
+                        if (parts.dialogue) {
+                            const diaSpan = document.createElement('span');
+                            diaSpan.className = 'rp-dialogue';
+                            diaSpan.textContent = parts.dialogue;
+                            bubble.appendChild(diaSpan);
+                        }
+                        // 添加更多按钮
+                        const moreBtn = document.createElement('button');
+                        moreBtn.className = 'msg-more-btn';
+                        moreBtn.textContent = '⋯';
+                        moreBtn.addEventListener('click', function(e) {
+                            e.stopPropagation();
+                            showMsgActions(e, idx, msg.role);
+                        });
+                        bubble.appendChild(moreBtn);
+
+                        row.appendChild(avatarImg);
+                        row.appendChild(bubble);
+                        wrapper.appendChild(row);
+
+                        // footer
+                        const footer = buildFooter(msg, idx, lang, showToken);
+                        wrapper.appendChild(footer);
+                        area.appendChild(wrapper);
+                        return;
+                    }
+                }
+
+                // 普通渲染
+                let contentText = displayContent;
+                if (msg.role === 'ai' && displayContent === '…') {
+                    contentText = '思考中 …';
+                }
+                bubble.textContent = contentText;
+
+                // 更多按钮
+                const moreBtn = document.createElement('button');
+                moreBtn.className = 'msg-more-btn';
+                moreBtn.textContent = '⋯';
+                moreBtn.addEventListener('click', function(e) {
                     e.stopPropagation();
                     showMsgActions(e, idx, msg.role);
                 });
-
-                let displayContent = msg.content || '';
-                if (msg.role === 'ai' && displayContent === '…') {
-                    displayContent = '⋯ 思考中 …';
-                }
-                bubble.textContent = displayContent;
+                bubble.appendChild(moreBtn);
 
                 row.appendChild(avatarImg);
                 row.appendChild(bubble);
                 wrapper.appendChild(row);
 
-                const footer = document.createElement('div');
-                footer.className = 'msg-footer';
-
-                let ts = msg.timestamp;
-                if (msg.role === 'ai' && msg.regenerateHistory && msg.regenerateHistory.length > 0) {
-                    const curIdx = msg.currentHistoryIndex !== undefined ? msg.currentHistoryIndex : 0;
-                    if (msg.regenerateHistory[curIdx] && msg.regenerateHistory[curIdx].timestamp) {
-                        ts = msg.regenerateHistory[curIdx].timestamp;
-                    }
-                }
-                if (msg.role === 'user' && msg.regenerateHistory && msg.regenerateHistory.length > 0) {
-                    const curIdx = msg.currentHistoryIndex !== undefined ? msg.currentHistoryIndex : 0;
-                    if (msg.regenerateHistory[curIdx] && msg.regenerateHistory[curIdx].timestamp) {
-                        ts = msg.regenerateHistory[curIdx].timestamp;
-                    }
-                }
-                if (!ts) ts = Date.now();
-                const timeStr = formatTime(ts, lang);
-                const timeSpan = document.createElement('span');
-                timeSpan.className = 'time-label';
-                timeSpan.textContent = timeStr;
-                footer.appendChild(timeSpan);
-
-                if (msg.role === 'ai') {
-                    let tokens = 0;
-                    if (msg.regenerateHistory && msg.regenerateHistory.length > 0) {
-                        const curIdx = msg.currentHistoryIndex !== undefined ? msg.currentHistoryIndex : 0;
-                        if (msg.regenerateHistory[curIdx] && msg.regenerateHistory[curIdx].tokens !== undefined) {
-                            tokens = msg.regenerateHistory[curIdx].tokens;
-                        }
-                    }
-                    if (showToken && tokens > 0) {
-                        const tokenSpan = document.createElement('span');
-                        tokenSpan.className = 'token-label';
-                        tokenSpan.textContent = `token: ${tokens}`;
-                        footer.appendChild(tokenSpan);
-                    }
-
-                    const history = msg.regenerateHistory || [];
-                    if (history.length > 1) {
-                        const curIdx = msg.currentHistoryIndex !== undefined ? msg.currentHistoryIndex : 0;
-                        const navWrap = buildNavWrap(idx, curIdx, history.length, 'ai');
-                        footer.appendChild(navWrap);
-                    }
-                }
-
-                if (msg.role === 'user') {
-                    const history = msg.regenerateHistory || [];
-                    if (history.length > 1) {
-                        const curIdx = msg.currentHistoryIndex !== undefined ? msg.currentHistoryIndex : 0;
-                        const navWrap = buildNavWrap(idx, curIdx, history.length, 'user');
-                        footer.appendChild(navWrap);
-                    }
-                }
-
+                const footer = buildFooter(msg, idx, lang, showToken);
                 wrapper.appendChild(footer);
                 area.appendChild(wrapper);
             });
 
             area.scrollTop = area.scrollHeight;
+        }
+
+        // ---- 角色扮演内容拆分 ----
+        function splitRpContent(text) {
+            // 检测引号：双引号或单引号
+            const doubleQuoteMatch = text.match(/^([^"“]*)(["“])([^"“]*)(["“])(.*)$/s);
+            if (doubleQuoteMatch) {
+                const before = doubleQuoteMatch[1].trim();
+                const dialogue = doubleQuoteMatch[3].trim();
+                const after = doubleQuoteMatch[5].trim();
+                let desc = before;
+                if (after) desc += (desc ? ' ' : '') + after;
+                return { desc: desc || null, dialogue: dialogue || null, hasDialogue: !!dialogue };
+            }
+            const singleQuoteMatch = text.match(/^([^'‘]*)(['‘])([^'‘]*)(['‘])(.*)$/s);
+            if (singleQuoteMatch) {
+                const before = singleQuoteMatch[1].trim();
+                const dialogue = singleQuoteMatch[3].trim();
+                const after = singleQuoteMatch[5].trim();
+                let desc = before;
+                if (after) desc += (desc ? ' ' : '') + after;
+                return { desc: desc || null, dialogue: dialogue || null, hasDialogue: !!dialogue };
+            }
+            // 无引号，全部当描述
+            return { desc: text.trim() || null, dialogue: null, hasDialogue: false };
+        }
+
+        function buildFooter(msg, idx, lang, showToken) {
+            const footer = document.createElement('div');
+            footer.className = 'msg-footer';
+
+            let ts = msg.timestamp;
+            if (msg.regenerateHistory && msg.regenerateHistory.length > 0) {
+                const curIdx = msg.currentHistoryIndex !== undefined ? msg.currentHistoryIndex : 0;
+                if (msg.regenerateHistory[curIdx] && msg.regenerateHistory[curIdx].timestamp) {
+                    ts = msg.regenerateHistory[curIdx].timestamp;
+                }
+            }
+            if (!ts) ts = Date.now();
+            const timeStr = formatTime(ts, lang);
+            const timeSpan = document.createElement('span');
+            timeSpan.className = 'time-label';
+            timeSpan.textContent = timeStr;
+            footer.appendChild(timeSpan);
+
+            if (msg.role === 'ai' && showToken) {
+                let tokens = 0;
+                if (msg.regenerateHistory && msg.regenerateHistory.length > 0) {
+                    const curIdx = msg.currentHistoryIndex !== undefined ? msg.currentHistoryIndex : 0;
+                    if (msg.regenerateHistory[curIdx] && msg.regenerateHistory[curIdx].tokens !== undefined) {
+                        tokens = msg.regenerateHistory[curIdx].tokens;
+                    }
+                }
+                if (tokens > 0) {
+                    const tokenSpan = document.createElement('span');
+                    tokenSpan.className = 'token-label';
+                    tokenSpan.textContent = 'token: ' + tokens;
+                    footer.appendChild(tokenSpan);
+                }
+            }
+
+            const history = msg.regenerateHistory || [];
+            if (history.length > 1) {
+                const curIdx = msg.currentHistoryIndex !== undefined ? msg.currentHistoryIndex : 0;
+                const navWrap = buildNavWrap(idx, curIdx, history.length, msg.role);
+                footer.appendChild(navWrap);
+            }
+
+            return footer;
         }
 
         function buildNavWrap(msgIndex, curIdx, total, role) {
@@ -1827,17 +2206,13 @@
             btnPrev.textContent = '<';
             btnPrev.addEventListener('click', function(e) {
                 e.stopPropagation();
-                if (role === 'ai') {
-                    switchHistoryVersion(msgIndex, -1);
-                } else {
-                    switchUserHistoryVersion(msgIndex, -1);
-                }
+                switchHistoryVersion(msgIndex, -1, role);
             });
             navWrap.appendChild(btnPrev);
 
             const indexSpan = document.createElement('span');
             indexSpan.className = 'nav-index';
-            indexSpan.textContent = `${curIdx + 1}/${total}`;
+            indexSpan.textContent = (curIdx + 1) + '/' + total;
             navWrap.appendChild(indexSpan);
 
             const btnNext = document.createElement('button');
@@ -1845,22 +2220,18 @@
             btnNext.textContent = '>';
             btnNext.addEventListener('click', function(e) {
                 e.stopPropagation();
-                if (role === 'ai') {
-                    switchHistoryVersion(msgIndex, 1);
-                } else {
-                    switchUserHistoryVersion(msgIndex, 1);
-                }
+                switchHistoryVersion(msgIndex, 1, role);
             });
             navWrap.appendChild(btnNext);
 
             return navWrap;
         }
 
-        function switchHistoryVersion(msgIndex, direction) {
+        function switchHistoryVersion(msgIndex, direction, role) {
             const conv = getCurrentConv();
             if (!conv || !conv.messages[msgIndex]) return;
             const msg = conv.messages[msgIndex];
-            if (msg.role !== 'ai') return;
+            if (msg.role !== role) return;
             const history = msg.regenerateHistory || [];
             if (history.length <= 1) return;
 
@@ -1870,25 +2241,7 @@
 
             msg.currentHistoryIndex = newIdx;
             msg.content = history[newIdx].content;
-            saveConversations();
-            renderMessages(conv.messages);
-        }
-
-        function switchUserHistoryVersion(msgIndex, direction) {
-            const conv = getCurrentConv();
-            if (!conv || !conv.messages[msgIndex]) return;
-            const msg = conv.messages[msgIndex];
-            if (msg.role !== 'user') return;
-            const history = msg.regenerateHistory || [];
-            if (history.length <= 1) return;
-
-            let curIdx = msg.currentHistoryIndex !== undefined ? msg.currentHistoryIndex : 0;
-            const newIdx = curIdx + direction;
-            if (newIdx < 0 || newIdx >= history.length) return;
-
-            msg.currentHistoryIndex = newIdx;
-            msg.content = history[newIdx].content;
-            msg.timestamp = history[newIdx].timestamp;
+            if (history[newIdx].timestamp) msg.timestamp = history[newIdx].timestamp;
             saveConversations();
             renderMessages(conv.messages);
         }
@@ -1901,6 +2254,16 @@
             actionsTargetIndex = msgIndex;
 
             actions.innerHTML = '';
+
+            // 复制（对所有消息有效）
+            const copyBtn = document.createElement('button');
+            copyBtn.textContent = '复制';
+            copyBtn.onclick = function() {
+                hideMsgActions();
+                copyMessage(msgIndex);
+            };
+            actions.appendChild(copyBtn);
+
             if (role === 'user') {
                 const editBtn = document.createElement('button');
                 editBtn.textContent = '✎ 修改';
@@ -1952,10 +2315,50 @@
         }
 
         document.addEventListener('click', function(e) {
-            if (!e.target.closest('.msg-actions') && !e.target.closest('.msg-bubble')) {
+            if (!e.target.closest('.msg-actions') && !e.target.closest('.msg-bubble') && !e.target.closest(
+                    '.msg-more-btn')) {
                 hideMsgActions();
             }
         });
+
+        // ---- 复制消息 ----
+        function copyMessage(msgIndex) {
+            const conv = getCurrentConv();
+            if (!conv || !conv.messages[msgIndex]) return;
+            const msg = conv.messages[msgIndex];
+            const text = msg.content || '';
+            if (!text) return;
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text).then(() => {
+                    // 简单反馈
+                    const actions = document.getElementById('msgActions');
+                    const origHtml = actions.innerHTML;
+                    actions.innerHTML = '<button style="color:#7abf8a;">✓ 已复制</button>';
+                    setTimeout(() => { actions.innerHTML = origHtml; }, 800);
+                }).catch(() => {
+                    fallbackCopy(text);
+                });
+            } else {
+                fallbackCopy(text);
+            }
+        }
+
+        function fallbackCopy(text) {
+            const ta = document.createElement('textarea');
+            ta.value = text;
+            ta.style.position = 'fixed';
+            ta.style.opacity = '0';
+            document.body.appendChild(ta);
+            ta.select();
+            try {
+                document.execCommand('copy');
+                const actions = document.getElementById('msgActions');
+                const origHtml = actions.innerHTML;
+                actions.innerHTML = '<button style="color:#7abf8a;">✓ 已复制</button>';
+                setTimeout(() => { actions.innerHTML = origHtml; }, 800);
+            } catch (e) { alert('复制失败，请手动复制'); }
+            document.body.removeChild(ta);
+        }
 
         // ---- 修改用户消息 ----
         function startEditMessage(msgIndex) {
@@ -1984,6 +2387,7 @@
             textarea.setSelectionRange(textarea.value.length, textarea.value.length);
             textarea.addEventListener('keydown', function(e) {
                 if (e.key === 'Escape') cancelEditMessage(msgIndex);
+                if (e.key === 'Enter' && e.ctrlKey) confirmEditMessage(msgIndex);
             });
         }
 
@@ -1993,39 +2397,28 @@
             const textarea = document.getElementById('editTextarea_' + msgIndex);
             if (!textarea) return;
             const newContent = textarea.value.trim();
-            if (!newContent) return;
+            if (!newContent) { alert('内容不能为空'); return; }
 
             const msg = conv.messages[msgIndex];
             const oldContent = msg.content;
 
-            if (!msg.regenerateHistory) {
-                msg.regenerateHistory = [];
-            }
-
+            if (!msg.regenerateHistory) msg.regenerateHistory = [];
             if (oldContent && !msg.regenerateHistory.some(h => h.content === oldContent)) {
-                msg.regenerateHistory.push({
-                    content: oldContent,
-                    timestamp: msg.timestamp || Date.now()
-                });
+                msg.regenerateHistory.push({ content: oldContent, timestamp: msg.timestamp || Date.now() });
             }
 
             msg.content = newContent;
             msg.timestamp = Date.now();
-
             if (!msg.regenerateHistory.some(h => h.content === newContent)) {
-                msg.regenerateHistory.push({
-                    content: newContent,
-                    timestamp: Date.now()
-                });
+                msg.regenerateHistory.push({ content: newContent, timestamp: Date.now() });
             }
-
             msg.currentHistoryIndex = msg.regenerateHistory.length - 1;
 
             conv.messages = conv.messages.slice(0, msgIndex + 1);
-
             saveConversations();
             renderMessages(conv.messages);
 
+            // 自动触发AI回复
             if (conv.messages.length > 0 && conv.messages[conv.messages.length - 1].role === 'user') {
                 triggerAiResponse();
             }
@@ -2054,30 +2447,27 @@
             const msg = conv.messages[msgIndex];
             if (!msg || msg.role !== 'ai') return;
 
-            if (!msg.regenerateHistory) {
-                msg.regenerateHistory = [];
-            }
-
-            const placeholder = '…';
-            const loadingText = '⋯ 思考中 …';
-            if (msg.content !== placeholder && msg.content !== loadingText) {
-                const exists = msg.regenerateHistory.some(h => h.content === msg.content);
+            if (!msg.regenerateHistory) msg.regenerateHistory = [];
+            const curContent = msg.content;
+            if (curContent && curContent !== '…' && curContent !== '思考中 …') {
+                const exists = msg.regenerateHistory.some(h => h.content === curContent);
                 if (!exists) {
-                    msg.regenerateHistory.push({
-                        content: msg.content,
-                        timestamp: msg.timestamp || Date.now(),
-                        tokens: 0
-                    });
+                    msg.regenerateHistory.push({ content: curContent, timestamp: msg.timestamp || Date.now(),
+                        tokens: 0 });
                 }
             }
-
             if (msg.regenerateHistory.length > 0) {
                 msg.currentHistoryIndex = msg.regenerateHistory.length - 1;
             }
-
             saveConversations();
             renderMessages(conv.messages);
             triggerAiResponse(msgIndex);
+        }
+
+        // ---- 检测角色扮演触发 ----
+        function checkRpTrigger(text) {
+            const keywords = ['角色扮演', '扮演', 'rp', 'RP', '来演', '你演'];
+            return keywords.some(kw => text.includes(kw));
         }
 
         // ---- 触发 AI 回复 ----
@@ -2099,6 +2489,12 @@
                 }
                 existing.content = '…';
             } else {
+                // 检查用户最后一条消息是否触发了角色扮演
+                const lastUserMsg = conv.messages.filter(m => m.role === 'user').pop();
+                if (lastUserMsg && checkRpTrigger(lastUserMsg.content)) {
+                    isRpMode = true;
+                }
+
                 const aiMsg = {
                     role: 'ai',
                     content: '…',
@@ -2117,7 +2513,22 @@
             const temperature = conv.temperature || 0.7;
             const topP = conv.topP || 0.9;
             const lang = conv.lang || 'zh';
+            const thinkMode = conv.thinkMode || 'medium';
 
+            // 构建思考模式提示
+            let thinkPrompt = '';
+            if (thinkMode === 'low') thinkPrompt = '请简洁直接地回答，不需要展开推理。';
+            else if (thinkMode === 'high') thinkPrompt = '请深入思考，详细推理后再给出回答。';
+            else thinkPrompt = '请保持适中的思考深度，清晰有条理地回答。';
+
+            // 系统提示：角色扮演模式下添加格式说明（但不改变AI底层逻辑）
+            let sysPrompt = '你是 DeepSeek，一个由深度求索公司开发的 AI 助手。' + thinkPrompt;
+            if (isRpMode) {
+                sysPrompt +=
+                    ' 用户正在与你进行角色扮演。你的回复中可能包含描述性文字和对话内容。请自然书写，不需要额外标记。前端会自动识别对话内容。';
+            }
+
+            // 构建历史消息
             const history = conv.messages.filter((m, i) => {
                 if (i === aiIndex) return false;
                 if (m.role === 'ai' && m.content === '…') return false;
@@ -2127,15 +2538,12 @@
                 content: m.content
             }));
 
-            // 最原始的系统提示：仅声明身份，无任何角色铺垫
-            const sysPrompt = '你是 DeepSeek，一个由深度求索公司开发的 AI 助手。';
-
             try {
                 const resp = await fetch('https://api.deepseek.com/v1/chat/completions', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${apiKey}`
+                        'Authorization': 'Bearer ' + apiKey
                     },
                     body: JSON.stringify({
                         model: modelId,
@@ -2151,12 +2559,12 @@
 
                 if (!resp.ok) {
                     const errText = await resp.text();
-                    throw new Error(`API 错误 ${resp.status}: ${errText}`);
+                    throw new Error('API 错误 ' + resp.status + ': ' + errText);
                 }
 
                 const data = await resp.json();
                 const reply = data.choices[0].message.content;
-                const totalTokens = data.usage?.total_tokens || 0;
+                const totalTokens = data.usage?.total_tokens || estimateTokens(reply);
 
                 const aiMsgObj = conv.messages[aiIndex];
                 if (!aiMsgObj) return;
@@ -2167,19 +2575,13 @@
                     tokens: totalTokens > 0 ? totalTokens : estimateTokens(reply)
                 };
 
-                if (!aiMsgObj.regenerateHistory) {
-                    aiMsgObj.regenerateHistory = [];
-                }
-
+                if (!aiMsgObj.regenerateHistory) aiMsgObj.regenerateHistory = [];
                 const curContent = aiMsgObj.content;
-                if (curContent !== '…' && curContent !== '⋯ 思考中 …') {
+                if (curContent !== '…' && curContent !== '思考中 …' && curContent.trim().length > 0) {
                     const exists = aiMsgObj.regenerateHistory.some(h => h.content === curContent);
-                    if (!exists && curContent.trim().length > 0) {
-                        aiMsgObj.regenerateHistory.push({
-                            content: curContent,
-                            timestamp: aiMsgObj.timestamp || Date.now(),
-                            tokens: 0
-                        });
+                    if (!exists) {
+                        aiMsgObj.regenerateHistory.push({ content: curContent, timestamp: aiMsgObj.timestamp ||
+                                Date.now(), tokens: 0 });
                     }
                 }
 
@@ -2191,23 +2593,112 @@
                 saveConversations();
                 renderMessages(conv.messages);
 
+                // 长窗模式：AI主动发起
+                if (currentMode === 'long' && !targetMsgIndex) {
+                    // 检查是否需要AI主动说话（等待片刻后触发）
+                    // 这里用标志避免无限循环
+                    if (!conv._longActive) {
+                        conv._longActive = true;
+                        // 延迟触发，让用户看到当前回复
+                        setTimeout(() => {
+                            triggerLongMode(conv);
+                        }, 1500);
+                    }
+                }
+
             } catch (err) {
                 const aiMsgObj = conv.messages[aiIndex];
                 if (aiMsgObj) {
-                    aiMsgObj.content = `请求失败：${err.message}`;
-                    if (!aiMsgObj.regenerateHistory) {
-                        aiMsgObj.regenerateHistory = [];
-                    }
-                    aiMsgObj.regenerateHistory.push({
-                        content: aiMsgObj.content,
-                        timestamp: Date.now(),
-                        tokens: 0
-                    });
+                    aiMsgObj.content = '请求失败：' + err.message;
+                    if (!aiMsgObj.regenerateHistory) aiMsgObj.regenerateHistory = [];
+                    aiMsgObj.regenerateHistory.push({ content: aiMsgObj.content, timestamp: Date.now(),
+                        tokens: 0 });
                     aiMsgObj.currentHistoryIndex = aiMsgObj.regenerateHistory.length - 1;
                     saveConversations();
                     renderMessages(conv.messages);
                 }
             }
+        }
+
+        // ---- 长窗模式：AI主动发起 ----
+        function triggerLongMode(conv) {
+            // 检查是否还在长窗模式
+            if (currentMode !== 'long') return;
+            if (conv.id !== currentId) return;
+            // 避免重复触发
+            if (conv._longTriggered) return;
+            conv._longTriggered = true;
+
+            // 检查最后一条消息是否是AI的
+            const lastMsg = conv.messages[conv.messages.length - 1];
+            if (!lastMsg || lastMsg.role !== 'ai') {
+                conv._longTriggered = false;
+                return;
+            }
+
+            // 构造一个自然的承接话题
+            const lastContent = lastMsg.content || '';
+            // 生成一个简短的承接提示
+            const followUpPrompt = '继续对话，主动发起一个新话题或提问，承接上一轮内容。';
+            // 但这里不直接调API，而是用系统提示让AI主动发一条
+            // 简化方式：发送一条用户消息的模拟？不，我们直接调API让AI主动发言
+            // 但是API需要用户消息作为触发，所以我们构造一个系统提示
+            const apiKey = document.getElementById('apiKeyInput').value.trim();
+            if (!apiKey) { conv._longTriggered = false; return; }
+
+            // 获取当前对话历史
+            const history = conv.messages.map(m => ({
+                role: m.role === 'ai' ? 'assistant' : 'user',
+                content: m.content
+            }));
+
+            const sysPrompt = '你是 DeepSeek。当前是长窗模式，请主动发起一个新话题或提问，自然承接上一轮对话内容。只输出1-2句话。';
+
+            fetch('https://api.deepseek.com/v1/chat/completions', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + apiKey
+                },
+                body: JSON.stringify({
+                    model: conv.model || 'deepseek-chat',
+                    messages: [
+                        { role: 'system', content: sysPrompt },
+                        ...history
+                    ],
+                    temperature: 0.8,
+                    top_p: 0.9,
+                    max_tokens: 256
+                })
+            }).then(resp => {
+                if (!resp.ok) throw new Error('API error');
+                return resp.json();
+            }).then(data => {
+                const reply = data.choices[0].message.content;
+                if (!reply || reply.trim().length === 0) { conv._longTriggered = false; return; }
+
+                const aiMsg = {
+                    role: 'ai',
+                    content: reply,
+                    regenerateHistory: [{ content: reply, timestamp: Date.now(), tokens: estimateTokens(
+                            reply) }],
+                    currentHistoryIndex: 0,
+                    timestamp: Date.now()
+                };
+                conv.messages.push(aiMsg);
+                saveConversations();
+                renderMessages(conv.messages);
+                conv._longTriggered = false;
+                // 可继续循环，但控制频率
+                if (currentMode === 'long' && conv.id === currentId) {
+                    setTimeout(() => {
+                        conv._longTriggered = false;
+                        triggerLongMode(conv);
+                    }, 8000);
+                }
+            }).catch(() => {
+                conv._longTriggered = false;
+            });
         }
 
         function estimateTokens(text) {
@@ -2233,6 +2724,17 @@
             if (!apiKey) { alert('请先在设置中绑定 DeepSeek API 密钥'); return; }
 
             saveCurrentConversationState();
+
+            // 检查用户是否触发角色扮演
+            if (checkRpTrigger(text)) {
+                isRpMode = true;
+            }
+
+            // 长窗模式下，用户发送消息时重置触发标志
+            if (currentMode === 'long') {
+                conv._longTriggered = false;
+                conv._longActive = false;
+            }
 
             const userMsg = {
                 role: 'user',
@@ -2320,20 +2822,55 @@
                     document.getElementById('toppSlider').value = conv.topP || 0.9;
                     document.getElementById('tempValue').textContent = conv.temperature || 0.7;
                     document.getElementById('toppValue').textContent = conv.topP || 0.9;
+                    if (conv.thinkMode) setThinkMode(conv.thinkMode);
                 }
                 document.getElementById('aiAvatarPreview').src = getAiAvatarSrc();
                 document.getElementById('userAvatarPreview').src = getUserAvatarSrc();
                 document.getElementById('showMsgTokenToggle').checked = getMsgTokenDisplay();
+                // 气泡颜色预览
+                document.getElementById('userBubbleColorPreview').style.backgroundColor = getBubbleColor('user');
+                document.getElementById('aiBubbleColorPreview').style.backgroundColor = getBubbleColor('ai');
+                document.getElementById('userBubbleColorInput').value = getBubbleColor('user');
+                document.getElementById('aiBubbleColorInput').value = getBubbleColor('ai');
+                // 清除API检查状态
+                document.getElementById('apiCheckStatus').innerHTML = '';
             }
         }
 
         function switchTab(name) {
             document.querySelectorAll('.settings-tab').forEach(t => t.classList.remove('active'));
             document.querySelectorAll('.settings-content').forEach(c => c.classList.remove('active'));
-            const tab = document.querySelector(`.settings-tab[data-tab="${name}"]`);
+            const tab = document.querySelector('.settings-tab[data-tab="' + name + '"]');
             if (tab) tab.classList.add('active');
-            const content = document.getElementById(`tab-${name}`);
+            const content = document.getElementById('tab-' + name);
             if (content) content.classList.add('active');
+        }
+
+        // ---- API 连接检查 ----
+        async function checkApiConnection() {
+            const statusEl = document.getElementById('apiCheckStatus');
+            const apiKey = document.getElementById('apiKeyInput').value.trim();
+            if (!apiKey) {
+                statusEl.innerHTML = '<span class="check-fail">✗ 请先输入API密钥</span>';
+                return;
+            }
+            statusEl.innerHTML = '<span style="color:#dbb5ae;">检查中...</span>';
+            try {
+                const resp = await fetch('https://api.deepseek.com/v1/models', {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': 'Bearer ' + apiKey
+                    }
+                });
+                if (resp.ok) {
+                    statusEl.innerHTML = '<span class="check-success">✓ 连接成功</span>';
+                } else {
+                    const err = await resp.text();
+                    statusEl.innerHTML = '<span class="check-fail">✗ 连接失败: ' + err.substring(0, 50) + '</span>';
+                }
+            } catch (e) {
+                statusEl.innerHTML = '<span class="check-fail">✗ 网络错误: ' + e.message + '</span>';
+            }
         }
 
         // ---- 外观 ----
@@ -2363,7 +2900,7 @@
             reader.onload = function(e) {
                 const src = e.target.result;
                 localStorage.setItem('ww_bg_image', src);
-                document.getElementById('chatArea').style.backgroundImage = `url(${src})`;
+                document.getElementById('chatArea').style.backgroundImage = 'url(' + src + ')';
                 document.getElementById('chatArea').style.backgroundSize = 'cover';
                 document.getElementById('chatArea').style.backgroundPosition = 'center';
             };
@@ -2389,10 +2926,12 @@
 
             const bg = localStorage.getItem('ww_bg_image');
             if (bg) {
-                document.getElementById('chatArea').style.backgroundImage = `url(${bg})`;
+                document.getElementById('chatArea').style.backgroundImage = 'url(' + bg + ')';
                 document.getElementById('chatArea').style.backgroundSize = 'cover';
                 document.getElementById('chatArea').style.backgroundPosition = 'center';
             }
+            // 重置角色扮演模式
+            isRpMode = false;
         }
 
         function closeChat() {
@@ -2412,11 +2951,17 @@
             }
             if (e.target.id === 'apiKeyInput') {
                 setGlobalApiKey(e.target.value);
+                // 清除检查状态
+                document.getElementById('apiCheckStatus').innerHTML = '';
             }
             if (e.target.id === 'langSelect' || e.target.id === 'modelSelect') {
                 saveCurrentConversationState();
                 const conv = getCurrentConv();
                 if (conv) renderMessages(conv.messages);
+            }
+            // 思考模式
+            if (e.target.name === 'thinkMode') {
+                saveCurrentConversationState();
             }
         });
 
@@ -2445,7 +2990,6 @@
         });
 
         // ---- 启动 ----
-        // 默认显示加载页，首页隐藏
         document.getElementById('page-loading').style.display = 'flex';
         document.getElementById('page-index').style.display = 'none';
         document.getElementById('page-chat').style.display = 'none';
@@ -2453,7 +2997,6 @@
         document.getElementById('sub-page-setting').classList.remove('active');
         document.getElementById('sub-page-games').classList.remove('active');
 
-        // 预加载对话数据
         loadConversations();
     </script>
 </body>
