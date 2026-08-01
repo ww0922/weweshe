@@ -4,6 +4,12 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>味味舍</title>
+    <link rel="manifest" href="/manifest.json">
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js');
+        }
+    </script>
     <style>
         /* ===== 全局重置 ===== */
         * {
@@ -11,7 +17,6 @@
             padding: 0;
             box-sizing: border-box;
         }
-
         body {
             background: #ffffff;
             font-family: 'Georgia', 'Times New Roman', 'PingFang SC', 'Microsoft YaHei', serif;
@@ -22,7 +27,6 @@
             align-items: center;
             justify-content: center;
         }
-
         .app {
             width: 100%;
             height: 100%;
@@ -34,9 +38,7 @@
             position: relative;
         }
 
-        /* ============================================================
-           LOADING 页面
-           ============================================================ */
+        /* ===== LOADING ===== */
         #page-loading {
             display: flex;
             flex-direction: column;
@@ -49,7 +51,6 @@
             overflow-y: auto;
             text-align: center;
         }
-
         .loading-title {
             font-size: 36px;
             font-weight: 400;
@@ -58,7 +59,6 @@
             font-family: 'Georgia', serif;
             margin-bottom: 6px;
         }
-
         .loading-version {
             font-size: 13px;
             color: #dbb5ae;
@@ -66,14 +66,12 @@
             font-style: italic;
             margin-bottom: 22px;
         }
-
         .loading-divider {
             width: 60px;
             height: 1px;
             background: #e8d5ce;
             margin: 6px auto 20px auto;
         }
-
         .loading-welcome {
             font-size: 16px;
             color: #6b4f4b;
@@ -82,12 +80,10 @@
             max-width: 600px;
             margin: 0 auto 16px auto;
         }
-
         .loading-welcome small {
             font-size: 14px;
             color: #b58a82;
         }
-
         .loading-notice {
             font-size: 14px;
             color: #b58a82;
@@ -100,7 +96,6 @@
             border-radius: 16px;
             border: 1px solid #f0e6e2;
         }
-
         .loading-crew {
             font-size: 14px;
             color: #6b4f4b;
@@ -108,16 +103,13 @@
             line-height: 2;
             margin-bottom: 20px;
         }
-
         .loading-crew .label {
             color: #b58a82;
             font-style: italic;
         }
-
         .loading-crew .highlight {
             color: #c49a92;
         }
-
         .loading-footer {
             font-size: 12px;
             color: #dbb5ae;
@@ -125,11 +117,9 @@
             margin-bottom: 20px;
             line-height: 1.8;
         }
-
         .loading-footer .copy {
             color: #c49a92;
         }
-
         .loader {
             width: 32px;
             height: 32px;
@@ -139,13 +129,11 @@
             animation: spin 0.9s linear infinite;
             margin: 6px auto 18px auto;
         }
-
         @keyframes spin {
             to {
                 transform: rotate(360deg);
             }
         }
-
         .enter-btn {
             background: #fff6f3;
             border: 1.5px solid #e8d5ce;
@@ -159,7 +147,6 @@
             letter-spacing: 4px;
             margin-top: 6px;
         }
-
         .enter-btn:hover {
             background: #f8f0ed;
             border-color: #dbb5ae;
@@ -167,9 +154,7 @@
             box-shadow: 0 4px 16px rgba(196, 154, 146, 0.12);
         }
 
-        /* ============================================================
-           首页 (原 index)
-           ============================================================ */
+        /* ===== 首页 ===== */
         #page-index {
             display: none;
             flex-direction: column;
@@ -181,12 +166,10 @@
             padding: 40px 24px;
             overflow-y: auto;
         }
-
         .index-header {
             text-align: center;
             margin-bottom: 36px;
         }
-
         .index-header h1 {
             font-size: 32px;
             font-weight: 400;
@@ -194,7 +177,6 @@
             letter-spacing: 8px;
             font-family: 'Georgia', serif;
         }
-
         .index-header p {
             font-size: 14px;
             color: #dbb5ae;
@@ -202,32 +184,27 @@
             margin-top: 8px;
             font-style: italic;
         }
-
         .index-divider {
             width: 60px;
             height: 1px;
             background: #e8d5ce;
             margin: 20px auto 32px auto;
         }
-
         .index-grid {
             display: flex;
             justify-content: center;
             gap: 48px;
             flex-wrap: wrap;
         }
-
         .index-item {
             text-align: center;
             width: 120px;
             cursor: pointer;
             transition: transform 0.2s ease;
         }
-
         .index-item:hover {
             transform: translateY(-4px);
         }
-
         .index-icon {
             width: 72px;
             height: 72px;
@@ -241,11 +218,9 @@
             transition: background 0.2s ease;
             box-shadow: 0 4px 16px rgba(245, 208, 199, 0.12);
         }
-
         .index-item:hover .index-icon {
             background: #fdece8;
         }
-
         .index-icon svg {
             width: 30px;
             height: 30px;
@@ -255,14 +230,12 @@
             stroke-linecap: round;
             stroke-linejoin: round;
         }
-
         .index-label {
             font-size: 16px;
             color: #b58a82;
             letter-spacing: 2px;
             font-weight: 400;
         }
-
         .index-desc {
             font-size: 11px;
             color: #dbb5ae;
@@ -270,7 +243,6 @@
             font-style: italic;
             margin-top: 4px;
         }
-
         .index-footer {
             position: absolute;
             bottom: 28px;
@@ -280,9 +252,7 @@
             font-style: italic;
         }
 
-        /* ============================================================
-           子页面 (问卷 / 设定 / 小游戏)
-           ============================================================ */
+        /* ===== 子页面 ===== */
         .sub-page {
             display: none;
             flex-direction: column;
@@ -290,11 +260,9 @@
             width: 100%;
             background: #ffffff;
         }
-
         .sub-page.active {
             display: flex;
         }
-
         .sub-list {
             flex: 1;
             overflow-y: auto;
@@ -303,7 +271,6 @@
             flex-direction: column;
             gap: 12px;
         }
-
         .sub-list::-webkit-scrollbar {
             width: 4px;
         }
@@ -311,7 +278,6 @@
             background: #e8d5ce;
             border-radius: 10px;
         }
-
         .sub-list-item {
             display: flex;
             align-items: center;
@@ -323,44 +289,28 @@
             transition: 0.2s;
             background: #ffffff;
         }
-
         .sub-list-item:hover {
             background: #f8f0ed;
             border-color: #dbb5ae;
             transform: translateX(4px);
         }
-
         .sub-list-item .item-name {
             font-size: 15px;
             color: #5d4a46;
             letter-spacing: 1px;
         }
-
         .sub-list-item .item-arrow {
             font-size: 18px;
             color: #dbb5ae;
         }
 
-        .sub-list-item .item-tag {
-            font-size: 11px;
-            color: #c49a92;
-            background: #fff6f3;
-            padding: 4px 10px;
-            border-radius: 12px;
-            letter-spacing: 1px;
-            margin-left: 10px;
-        }
-
-        /* ============================================================
-           AI 聊天室 (完整功能 + 新增)
-           ============================================================ */
+        /* ===== AI 聊天室 ===== */
         #page-chat {
             display: none;
             flex-direction: column;
             height: 100%;
             width: 100%;
         }
-
         .topbar {
             display: flex;
             align-items: center;
@@ -371,7 +321,6 @@
             flex-shrink: 0;
             min-height: 60px;
         }
-
         .topbar-left {
             display: flex;
             align-items: center;
@@ -379,7 +328,6 @@
             flex: 1;
             min-width: 0;
         }
-
         .back-home-btn {
             background: none;
             border: 1px solid #e8d5ce;
@@ -393,11 +341,9 @@
             letter-spacing: 1px;
             flex-shrink: 0;
         }
-
         .back-home-btn:hover {
             background: #f8f0ed;
         }
-
         .topbar-title {
             font-size: 16px;
             color: #6b4f4b;
@@ -413,16 +359,14 @@
             flex: 1;
             min-width: 60px;
         }
-
         .topbar-title:hover {
             background: #f8f0ed;
         }
-
         .topbar-title.editing {
             background: #fff6f3;
             border: 1px solid #e8d5ce;
-            padding: 4px 8px;
             border-radius: 20px;
+            padding: 4px 8px;
             font-family: 'Georgia', serif;
             font-size: 16px;
             color: #6b4f4b;
@@ -431,15 +375,35 @@
             flex: 1;
             min-width: 60px;
         }
-
         .topbar-right {
             display: flex;
             align-items: center;
             gap: 6px;
             flex-shrink: 0;
         }
+        .menu-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 30px;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .menu-btn:hover {
+            background: #f8f0ed;
+        }
+        .menu-btn svg {
+            width: 24px;
+            height: 24px;
+            stroke: #c49a92;
+            fill: none;
+            stroke-width: 2;
+        }
 
-        /* ---- 模式切换 (新对话时显示) ---- */
+        /* 模式选择器（仅消息数为0时显示） */
         .mode-selector {
             display: flex;
             align-items: center;
@@ -454,7 +418,9 @@
             flex-shrink: 0;
             min-height: 32px;
         }
-
+        .mode-selector.hidden {
+            display: none;
+        }
         .mode-selector span {
             cursor: pointer;
             padding: 2px 10px;
@@ -462,42 +428,15 @@
             transition: 0.2s;
             color: #dbb5ae;
         }
-
         .mode-selector span.active {
             color: #c49a92;
             background: #fff6f3;
         }
-
         .mode-selector span:hover {
             color: #b58a82;
         }
-
         .mode-selector .mode-divider {
             color: #e8d5ce;
-        }
-
-        .menu-btn {
-            background: none;
-            border: none;
-            cursor: pointer;
-            padding: 8px;
-            border-radius: 30px;
-            transition: 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .menu-btn:hover {
-            background: #f8f0ed;
-        }
-
-        .menu-btn svg {
-            width: 24px;
-            height: 24px;
-            stroke: #c49a92;
-            fill: none;
-            stroke-width: 2;
         }
 
         .chat-area {
@@ -510,7 +449,6 @@
             scroll-behavior: smooth;
             background: #ffffff;
         }
-
         .chat-area::-webkit-scrollbar {
             width: 4px;
         }
@@ -528,14 +466,12 @@
             animation: fadeIn 0.25s ease;
             position: relative;
         }
-
         .msg-wrapper.user {
             align-items: flex-end;
         }
         .msg-wrapper.ai {
             align-items: flex-start;
         }
-
         @keyframes fadeIn {
             from {
                 opacity: 0;
@@ -553,7 +489,6 @@
             gap: 12px;
             max-width: 78%;
         }
-
         .msg-wrapper.user .msg-row {
             flex-direction: row-reverse;
         }
@@ -566,9 +501,10 @@
             height: 36px;
             border-radius: 50%;
             object-fit: cover;
-            border: 1.5px solid #e8d5ce;
+            border: 2px solid #e8d5ce;
             flex-shrink: 0;
             background: #ffffff;
+            transition: border-color 0.2s;
         }
 
         .msg-bubble {
@@ -579,21 +515,18 @@
             word-wrap: break-word;
             white-space: pre-wrap;
             letter-spacing: 0.3px;
-            border: 1px solid #e8d5ce;
+            border: 2px solid #e8d5ce;
             background: #ffffff;
             color: #5d4a46;
             box-shadow: 0 1px 6px rgba(196, 154, 146, 0.06);
             cursor: pointer;
-            transition: box-shadow 0.2s;
+            transition: box-shadow 0.2s, border-color 0.2s;
             flex: 1;
             position: relative;
         }
-
         .msg-bubble:hover {
             box-shadow: 0 2px 12px rgba(196, 154, 146, 0.15);
         }
-
-        /* 气泡颜色由 JS 动态设置，这里留空 */
 
         .msg-more-btn {
             position: absolute;
@@ -609,7 +542,6 @@
             transition: opacity 0.2s;
             line-height: 1;
         }
-
         .msg-bubble:hover .msg-more-btn {
             opacity: 0.6;
         }
@@ -617,25 +549,29 @@
             opacity: 1 !important;
         }
 
-        /* 角色扮演：描述（小字浅色）+ 对话（正常） */
+        /* ========================================================== */
+        /*  角色扮演专属样式：上小下大、上浅下深、上下有间隔          */
+        /* ========================================================== */
+        .msg-bubble .rp-structure {
+            display: flex;
+            flex-direction: column;
+            gap: 12px; /* 描述和对话之间的间距 */
+        }
+
         .msg-bubble .rp-desc {
-            font-size: 0.8em;
-            color: #b5a09a;
+            font-size: 0.8em;      /* 缩小字号 */
+            color: #b5a09a;        /* 浅灰色 */
             display: block;
-            line-height: 1.5;
+            line-height: 1.6;
+            white-space: pre-wrap;
         }
 
         .msg-bubble .rp-dialogue {
-            font-size: 1em;
-            color: inherit;
+            font-size: 1em;        /* 正常/大字号 */
+            color: #5d4a46;        /* 深色实体字 */
             display: block;
             line-height: 1.7;
-        }
-
-        .msg-bubble .rp-divider {
-            display: block;
-            margin: 4px 0;
-            color: #e0d0ca;
+            white-space: pre-wrap;
         }
 
         .msg-footer {
@@ -651,27 +587,22 @@
             min-height: 20px;
             user-select: none;
         }
-
         .msg-wrapper.user .msg-footer {
             justify-content: flex-end;
             padding-right: 48px;
         }
-
         .msg-wrapper.ai .msg-footer {
             justify-content: flex-start;
             padding-left: 48px;
         }
-
         .msg-footer .time-label {
             color: #dbb5ae;
             font-feature-settings: "tnum";
         }
-
         .msg-footer .token-label {
             color: #c49a92;
             font-feature-settings: "tnum";
         }
-
         .msg-footer .nav-wrap {
             display: inline-flex;
             align-items: center;
@@ -681,7 +612,6 @@
             padding: 0 6px;
             border: 1px solid #f0e6e2;
         }
-
         .msg-footer .nav-btn {
             background: none;
             border: none;
@@ -694,16 +624,13 @@
             border-radius: 4px;
             line-height: 1.4;
         }
-
         .msg-footer .nav-btn:hover {
             background: #f0e6e2;
             color: #b58a82;
         }
-
         .msg-footer .nav-btn:active {
             transform: scale(0.92);
         }
-
         .msg-footer .nav-index {
             font-size: 11px;
             color: #b58a82;
@@ -719,7 +646,6 @@
             gap: 8px;
             width: 100%;
         }
-
         .msg-edit-area textarea {
             padding: 10px 14px;
             border: 1px solid #dbb5ae;
@@ -732,15 +658,12 @@
             resize: vertical;
             line-height: 1.6;
             min-height: 120px;
-            /* 6-7行 */
         }
-
         .msg-edit-btns {
             display: flex;
             gap: 8px;
             justify-content: flex-end;
         }
-
         .msg-edit-btns button {
             padding: 6px 16px;
             border-radius: 16px;
@@ -753,17 +676,14 @@
             letter-spacing: 1px;
             transition: 0.2s;
         }
-
         .msg-edit-btns button:hover {
             background: #f8f0ed;
         }
-
         .msg-edit-btns button.confirm-edit {
             background: #e8d5ce;
             color: #ffffff;
             border-color: #dcc5bc;
         }
-
         .msg-edit-btns button.confirm-edit:hover {
             background: #dcc5bc;
         }
@@ -780,11 +700,9 @@
             flex-direction: column;
             min-width: 90px;
         }
-
         .msg-actions.active {
             display: flex;
         }
-
         .msg-actions button {
             background: none;
             border: none;
@@ -798,12 +716,10 @@
             transition: background 0.15s;
             white-space: nowrap;
         }
-
         .msg-actions button:hover {
             background: #f8f0ed;
             color: #c49a92;
         }
-
         .msg-actions button.delete-action {
             color: #dbb5ae;
         }
@@ -821,7 +737,6 @@
             background: #ffffff;
             flex-shrink: 0;
         }
-
         .input-area textarea {
             flex: 1;
             padding: 12px 18px;
@@ -837,11 +752,9 @@
             line-height: 1.4;
             max-height: 100px;
         }
-
         .input-area textarea:focus {
             border-color: #dbb5ae;
         }
-
         .send-btn {
             background: #e8d5ce;
             border: none;
@@ -855,11 +768,9 @@
             transition: 0.2s;
             flex-shrink: 0;
         }
-
         .send-btn:hover {
             background: #dcc5bc;
         }
-
         .send-btn svg {
             width: 22px;
             height: 22px;
@@ -882,11 +793,9 @@
             align-items: flex-start;
             justify-content: flex-end;
         }
-
         .menu-overlay.active {
             display: flex;
         }
-
         .menu-panel {
             background: #ffffff;
             border-left: 1px solid #e8d5ce;
@@ -899,7 +808,6 @@
             overflow-y: auto;
             box-shadow: -6px 0 24px rgba(200, 150, 140, 0.08);
         }
-
         .menu-panel::-webkit-scrollbar {
             width: 3px;
         }
@@ -907,21 +815,18 @@
             background: #e8d5ce;
             border-radius: 10px;
         }
-
         .menu-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 18px;
         }
-
         .menu-header h3 {
             font-size: 17px;
             color: #6b4f4b;
             font-weight: 400;
             letter-spacing: 2px;
         }
-
         .menu-close {
             background: none;
             border: none;
@@ -930,7 +835,6 @@
             cursor: pointer;
             line-height: 1;
         }
-
         .menu-new-btn {
             width: 100%;
             padding: 12px;
@@ -945,11 +849,9 @@
             letter-spacing: 1px;
             margin-bottom: 16px;
         }
-
         .menu-new-btn:hover {
             background: #f8f0ed;
         }
-
         .menu-settings-btn {
             width: 100%;
             padding: 12px;
@@ -968,11 +870,9 @@
             justify-content: center;
             gap: 8px;
         }
-
         .menu-settings-btn:hover {
             background: #f8f0ed;
         }
-
         .menu-settings-btn svg {
             width: 18px;
             height: 18px;
@@ -980,13 +880,11 @@
             fill: none;
             stroke-width: 2;
         }
-
         .conversation-list {
             display: flex;
             flex-direction: column;
             gap: 4px;
         }
-
         .conversation-item {
             padding: 10px 14px;
             border-radius: 16px;
@@ -997,17 +895,14 @@
             align-items: center;
             border: 1px solid transparent;
         }
-
         .conversation-item:hover {
             background: #f8f0ed;
             border-color: #e8d5ce;
         }
-
         .conversation-item.active {
             background: #f5efec;
             border-color: #dbb5ae;
         }
-
         .conversation-item .conv-title {
             font-size: 13px;
             color: #5d4a46;
@@ -1017,7 +912,6 @@
             white-space: nowrap;
             flex: 1;
         }
-
         .conversation-item .conv-del {
             background: none;
             border: none;
@@ -1028,7 +922,6 @@
             opacity: 0.5;
             transition: 0.2s;
         }
-
         .conversation-item .conv-del:hover {
             opacity: 1;
             color: #c49a92;
@@ -1048,11 +941,9 @@
             align-items: center;
             justify-content: center;
         }
-
         .settings-overlay.active {
             display: flex;
         }
-
         .settings-panel {
             background: #ffffff;
             border: 1px solid #e8d5ce;
@@ -1065,7 +956,6 @@
             box-shadow: 0 16px 40px rgba(200, 150, 140, 0.1);
             position: relative;
         }
-
         .settings-panel::-webkit-scrollbar {
             width: 3px;
         }
@@ -1073,7 +963,6 @@
             background: #e8d5ce;
             border-radius: 10px;
         }
-
         .settings-close {
             position: absolute;
             top: 14px;
@@ -1086,7 +975,6 @@
             font-family: 'Georgia', serif;
             line-height: 1;
         }
-
         .settings-tabs {
             display: flex;
             gap: 20px;
@@ -1095,7 +983,6 @@
             padding-bottom: 10px;
             flex-wrap: wrap;
         }
-
         .settings-tab {
             background: none;
             border: none;
@@ -1108,18 +995,15 @@
             transition: 0.2s;
             white-space: nowrap;
         }
-
         .settings-tab.active {
             color: #c49a92;
             border-bottom: 2px solid #c49a92;
         }
-
         .settings-content {
             display: none;
             flex-direction: column;
             gap: 16px;
         }
-
         .settings-content.active {
             display: flex;
         }
@@ -1129,13 +1013,11 @@
             flex-direction: column;
             gap: 6px;
         }
-
         .setting-item label {
             font-size: 13px;
             color: #b58a82;
             letter-spacing: 1px;
         }
-
         .setting-item input,
         .setting-item select {
             padding: 10px 14px;
@@ -1148,76 +1030,162 @@
             outline: none;
             transition: 0.2s;
         }
-
         .setting-item input:focus,
         .setting-item select:focus {
             border-color: #dbb5ae;
         }
-
         .setting-item input[type="file"] {
             border: none;
             padding: 6px 0;
             background: transparent;
         }
 
-        .setting-item .avatar-preview {
+        .avatar-preview {
             display: flex;
             align-items: center;
             gap: 14px;
             flex-wrap: wrap;
         }
-
-        .setting-item .avatar-preview img {
+        .avatar-preview img {
             width: 44px;
             height: 44px;
             border-radius: 50%;
             object-fit: cover;
-            border: 1.5px solid #e8d5ce;
+            border: 2px solid #e8d5ce;
             background: #ffffff;
         }
 
-        /* 气泡颜色设置 */
-        .bubble-color-row {
+        /* 气泡边框颜色 - 简洁版 */
+        .bubble-color-simple {
             display: flex;
             align-items: center;
-            gap: 16px;
+            gap: 20px;
             flex-wrap: wrap;
         }
-
-        .bubble-color-row .color-label {
-            font-size: 13px;
-            color: #5d4a46;
-            letter-spacing: 1px;
-            min-width: 30px;
-        }
-
-        .color-picker-wrap {
+        .bubble-color-simple .color-group {
             display: flex;
             align-items: center;
             gap: 8px;
         }
-
-        .color-picker-wrap .color-circle {
-            width: 36px;
-            height: 36px;
+        .bubble-color-simple .color-group .color-label {
+            font-size: 13px;
+            color: #5d4a46;
+            letter-spacing: 1px;
+        }
+        .bubble-color-simple .color-group .color-circle-btn {
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
             border: 2px solid #e8d5ce;
             cursor: pointer;
             transition: 0.2s;
             flex-shrink: 0;
         }
-
-        .color-picker-wrap .color-circle:hover {
+        .bubble-color-simple .color-group .color-circle-btn:hover {
             transform: scale(1.05);
-            border-color: #dbb5ae;
+            border-color: #b58a82;
         }
 
-        .color-picker-wrap input[type="color"] {
-            width: 0;
-            height: 0;
-            opacity: 0;
-            position: absolute;
-            pointer-events: none;
+        /* 色图弹窗 */
+        .color-picker-popup {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 50;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(2px);
+            align-items: center;
+            justify-content: center;
+        }
+        .color-picker-popup.active {
+            display: flex;
+        }
+        .color-picker-popup .popup-inner {
+            background: #ffffff;
+            border-radius: 24px;
+            padding: 20px 24px;
+            max-width: 380px;
+            width: 90%;
+            max-height: 70vh;
+            overflow-y: auto;
+            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.15);
+            position: relative;
+        }
+        .color-picker-popup .popup-inner::-webkit-scrollbar {
+            width: 3px;
+        }
+        .color-picker-popup .popup-inner::-webkit-scrollbar-thumb {
+            background: #e8d5ce;
+            border-radius: 10px;
+        }
+        .color-picker-popup .popup-title {
+            font-size: 15px;
+            color: #6b4f4b;
+            letter-spacing: 2px;
+            margin-bottom: 12px;
+            text-align: center;
+        }
+        .color-picker-popup .popup-close {
+            position: sticky;
+            top: 0;
+            float: right;
+            background: none;
+            border: none;
+            font-size: 22px;
+            color: #c49a92;
+            cursor: pointer;
+            line-height: 1;
+            z-index: 1;
+        }
+        .color-picker-popup .palette-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            justify-content: center;
+        }
+        .color-picker-popup .palette-grid .swatch {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 2px solid #e8d5ce;
+            cursor: pointer;
+            transition: 0.15s;
+            flex-shrink: 0;
+        }
+        .color-picker-popup .palette-grid .swatch:hover {
+            transform: scale(1.15);
+            border-color: #b58a82;
+        }
+        .color-picker-popup .palette-grid .swatch.active {
+            border-color: #5d4a46;
+            border-width: 3px;
+            transform: scale(1.1);
+        }
+        .color-picker-popup .custom-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid #f0e6e2;
+        }
+        .color-picker-popup .custom-row label {
+            font-size: 12px;
+            color: #b58a82;
+            letter-spacing: 1px;
+        }
+        .color-picker-popup .custom-row input[type="color"] {
+            width: 36px;
+            height: 36px;
+            border: 1px solid #e8d5ce;
+            border-radius: 50%;
+            padding: 0;
+            cursor: pointer;
+            background: none;
         }
 
         .toggle-switch {
@@ -1226,13 +1194,11 @@
             width: 44px;
             height: 24px;
         }
-
         .toggle-switch input {
             opacity: 0;
             width: 0;
             height: 0;
         }
-
         .toggle-slider {
             position: absolute;
             cursor: pointer;
@@ -1244,7 +1210,6 @@
             transition: 0.3s;
             border-radius: 24px;
         }
-
         .toggle-slider:before {
             position: absolute;
             content: "";
@@ -1256,11 +1221,9 @@
             transition: 0.3s;
             border-radius: 50%;
         }
-
         .toggle-switch input:checked+.toggle-slider {
             background-color: #c49a92;
         }
-
         .toggle-switch input:checked+.toggle-slider:before {
             transform: translateX(20px);
         }
@@ -1271,7 +1234,6 @@
             justify-content: space-between;
             gap: 14px;
         }
-
         .toggle-row label {
             flex: 1;
         }
@@ -1289,19 +1251,16 @@
             letter-spacing: 1px;
             text-align: center;
         }
-
         .btn-import-bg:hover {
             background: #f8f0ed;
         }
 
-        /* API 检查状态 */
         .api-check-row {
             display: flex;
             align-items: center;
             gap: 12px;
             flex-wrap: wrap;
         }
-
         .api-check-btn {
             padding: 8px 20px;
             border: 1px solid #e8d5ce;
@@ -1314,31 +1273,25 @@
             letter-spacing: 1px;
             transition: 0.2s;
         }
-
         .api-check-btn:hover {
             background: #f8f0ed;
         }
-
         .api-check-status {
             font-size: 20px;
             line-height: 1;
         }
-
         .api-check-status .check-success {
             color: #7abf8a;
         }
-
         .api-check-status .check-fail {
             color: #d4877a;
         }
 
-        /* 思考模式单选 */
         .think-mode-group {
             display: flex;
             gap: 12px;
             flex-wrap: wrap;
         }
-
         .think-mode-group label {
             display: flex;
             align-items: center;
@@ -1348,7 +1301,6 @@
             cursor: pointer;
             letter-spacing: 1px;
         }
-
         .think-mode-group input[type="radio"] {
             accent-color: #c49a92;
             width: 16px;
@@ -1356,7 +1308,7 @@
             cursor: pointer;
         }
 
-        /* ===== 响应式 ===== */
+        /* 响应式 */
         @media (max-width: 600px) {
             .index-grid {
                 gap: 24px;
@@ -1409,7 +1361,6 @@
             .menu-panel {
                 width: 240px;
             }
-
             .loading-title {
                 font-size: 28px;
                 letter-spacing: 8px;
@@ -1434,34 +1385,49 @@
                 padding: 6px 0 2px 0;
                 min-height: 28px;
             }
-            .bubble-color-row {
-                gap: 10px;
+            .bubble-color-simple {
+                gap: 12px;
             }
+            .bubble-color-simple .color-group .color-circle-btn {
+                width: 32px;
+                height: 32px;
+            }
+            .color-picker-popup .popup-inner {
+                max-width: 320px;
+                padding: 16px 18px;
+            }
+            .color-picker-popup .palette-grid .swatch {
+                width: 26px;
+                height: 26px;
+            }
+        }
+
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #e8d5ce;
+            border-radius: 10px;
         }
     </style>
 </head>
 <body>
     <div class="app" id="app">
 
-        <!-- ============================================================
-        LOADING 页面
-        ============================================================ -->
+        <!-- LOADING -->
         <div id="page-loading">
             <div class="loading-title">味 味 舍</div>
-            <div class="loading-version">✦ 内测版 · v1.1.0 ✦</div>
+            <div class="loading-version">✦ 内测版 · v1.3.0 ✦</div>
             <div class="loading-divider"></div>
-
             <div class="loading-welcome">
                 欢迎来到本站<br />
                 <small>站内所有内容均为原创自制，所有网页文件均为纯静态页面，<br />无后台、无弹窗广告、不会收集你的任何个人信息。</small>
             </div>
-
-            <div class="loading-notice">
-                若页面存在 bug、排版错误，欢迎在群内随时反馈 ~
-            </div>
-
+            <div class="loading-notice">若页面存在 bug、排版错误，欢迎在群内随时反馈 ~</div>
             <div class="loader"></div>
-
             <div class="loading-crew">
                 <span class="label">作者：</span><span class="highlight">ww</span><br />
                 <span class="label">抖音号：</span><span class="highlight">60998104595</span><br />
@@ -1470,17 +1436,11 @@
                 <span class="label">宇宙最痞之人：</span><span class="highlight">姜笙</span><br />
                 <span class="label">宇宙最恶俗之人：</span><span class="highlight">🐟· :.·</span>
             </div>
-
-            <div class="loading-footer">
-                <span class="copy">✦ 一切版权均归作者所有 ✦</span>
-            </div>
-
+            <div class="loading-footer"><span class="copy">✦ 一切版权均归作者所有 ✦</span></div>
             <button class="enter-btn" onclick="enterApp()">✦ 进入味味舍 ✦</button>
         </div>
 
-        <!-- ============================================================
-        首页
-        ============================================================ -->
+        <!-- 首页 -->
         <div id="page-index">
             <div class="index-header">
                 <h1>味 味 舍</h1>
@@ -1489,30 +1449,22 @@
             <div class="index-divider"></div>
             <div class="index-grid">
                 <div class="index-item" onclick="openSubPage('questionnaire')">
-                    <div class="index-icon">
-                        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="9" x2="15" y2="9"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="12" y2="17"/></svg>
-                    </div>
+                    <div class="index-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="9" x2="15" y2="9"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="12" y2="17"/></svg></div>
                     <div class="index-label">问 卷</div>
                     <div class="index-desc">私密清单</div>
                 </div>
                 <div class="index-item" onclick="openSubPage('setting')">
-                    <div class="index-icon">
-                        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09A1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-                    </div>
+                    <div class="index-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09A1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l-.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></div>
                     <div class="index-label">设 定</div>
                     <div class="index-desc">角色 · 世界观</div>
                 </div>
                 <div class="index-item" onclick="openSubPage('games')">
-                    <div class="index-icon">
-                        <svg viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="8" cy="12" r="1.5"/><circle cx="16" cy="12" r="1.5"/><path d="M10 12h4"/></svg>
-                    </div>
+                    <div class="index-icon"><svg viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="8" cy="12" r="1.5"/><circle cx="16" cy="12" r="1.5"/><path d="M10 12h4"/></svg></div>
                     <div class="index-label">小 游 戏</div>
                     <div class="index-desc">敬请期待✦</div>
                 </div>
                 <div class="index-item" onclick="openChat()">
-                    <div class="index-icon">
-                        <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-                    </div>
+                    <div class="index-icon"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
                     <div class="index-label">AI 聊天</div>
                     <div class="index-desc">与deepseek对话 ✦</div>
                 </div>
@@ -1520,9 +1472,7 @@
             <div class="index-footer">✦ 只属于你的小天地 ✦</div>
         </div>
 
-        <!-- ============================================================
-        子页面：问卷
-        ============================================================ -->
+        <!-- 问卷 -->
         <div class="sub-page" id="sub-page-questionnaire">
             <div class="topbar">
                 <div class="topbar-left">
@@ -1541,9 +1491,7 @@
             </div>
         </div>
 
-        <!-- ============================================================
-        子页面：设定
-        ============================================================ -->
+        <!-- 设定 -->
         <div class="sub-page" id="sub-page-setting">
             <div class="topbar">
                 <div class="topbar-left">
@@ -1556,13 +1504,11 @@
                 <a class="sub-list-item" href="setting-侯府攻略.html" style="text-decoration:none;color:inherit;display:flex;align-items:center;justify-content:space-between;width:100%;"><span class="item-name">侯府攻略设定</span><span class="item-arrow">→</span></a>
                 <a class="sub-list-item" href="setting-双主共感.html" style="text-decoration:none;color:inherit;display:flex;align-items:center;justify-content:space-between;width:100%;"><span class="item-name">双主共感设定</span><span class="item-arrow">→</span></a>
                 <a class="sub-list-item" href="setting-网黄男主播.html" style="text-decoration:none;color:inherit;display:flex;align-items:center;justify-content:space-between;width:100%;"><span class="item-name">网黄男主播设定</span><span class="item-arrow">→</span></a>
-                <a class="sub-list-item" href="setting-沈砚.html" style="text-decoration:none;color:inherit;display:flex;align-items:center;justify-content:space-between;width:100%;"><span class="item-name">妇科医生设定</span><span class="item-arrow">→</span></a>
+                <a class="sub-list-item" href="setting-沈砚.html" style="text-decoration:none;color:inherit;display:flex;align-items:center;justify-content:space-between;width:100%;"><span class="item-name">医生设定</span><span class="item-arrow">→</span></a>
             </div>
         </div>
 
-        <!-- ============================================================
-        子页面：小游戏
-        ============================================================ -->
+        <!-- 小游戏 -->
         <div class="sub-page" id="sub-page-games">
             <div class="topbar">
                 <div class="topbar-left">
@@ -1576,9 +1522,7 @@
             </div>
         </div>
 
-        <!-- ============================================================
-        AI 聊天室
-        ============================================================ -->
+        <!-- AI 聊天室 -->
         <div id="page-chat">
             <div class="topbar">
                 <div class="topbar-left">
@@ -1592,7 +1536,7 @@
                 </div>
             </div>
 
-            <!-- 模式选择器（仅新对话时显示） -->
+            <!-- 模式选择器 -->
             <div class="mode-selector" id="modeSelector">
                 <span class="active" data-mode="normal" onclick="selectMode('normal')">普通模式</span>
                 <span class="mode-divider">|</span>
@@ -1610,12 +1554,10 @@
 
             <div class="msg-actions" id="msgActions"></div>
 
+            <!-- 菜单 -->
             <div class="menu-overlay" id="menuOverlay">
                 <div class="menu-panel">
-                    <div class="menu-header">
-                        <h3>菜 单</h3>
-                        <button class="menu-close" onclick="toggleMenu()">×</button>
-                    </div>
+                    <div class="menu-header"><h3>菜 单</h3><button class="menu-close" onclick="toggleMenu()">×</button></div>
                     <button class="menu-new-btn" onclick="newConversation()">＋ 新建对话</button>
                     <button class="menu-settings-btn" onclick="openSettingsFromMenu()">
                         <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09A1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l-.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
@@ -1625,6 +1567,7 @@
                 </div>
             </div>
 
+            <!-- 设置 -->
             <div class="settings-overlay" id="settingsOverlay">
                 <div class="settings-panel">
                     <button class="settings-close" onclick="toggleSettings()">×</button>
@@ -1692,17 +1635,15 @@
                             </div>
                         </div>
                         <div class="setting-item">
-                            <label>气泡设置</label>
-                            <div class="bubble-color-row">
-                                <span class="color-label">用户：</span>
-                                <div class="color-picker-wrap">
-                                    <div class="color-circle" id="userBubbleColorPreview" style="background-color:#f5efec;" onclick="document.getElementById('userBubbleColorInput').click();"></div>
-                                    <input type="color" id="userBubbleColorInput" value="#f5efec" onchange="setBubbleColor('user', this.value)" />
+                            <label>气泡边框颜色</label>
+                            <div class="bubble-color-simple">
+                                <div class="color-group">
+                                    <span class="color-label">用户</span>
+                                    <div class="color-circle-btn" id="userColorBtn" style="background-color:#e8d5ce;" onclick="openColorPicker('user')"></div>
                                 </div>
-                                <span class="color-label" style="margin-left:8px;">AI：</span>
-                                <div class="color-picker-wrap">
-                                    <div class="color-circle" id="aiBubbleColorPreview" style="background-color:#ffffff;" onclick="document.getElementById('aiBubbleColorInput').click();"></div>
-                                    <input type="color" id="aiBubbleColorInput" value="#ffffff" onchange="setBubbleColor('ai', this.value)" />
+                                <div class="color-group">
+                                    <span class="color-label">AI</span>
+                                    <div class="color-circle-btn" id="aiColorBtn" style="background-color:#e8d5ce;" onclick="openColorPicker('ai')"></div>
                                 </div>
                             </div>
                         </div>
@@ -1751,9 +1692,22 @@
         </div>
     </div>
 
+    <!-- 色图弹窗 -->
+    <div class="color-picker-popup" id="colorPickerPopup">
+        <div class="popup-inner">
+            <button class="popup-close" onclick="closeColorPicker()">×</button>
+            <div class="popup-title" id="pickerTitle">选择颜色</div>
+            <div class="palette-grid" id="paletteGrid"></div>
+            <div class="custom-row">
+                <label>自定义</label>
+                <input type="color" id="customColorInput" onchange="onCustomColorChange()" />
+            </div>
+        </div>
+    </div>
+
     <script>
         // ============================================================
-        //  加载页 → 进入主应用
+        //  加载页
         // ============================================================
         function enterApp() {
             document.getElementById('page-loading').style.display = 'none';
@@ -1791,17 +1745,27 @@
 
         function getBubbleColor(role) {
             const key = 'ww_bubble_color_' + role;
-            const defaults = { user: '#f5efec', ai: '#ffffff' };
-            return localStorage.getItem(key) || defaults[role] || '#ffffff';
+            const defaults = { user: '#e8d5ce', ai: '#e8d5ce' };
+            return localStorage.getItem(key) || defaults[role] || '#e8d5ce';
         }
 
         function setBubbleColor(role, color) {
             localStorage.setItem('ww_bubble_color_' + role, color);
-            const preview = document.getElementById(role + 'BubbleColorPreview');
-            if (preview) preview.style.backgroundColor = color;
-            // 重新渲染当前对话
+            // 更新按钮颜色
+            const btn = document.getElementById(role + 'ColorBtn');
+            if (btn) btn.style.backgroundColor = color;
+            // 重新渲染
             const conv = getCurrentConv();
             if (conv) renderMessages(conv.messages);
+            // 更新头像边框
+            updateAvatarBorders();
+        }
+
+        function updateAvatarBorders() {
+            const userColor = getBubbleColor('user');
+            const aiColor = getBubbleColor('ai');
+            document.querySelectorAll('.msg-wrapper.user .msg-avatar').forEach(el => el.style.borderColor = userColor);
+            document.querySelectorAll('.msg-wrapper.ai .msg-avatar').forEach(el => el.style.borderColor = aiColor);
         }
 
         function getThinkMode() {
@@ -1813,6 +1777,67 @@
             const el = document.querySelector('input[name="thinkMode"][value="' + val + '"]');
             if (el) el.checked = true;
         }
+
+        // ---- 色图弹窗 ----
+        let pickerTargetRole = 'user';
+
+        function generate224Colors() {
+            const colors = [];
+            const saturations = [40, 60, 80];
+            const lightness = [50, 65, 80];
+            for (let h = 0; h < 360; h += 15) {
+                for (let s of saturations) {
+                    for (let l of lightness) {
+                        colors.push('hsl(' + h + ', ' + s + '%, ' + l + '%)');
+                    }
+                }
+            }
+            const neutrals = ['#e8d5ce', '#dcc5bc', '#c49a92', '#b58a82', '#a07a72', '#8a6a62', '#f5efec', '#fcfaf9'];
+            neutrals.forEach(c => colors.push(c));
+            return colors;
+        }
+
+        function openColorPicker(role) {
+            pickerTargetRole = role;
+            const popup = document.getElementById('colorPickerPopup');
+            const title = document.getElementById('pickerTitle');
+            title.textContent = role === 'user' ? '选择用户气泡颜色' : '选择AI气泡颜色';
+            const grid = document.getElementById('paletteGrid');
+            grid.innerHTML = '';
+            const colors = generate224Colors();
+            const current = getBubbleColor(role);
+            colors.forEach(c => {
+                const swatch = document.createElement('span');
+                swatch.className = 'swatch' + (c === current ? ' active' : '');
+                swatch.style.backgroundColor = c;
+                swatch.dataset.color = c;
+                swatch.onclick = function() {
+                    setBubbleColor(role, c);
+                    closeColorPicker();
+                };
+                grid.appendChild(swatch);
+            });
+            // 设置自定义颜色
+            document.getElementById('customColorInput').value = current;
+            popup.classList.add('active');
+        }
+
+        function closeColorPicker() {
+            document.getElementById('colorPickerPopup').classList.remove('active');
+        }
+
+        function onCustomColorChange() {
+            const input = document.getElementById('customColorInput');
+            if (input) {
+                setBubbleColor(pickerTargetRole, input.value);
+                closeColorPicker();
+            }
+        }
+
+        // 点击弹窗外部关闭
+        document.getElementById('colorPickerPopup').addEventListener('click', function(e) {
+            if (e.target === this) closeColorPicker();
+        });
 
         // ---- 时区 ----
         const LANG_TIMEZONE = {
@@ -1858,12 +1883,13 @@
         // ---- 对话管理 ----
         let conversations = [];
         let currentId = null;
-        let currentMode = 'normal'; // 'normal' | 'long'
-        let isRpMode = false; // 角色扮演模式（用户触发）
+        let currentMode = 'normal';
+        let isRpMode = false;
+        let rpFirstMessage = true; // 标记是否是角色扮演的第一条消息
 
         function loadConversations() {
             try {
-                const raw = localStorage.getItem('ww_conversations_v7');
+                const raw = localStorage.getItem('ww_conversations_v9');
                 if (raw) {
                     conversations = JSON.parse(raw);
                 } else {
@@ -1884,10 +1910,15 @@
             saveConversations();
             renderConversationList();
             loadCurrentConversation();
+            // 恢复气泡颜色预览
+            const userColor = getBubbleColor('user');
+            const aiColor = getBubbleColor('ai');
+            document.getElementById('userColorBtn').style.backgroundColor = userColor;
+            document.getElementById('aiColorBtn').style.backgroundColor = aiColor;
         }
 
         function saveConversations() {
-            try { localStorage.setItem('ww_conversations_v7', JSON.stringify(conversations)); } catch (e) {}
+            try { localStorage.setItem('ww_conversations_v9', JSON.stringify(conversations)); } catch (e) {}
         }
 
         function getCurrentConv() {
@@ -1914,6 +1945,7 @@
             loadCurrentConversation();
             renderConversationList();
             toggleMenu();
+            rpFirstMessage = true;
         }
 
         function newConversation() {
@@ -1934,12 +1966,13 @@
             conversations.push(conv);
             saveConversations();
             switchConversation(conv.id);
-            // 重置模式选择器高亮
             document.querySelectorAll('.mode-selector span').forEach(el => el.classList.remove('active'));
             const target = document.querySelector('.mode-selector span[data-mode="' + mode + '"]');
             if (target) target.classList.add('active');
             currentMode = mode;
             isRpMode = false;
+            rpFirstMessage = true;
+            updateModeUI();
         }
 
         function deleteConversation(id) {
@@ -1964,27 +1997,18 @@
             document.getElementById('toppValue').textContent = conv.topP || 0.9;
             document.getElementById('showMsgTokenToggle').checked = getMsgTokenDisplay();
 
-            // 恢复模式
             const mode = conv.mode || 'normal';
             currentMode = mode;
             document.querySelectorAll('.mode-selector span').forEach(el => el.classList.remove('active'));
             const target = document.querySelector('.mode-selector span[data-mode="' + mode + '"]');
             if (target) target.classList.add('active');
 
-            // 恢复思考模式
             if (conv.thinkMode) setThinkMode(conv.thinkMode);
 
-            // 恢复气泡颜色预览
-            const userColor = getBubbleColor('user');
-            const aiColor = getBubbleColor('ai');
-            document.getElementById('userBubbleColorPreview').style.backgroundColor = userColor;
-            document.getElementById('aiBubbleColorPreview').style.backgroundColor = aiColor;
-            document.getElementById('userBubbleColorInput').value = userColor;
-            document.getElementById('aiBubbleColorInput').value = aiColor;
-
-            // 检查是否有消息，若无则显示欢迎语
             renderMessages(conv.messages || []);
-            isRpMode = false; // 重置角色扮演标记
+            isRpMode = false;
+            rpFirstMessage = true;
+            updateModeUI();
         }
 
         function saveCurrentConversationState() {
@@ -2004,7 +2028,6 @@
         function selectMode(mode) {
             const conv = getCurrentConv();
             if (!conv) return;
-            // 如果对话已有消息，禁止切换
             if (conv.messages && conv.messages.length > 0) {
                 alert('当前对话已有消息，无法切换模式。请新建对话。');
                 return;
@@ -2015,28 +2038,44 @@
             if (target) target.classList.add('active');
             conv.mode = mode;
             saveConversations();
+            updateModeUI();
         }
 
-        // ---- 消息渲染（含角色扮演识别） ----
+        function updateModeUI() {
+            const selector = document.getElementById('modeSelector');
+            const conv = getCurrentConv();
+            const hasMessages = conv && conv.messages && conv.messages.length > 0;
+            if (hasMessages) {
+                selector.classList.add('hidden');
+            } else {
+                selector.classList.remove('hidden');
+            }
+        }
+
+        // ---- 消息渲染 ----
         function renderMessages(messages) {
             const area = document.getElementById('chatArea');
             area.innerHTML = '';
             const conv = getCurrentConv();
             const lang = conv?.lang || 'zh';
             const showToken = getMsgTokenDisplay();
+            const userColor = getBubbleColor('user');
+            const aiColor = getBubbleColor('ai');
 
             if (!messages || messages.length === 0) {
                 area.innerHTML =
-                    `<div class="msg-wrapper ai"><div class="msg-row"><img class="msg-avatar" src="${getAiAvatarSrc()}" alt="AI" /><div class="msg-bubble" style="background-color:${getBubbleColor('ai')};">你好，我是 DeepSeek，有什么可以帮你的？</div></div></div>`;
+                    `<div class="msg-wrapper ai"><div class="msg-row"><img class="msg-avatar" src="${getAiAvatarSrc()}" style="border-color:${aiColor};" /><div class="msg-bubble" style="border-color:${aiColor};">你好，我是 DeepSeek，有什么可以帮你的？</div></div></div>`;
+                updateModeUI();
                 return;
             }
 
             messages.forEach((msg, idx) => {
                 const wrapper = document.createElement('div');
-                wrapper.className = `msg-wrapper ${msg.role}`;
+                wrapper.className = 'msg-wrapper ' + msg.role;
                 wrapper.setAttribute('data-msg-index', idx);
 
                 const avatarSrc = msg.role === 'ai' ? getAiAvatarSrc() : getUserAvatarSrc();
+                const borderColor = msg.role === 'user' ? userColor : aiColor;
 
                 const row = document.createElement('div');
                 row.className = 'msg-row';
@@ -2044,69 +2083,71 @@
                 const avatarImg = document.createElement('img');
                 avatarImg.className = 'msg-avatar';
                 avatarImg.src = avatarSrc;
-                avatarImg.alt = msg.role;
+                avatarImg.style.borderColor = borderColor;
 
                 const bubble = document.createElement('div');
                 bubble.className = 'msg-bubble';
-                const bubbleColor = msg.role === 'user' ? getBubbleColor('user') : getBubbleColor('ai');
-                bubble.style.backgroundColor = bubbleColor;
+                bubble.style.borderColor = borderColor;
 
-                // 角色扮演渲染（仅AI消息，且是RP模式）
                 let displayContent = msg.content || '';
-                if (msg.role === 'ai' && isRpMode && displayContent && displayContent !== '…' && displayContent !==
-                    '⋯思考中 …') {
-                    // 检测是否有引号内容
-                    const parts = splitRpContent(displayContent);
-                    if (parts.hasDialogue) {
-                        bubble.innerHTML = '';
-                        if (parts.desc) {
-                            const descSpan = document.createElement('span');
-                            descSpan.className = 'rp-desc';
-                            descSpan.textContent = parts.desc;
-                            bubble.appendChild(descSpan);
-                        }
-                        if (parts.desc && parts.dialogue) {
-                            const div = document.createElement('span');
-                            div.className = 'rp-divider';
-                            div.textContent = '—';
-                            bubble.appendChild(div);
-                        }
-                        if (parts.dialogue) {
-                            const diaSpan = document.createElement('span');
-                            diaSpan.className = 'rp-dialogue';
-                            diaSpan.textContent = parts.dialogue;
-                            bubble.appendChild(diaSpan);
-                        }
-                        // 添加更多按钮
-                        const moreBtn = document.createElement('button');
-                        moreBtn.className = 'msg-more-btn';
-                        moreBtn.textContent = '⋯';
-                        moreBtn.addEventListener('click', function(e) {
-                            e.stopPropagation();
-                            showMsgActions(e, idx, msg.role);
-                        });
-                        bubble.appendChild(moreBtn);
 
-                        row.appendChild(avatarImg);
-                        row.appendChild(bubble);
-                        wrapper.appendChild(row);
+                // ================================================================
+                //  【核心重写】智能拆分描述与对话（上小下大，上浅下深，不露标签）
+                // ================================================================
+                if (msg.role === 'ai' && displayContent && displayContent !== '…' && displayContent !== '思考中 …') {
+                    
+                    // 1. 把 AI 回复的文本按换行符切割成数组
+                    let lines = displayContent.split('\n');
+                    let descLines = [];
+                    let dialogueLines = [];
 
-                        // footer
-                        const footer = buildFooter(msg, idx, lang, showToken);
-                        wrapper.appendChild(footer);
-                        area.appendChild(wrapper);
-                        return;
+                    // 2. 过滤空行，并判断哪些是描述行（带【】的），哪些是对话行
+                    lines.forEach(line => {
+                        let trimmed = line.trim();
+                        if (!trimmed) return; // 跳过空行
+
+                        // 只要是以 【 开头的，都算描述（场景/动作/旁白）
+                        if (trimmed.startsWith('【')) {
+                            // 把 【场景】 这种标签直接替换掉，只留内容
+                            let cleanDesc = trimmed.replace(/^【[^】]*】\s*/, '');
+                            if (cleanDesc) descLines.push(cleanDesc);
+                        } else {
+                            // 只要不是以 【 开头的，就视为角色说的话（对话）
+                            if (trimmed) dialogueLines.push(trimmed);
+                        }
+                    });
+
+                    // 3. 组装最终显示的 HTML 结构
+                    let htmlContent = '';
+                    if (descLines.length > 0 || dialogueLines.length > 0) {
+                        htmlContent += `<div class="rp-structure">`;
+                        // 如果有描述，小字、浅色、放上面
+                        if (descLines.length > 0) {
+                            htmlContent += `<div class="rp-desc">${descLines.join('<br />')}</div>`;
+                        }
+                        // 如果有对话，大字、深色、放下面
+                        if (dialogueLines.length > 0) {
+                            htmlContent += `<div class="rp-dialogue">${dialogueLines.join('<br />')}</div>`;
+                        }
+                        htmlContent += `</div>`;
+                        bubble.innerHTML = htmlContent;
+                    } else {
+                        // 兜底：如果什么标签都没识别到，就按普通文本显示
+                        bubble.textContent = displayContent;
                     }
+
+                } else {
+                    // 普通渲染（用户发的消息，或者AI还在思考中）
+                    let contentText = displayContent;
+                    if (msg.role === 'ai' && displayContent === '…') {
+                        contentText = '思考中 …';
+                    }
+                    bubble.textContent = contentText;
                 }
 
-                // 普通渲染
-                let contentText = displayContent;
-                if (msg.role === 'ai' && displayContent === '…') {
-                    contentText = '思考中 …';
-                }
-                bubble.textContent = contentText;
-
-                // 更多按钮
+                // ================================================================
+                //  底部加个“…”按钮
+                // ================================================================
                 const moreBtn = document.createElement('button');
                 moreBtn.className = 'msg-more-btn';
                 moreBtn.textContent = '⋯';
@@ -2126,31 +2167,8 @@
             });
 
             area.scrollTop = area.scrollHeight;
-        }
-
-        // ---- 角色扮演内容拆分 ----
-        function splitRpContent(text) {
-            // 检测引号：双引号或单引号
-            const doubleQuoteMatch = text.match(/^([^"“]*)(["“])([^"“]*)(["“])(.*)$/s);
-            if (doubleQuoteMatch) {
-                const before = doubleQuoteMatch[1].trim();
-                const dialogue = doubleQuoteMatch[3].trim();
-                const after = doubleQuoteMatch[5].trim();
-                let desc = before;
-                if (after) desc += (desc ? ' ' : '') + after;
-                return { desc: desc || null, dialogue: dialogue || null, hasDialogue: !!dialogue };
-            }
-            const singleQuoteMatch = text.match(/^([^'‘]*)(['‘])([^'‘]*)(['‘])(.*)$/s);
-            if (singleQuoteMatch) {
-                const before = singleQuoteMatch[1].trim();
-                const dialogue = singleQuoteMatch[3].trim();
-                const after = singleQuoteMatch[5].trim();
-                let desc = before;
-                if (after) desc += (desc ? ' ' : '') + after;
-                return { desc: desc || null, dialogue: dialogue || null, hasDialogue: !!dialogue };
-            }
-            // 无引号，全部当描述
-            return { desc: text.trim() || null, dialogue: null, hasDialogue: false };
+            updateModeUI();
+            updateAvatarBorders();
         }
 
         function buildFooter(msg, idx, lang, showToken) {
@@ -2200,7 +2218,6 @@
         function buildNavWrap(msgIndex, curIdx, total, role) {
             const navWrap = document.createElement('span');
             navWrap.className = 'nav-wrap';
-
             const btnPrev = document.createElement('button');
             btnPrev.className = 'nav-btn';
             btnPrev.textContent = '<';
@@ -2209,12 +2226,10 @@
                 switchHistoryVersion(msgIndex, -1, role);
             });
             navWrap.appendChild(btnPrev);
-
             const indexSpan = document.createElement('span');
             indexSpan.className = 'nav-index';
             indexSpan.textContent = (curIdx + 1) + '/' + total;
             navWrap.appendChild(indexSpan);
-
             const btnNext = document.createElement('button');
             btnNext.className = 'nav-btn';
             btnNext.textContent = '>';
@@ -2223,7 +2238,6 @@
                 switchHistoryVersion(msgIndex, 1, role);
             });
             navWrap.appendChild(btnNext);
-
             return navWrap;
         }
 
@@ -2234,11 +2248,9 @@
             if (msg.role !== role) return;
             const history = msg.regenerateHistory || [];
             if (history.length <= 1) return;
-
             let curIdx = msg.currentHistoryIndex !== undefined ? msg.currentHistoryIndex : 0;
             const newIdx = curIdx + direction;
             if (newIdx < 0 || newIdx >= history.length) return;
-
             msg.currentHistoryIndex = newIdx;
             msg.content = history[newIdx].content;
             if (history[newIdx].timestamp) msg.timestamp = history[newIdx].timestamp;
@@ -2247,21 +2259,14 @@
         }
 
         // ---- 消息操作浮层 ----
-        let actionsTargetIndex = -1;
-
         function showMsgActions(event, msgIndex, role) {
             const actions = document.getElementById('msgActions');
-            actionsTargetIndex = msgIndex;
-
             actions.innerHTML = '';
 
-            // 复制（对所有消息有效）
             const copyBtn = document.createElement('button');
-            copyBtn.textContent = '复制';
-            copyBtn.onclick = function() {
-                hideMsgActions();
-                copyMessage(msgIndex);
-            };
+            copyBtn.textContent = ' 复制';
+            copyBtn.onclick = function() { hideMsgActions();
+                copyMessage(msgIndex); };
             actions.appendChild(copyBtn);
 
             if (role === 'user') {
@@ -2270,7 +2275,6 @@
                 editBtn.onclick = function() { hideMsgActions();
                     startEditMessage(msgIndex); };
                 actions.appendChild(editBtn);
-
                 const delBtn = document.createElement('button');
                 delBtn.textContent = '✕ 删除';
                 delBtn.className = 'delete-action';
@@ -2283,7 +2287,6 @@
                 regenBtn.onclick = function() { hideMsgActions();
                     regenerateMessage(msgIndex); };
                 actions.appendChild(regenBtn);
-
                 const delBtn = document.createElement('button');
                 delBtn.textContent = '✕ 删除';
                 delBtn.className = 'delete-action';
@@ -2311,7 +2314,6 @@
 
         function hideMsgActions() {
             document.getElementById('msgActions').classList.remove('active');
-            actionsTargetIndex = -1;
         }
 
         document.addEventListener('click', function(e) {
@@ -2321,7 +2323,7 @@
             }
         });
 
-        // ---- 复制消息 ----
+        // ---- 复制 ----
         function copyMessage(msgIndex) {
             const conv = getCurrentConv();
             if (!conv || !conv.messages[msgIndex]) return;
@@ -2330,14 +2332,11 @@
             if (!text) return;
             if (navigator.clipboard && navigator.clipboard.writeText) {
                 navigator.clipboard.writeText(text).then(() => {
-                    // 简单反馈
                     const actions = document.getElementById('msgActions');
                     const origHtml = actions.innerHTML;
                     actions.innerHTML = '<button style="color:#7abf8a;">✓ 已复制</button>';
                     setTimeout(() => { actions.innerHTML = origHtml; }, 800);
-                }).catch(() => {
-                    fallbackCopy(text);
-                });
+                }).catch(() => { fallbackCopy(text); });
             } else {
                 fallbackCopy(text);
             }
@@ -2406,7 +2405,6 @@
             if (oldContent && !msg.regenerateHistory.some(h => h.content === oldContent)) {
                 msg.regenerateHistory.push({ content: oldContent, timestamp: msg.timestamp || Date.now() });
             }
-
             msg.content = newContent;
             msg.timestamp = Date.now();
             if (!msg.regenerateHistory.some(h => h.content === newContent)) {
@@ -2418,7 +2416,6 @@
             saveConversations();
             renderMessages(conv.messages);
 
-            // 自动触发AI回复
             if (conv.messages.length > 0 && conv.messages[conv.messages.length - 1].role === 'user') {
                 triggerAiResponse();
             }
@@ -2464,7 +2461,7 @@
             triggerAiResponse(msgIndex);
         }
 
-        // ---- 检测角色扮演触发 ----
+        // ---- 检测角色扮演 ----
         function checkRpTrigger(text) {
             const keywords = ['角色扮演', '扮演', 'rp', 'RP', '来演', '你演'];
             return keywords.some(kw => text.includes(kw));
@@ -2489,12 +2486,11 @@
                 }
                 existing.content = '…';
             } else {
-                // 检查用户最后一条消息是否触发了角色扮演
                 const lastUserMsg = conv.messages.filter(m => m.role === 'user').pop();
                 if (lastUserMsg && checkRpTrigger(lastUserMsg.content)) {
                     isRpMode = true;
+                    rpFirstMessage = true;
                 }
-
                 const aiMsg = {
                     role: 'ai',
                     content: '…',
@@ -2512,23 +2508,40 @@
             const modelId = conv.model || 'deepseek-chat';
             const temperature = conv.temperature || 0.7;
             const topP = conv.topP || 0.9;
-            const lang = conv.lang || 'zh';
             const thinkMode = conv.thinkMode || 'medium';
 
-            // 构建思考模式提示
             let thinkPrompt = '';
-            if (thinkMode === 'low') thinkPrompt = '请简洁直接地回答，不需要展开推理。';
-            else if (thinkMode === 'high') thinkPrompt = '请深入思考，详细推理后再给出回答。';
-            else thinkPrompt = '请保持适中的思考深度，清晰有条理地回答。';
+            if (thinkMode === 'low') thinkPrompt = '简洁直接回答，不展开推理。';
+            else if (thinkMode === 'high') thinkPrompt = '深入思考，详细推理后再回答。';
+            else thinkPrompt = '保持适中的思考深度，清晰有条理地回答。';
 
-            // 系统提示：角色扮演模式下添加格式说明（但不改变AI底层逻辑）
+            // ====== 彻底重写的结构化提示词 ======
             let sysPrompt = '你是 DeepSeek，一个由深度求索公司开发的 AI 助手。' + thinkPrompt;
             if (isRpMode) {
-                sysPrompt +=
-                    ' 用户正在与你进行角色扮演。你的回复中可能包含描述性文字和对话内容。请自然书写，不需要额外标记。前端会自动识别对话内容。';
+                sysPrompt += `
+                    你正在与用户进行角色扮演。
+                    请严格按以下两行格式生成回复，**不要有多余的废话**，**绝对不要使用引号**：
+
+                    第一行：写【场景/动作/神态/旁白】。用【】开头表示属性，后面接一句话。描述文字使用第三人称。如果有多句话，请用换行分开。
+                    第二行：直接写角色说的原话（对话）。不需要任何引导词，也不要用引号括起来。
+
+                    示例格式（请模仿格式，严禁模仿内容）：
+                    【场景】夜色深沉，房间内只亮着一盏台灯。
+                    【动作】他慢步走到桌前，轻轻叩了叩桌面。
+                    你到底想说什么？
+
+                    注意：描述文字必须放前面，对话放后面。
+                `;
+                if (rpFirstMessage) {
+                    rpFirstMessage = false;
+                }
             }
 
-            // 构建历史消息
+            // 长窗模式：限制回复为1-2句
+            if (currentMode === 'long') {
+                sysPrompt += ' 当前为长窗模式，每条回复请限制在1-2句话内，不要重复之前说过的内容或相近的表述。';
+            }
+
             const history = conv.messages.filter((m, i) => {
                 if (i === aiIndex) return false;
                 if (m.role === 'ai' && m.content === '…') return false;
@@ -2541,16 +2554,10 @@
             try {
                 const resp = await fetch('https://api.deepseek.com/v1/chat/completions', {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': 'Bearer ' + apiKey
-                    },
+                    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + apiKey },
                     body: JSON.stringify({
                         model: modelId,
-                        messages: [
-                            { role: 'system', content: sysPrompt },
-                            ...history
-                        ],
+                        messages: [{ role: 'system', content: sysPrompt }, ...history],
                         temperature: temperature,
                         top_p: topP,
                         max_tokens: 4096
@@ -2593,19 +2600,6 @@
                 saveConversations();
                 renderMessages(conv.messages);
 
-                // 长窗模式：AI主动发起
-                if (currentMode === 'long' && !targetMsgIndex) {
-                    // 检查是否需要AI主动说话（等待片刻后触发）
-                    // 这里用标志避免无限循环
-                    if (!conv._longActive) {
-                        conv._longActive = true;
-                        // 延迟触发，让用户看到当前回复
-                        setTimeout(() => {
-                            triggerLongMode(conv);
-                        }, 1500);
-                    }
-                }
-
             } catch (err) {
                 const aiMsgObj = conv.messages[aiIndex];
                 if (aiMsgObj) {
@@ -2618,87 +2612,6 @@
                     renderMessages(conv.messages);
                 }
             }
-        }
-
-        // ---- 长窗模式：AI主动发起 ----
-        function triggerLongMode(conv) {
-            // 检查是否还在长窗模式
-            if (currentMode !== 'long') return;
-            if (conv.id !== currentId) return;
-            // 避免重复触发
-            if (conv._longTriggered) return;
-            conv._longTriggered = true;
-
-            // 检查最后一条消息是否是AI的
-            const lastMsg = conv.messages[conv.messages.length - 1];
-            if (!lastMsg || lastMsg.role !== 'ai') {
-                conv._longTriggered = false;
-                return;
-            }
-
-            // 构造一个自然的承接话题
-            const lastContent = lastMsg.content || '';
-            // 生成一个简短的承接提示
-            const followUpPrompt = '继续对话，主动发起一个新话题或提问，承接上一轮内容。';
-            // 但这里不直接调API，而是用系统提示让AI主动发一条
-            // 简化方式：发送一条用户消息的模拟？不，我们直接调API让AI主动发言
-            // 但是API需要用户消息作为触发，所以我们构造一个系统提示
-            const apiKey = document.getElementById('apiKeyInput').value.trim();
-            if (!apiKey) { conv._longTriggered = false; return; }
-
-            // 获取当前对话历史
-            const history = conv.messages.map(m => ({
-                role: m.role === 'ai' ? 'assistant' : 'user',
-                content: m.content
-            }));
-
-            const sysPrompt = '你是 DeepSeek。当前是长窗模式，请主动发起一个新话题或提问，自然承接上一轮对话内容。只输出1-2句话。';
-
-            fetch('https://api.deepseek.com/v1/chat/completions', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + apiKey
-                },
-                body: JSON.stringify({
-                    model: conv.model || 'deepseek-chat',
-                    messages: [
-                        { role: 'system', content: sysPrompt },
-                        ...history
-                    ],
-                    temperature: 0.8,
-                    top_p: 0.9,
-                    max_tokens: 256
-                })
-            }).then(resp => {
-                if (!resp.ok) throw new Error('API error');
-                return resp.json();
-            }).then(data => {
-                const reply = data.choices[0].message.content;
-                if (!reply || reply.trim().length === 0) { conv._longTriggered = false; return; }
-
-                const aiMsg = {
-                    role: 'ai',
-                    content: reply,
-                    regenerateHistory: [{ content: reply, timestamp: Date.now(), tokens: estimateTokens(
-                            reply) }],
-                    currentHistoryIndex: 0,
-                    timestamp: Date.now()
-                };
-                conv.messages.push(aiMsg);
-                saveConversations();
-                renderMessages(conv.messages);
-                conv._longTriggered = false;
-                // 可继续循环，但控制频率
-                if (currentMode === 'long' && conv.id === currentId) {
-                    setTimeout(() => {
-                        conv._longTriggered = false;
-                        triggerLongMode(conv);
-                    }, 8000);
-                }
-            }).catch(() => {
-                conv._longTriggered = false;
-            });
         }
 
         function estimateTokens(text) {
@@ -2725,15 +2638,9 @@
 
             saveCurrentConversationState();
 
-            // 检查用户是否触发角色扮演
             if (checkRpTrigger(text)) {
                 isRpMode = true;
-            }
-
-            // 长窗模式下，用户发送消息时重置触发标志
-            if (currentMode === 'long') {
-                conv._longTriggered = false;
-                conv._longActive = false;
+                rpFirstMessage = true;
             }
 
             const userMsg = {
@@ -2827,12 +2734,10 @@
                 document.getElementById('aiAvatarPreview').src = getAiAvatarSrc();
                 document.getElementById('userAvatarPreview').src = getUserAvatarSrc();
                 document.getElementById('showMsgTokenToggle').checked = getMsgTokenDisplay();
-                // 气泡颜色预览
-                document.getElementById('userBubbleColorPreview').style.backgroundColor = getBubbleColor('user');
-                document.getElementById('aiBubbleColorPreview').style.backgroundColor = getBubbleColor('ai');
-                document.getElementById('userBubbleColorInput').value = getBubbleColor('user');
-                document.getElementById('aiBubbleColorInput').value = getBubbleColor('ai');
-                // 清除API检查状态
+                const userColor = getBubbleColor('user');
+                const aiColor = getBubbleColor('ai');
+                document.getElementById('userColorBtn').style.backgroundColor = userColor;
+                document.getElementById('aiColorBtn').style.backgroundColor = aiColor;
                 document.getElementById('apiCheckStatus').innerHTML = '';
             }
         }
@@ -2858,9 +2763,7 @@
             try {
                 const resp = await fetch('https://api.deepseek.com/v1/models', {
                     method: 'GET',
-                    headers: {
-                        'Authorization': 'Bearer ' + apiKey
-                    }
+                    headers: { 'Authorization': 'Bearer ' + apiKey }
                 });
                 if (resp.ok) {
                     statusEl.innerHTML = '<span class="check-success">✓ 连接成功</span>';
@@ -2930,8 +2833,9 @@
                 document.getElementById('chatArea').style.backgroundSize = 'cover';
                 document.getElementById('chatArea').style.backgroundPosition = 'center';
             }
-            // 重置角色扮演模式
             isRpMode = false;
+            rpFirstMessage = true;
+            updateModeUI();
         }
 
         function closeChat() {
@@ -2951,7 +2855,6 @@
             }
             if (e.target.id === 'apiKeyInput') {
                 setGlobalApiKey(e.target.value);
-                // 清除检查状态
                 document.getElementById('apiCheckStatus').innerHTML = '';
             }
             if (e.target.id === 'langSelect' || e.target.id === 'modelSelect') {
@@ -2959,7 +2862,6 @@
                 const conv = getCurrentConv();
                 if (conv) renderMessages(conv.messages);
             }
-            // 思考模式
             if (e.target.name === 'thinkMode') {
                 saveCurrentConversationState();
             }
