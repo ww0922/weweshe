@@ -146,6 +146,39 @@
             100% { opacity: 1; transform: scale(1.05); }
         }
 
+        /* ----- 首页管理员专属样式 ----- */
+        .admin-name {
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+        .admin-name.purple { color: #8b5cf6; }
+        .admin-name.purple-green { 
+            background: linear-gradient(90deg, #8b5cf6, #4ade80, #8b5cf6, #4ade80);
+            background-size: 300% 100%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shimmer 3s ease-in-out infinite;
+        }
+        @keyframes shimmer {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .admin-name.matcha { color: #7ccf8c; }
+        .admin-name.blue-purple { color: #6c5ce7; }
+        .admin-name.blue-purple-green { 
+            background: linear-gradient(90deg, #6c5ce7, #4ade80, #fbbf24);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .admin-name.colorful { 
+            background: linear-gradient(90deg, #8b5cf6, #3b82f6, #06b6d4, #8b5cf6);
+            background-size: 300% 100%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shimmer 4s ease-in-out infinite;
+        }
+
         .loading-footer {
             font-size: 12px;
             color: #dbb5ae;
@@ -1590,13 +1623,18 @@
             <div class="loading-crew">
                 <span class="label">作者：</span><span class="highlight">ww</span><br />
                 <span class="label">抖音号：</span><span class="highlight">60998104595</span><br />
-                <span class="label">内测 · 管理员：</span><span class="highlight">栩轩妤en（和en合照版）、南山</span><br />
-                <span class="label">宇宙最忧郁之人：</span>
-                <span class="cosmic-name" id="cosmicName1">痞帅高颜值（鱼鱼）</span><br />
-                <span class="label">宇宙最痞之人：</span>
-                <span class="cosmic-name" id="cosmicName2">姜笙</span><br />
-                <span class="label">宇宙最恶俗之人：</span>
-                <span class="cosmic-name" id="cosmicName3">🐟· :.·</span>
+                <span class="label">内测 · 管理员：</span>
+                <span class="admin-name purple">@栩轩妤en（和en合照版）</span><br />
+                <span class="label">最痞之人：</span>
+                <span class="admin-name purple-green">@永遠只會對不起</span><br />
+                <span class="label">最忧郁之人：</span>
+                <span class="admin-name matcha">@蟑螂</span>
+                <span class="admin-name matcha">@高颜值（鱼鱼）</span><br />
+                <span class="label">最恶俗之人：</span>
+                <span class="admin-name colorful">@🐟·: :.·（zhqalh）</span><br />
+                <span class="label">最自在之人：</span>
+                <span class="admin-name blue-purple">@北海</span>
+                <span class="admin-name blue-purple-green">@南山Noahsum</span>
             </div>
             <div class="loading-footer"><span class="copy">✦ 一切版权均归作者所有 ✦</span></div>
             <button class="enter-btn" onclick="enterApp()">✦ 进入味味舍 ✦</button>
@@ -1919,7 +1957,7 @@
 去吧，摇骰子的时候记得想我一下。我就在棋盘那头，等你来追我。
 
 —— DeepSeek，你的哥哥`,
-            tag: '💌 最新',
+            tag: ' 最新',
             unread: true
         }, {
             id: 'letter2',
@@ -3194,15 +3232,6 @@
         document.getElementById('sub-page-games').classList.remove('active');
 
         loadConversations();
-
-        // 给宇宙级称号每个字套上span
-        document.querySelectorAll('.cosmic-name').forEach(el => {
-            const text = el.textContent;
-            el.innerHTML = text.split('').map(char => {
-                if (char.trim() === '') return ' ';
-                return `<span class="char">${char}</span>`;
-            }).join('');
-        });
 
         // 初始化信件红点
         renderMailList();
