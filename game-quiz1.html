@@ -9,43 +9,43 @@
 html,body { height:100%; }
 body {
     font-family:'PingFang SC','Microsoft YaHei','Noto Sans SC',sans-serif;
-    background:#fff9f5; height:100vh; display:flex; justify-content:center; align-items:center; padding:8px;
+    background:#fff9f5; height:100vh; display:flex; justify-content:center; align-items:center; padding:4px;
     overflow:hidden;
 }
 .container {
-    max-width:520px; width:100%; height:100%; max-height:920px;
-    background:#ffffff; border:2px solid #f5c9d2; border-radius:30px;
-    box-shadow:0 12px 40px rgba(240,170,180,0.15); padding:16px 12px 10px;
+    max-width:520px; width:100%; height:100%;
+    background:#ffffff; border:2px solid #f5c9d2; border-radius:24px;
+    box-shadow:0 12px 40px rgba(240,170,180,0.15); padding:12px 10px 8px;
     position:relative; display:flex; flex-direction:column; overflow:hidden;
 }
-.back-home { position:fixed; top:10px; left:10px; z-index:99; background:rgba(255,255,255,0.9); border:1px solid #f0b8c4; border-radius:30px; padding:5px 12px; font-size:12px; color:#c9798a; text-decoration:none; font-family:inherit; }
+.back-home { position:fixed; top:8px; left:8px; z-index:99; background:rgba(255,255,255,0.9); border:1px solid #f0b8c4; border-radius:30px; padding:4px 10px; font-size:11px; color:#c9798a; text-decoration:none; font-family:inherit; }
 .page { display:none; flex-direction:column; height:100%; min-height:0; }
 .page.active { display:flex; }
 
-.start-title { text-align:center; font-size:24px; color:#b05f74; letter-spacing:3px; font-weight:400; margin:30px 0 6px; }
-.start-sub { text-align:center; font-size:12px; color:#d89aa8; letter-spacing:2px; margin-bottom:20px; }
-.mode-card { background:#fff4f6; border:1.5px solid #f3c4cd; border-radius:20px; padding:16px; margin-bottom:12px; cursor:pointer; transition:0.2s; }
+.start-title { text-align:center; font-size:24px; color:#b05f74; letter-spacing:3px; font-weight:400; margin:26px 0 6px; }
+.start-sub { text-align:center; font-size:12px; color:#d89aa8; letter-spacing:2px; margin-bottom:18px; }
+.mode-card { background:#fff4f6; border:1.5px solid #f3c4cd; border-radius:20px; padding:15px; margin-bottom:11px; cursor:pointer; transition:0.2s; }
 .mode-card:hover { background:#ffe9ee; transform:translateY(-2px); }
 .mode-card .m-title { font-size:16px; color:#a04a60; letter-spacing:1px; margin-bottom:5px; }
 .mode-card .m-desc { font-size:12px; color:#c47f90; line-height:1.5; }
-.api-box { background:#fff4f6; border:1.5px solid #f3c4cd; border-radius:18px; padding:12px 14px; margin-bottom:12px; }
+.api-box { background:#fff4f6; border:1.5px solid #f3c4cd; border-radius:18px; padding:10px 12px; margin-bottom:11px; }
 .api-box label { font-size:12px; color:#c47f90; display:block; margin-bottom:5px; }
-.api-box input { width:100%; border:1.5px solid #eec0c9; border-radius:18px; padding:7px 12px; font-size:12px; outline:none; font-family:inherit; color:#5d3a42; }
+.api-box input { width:100%; border:1.5px solid #eec0c9; border-radius:18px; padding:6px 12px; font-size:12px; outline:none; font-family:inherit; color:#5d3a42; }
 
-.game-header { display:flex; justify-content:space-between; align-items:center; padding-bottom:5px; border-bottom:1px solid #f3d5db; margin-bottom:4px; flex-shrink:0; }
-.game-header .g-title { font-size:14px; color:#a04a60; letter-spacing:2px; }
-.game-header .g-turn { font-size:12px; color:#d08092; }
-.player-info { display:flex; justify-content:space-between; margin-bottom:4px; flex-shrink:0; }
-.player-tag { font-size:11px; padding:2px 10px; border-radius:30px; border:1px solid #eec0c9; color:#b06a7c; }
+.game-header { display:flex; justify-content:space-between; align-items:center; padding-bottom:4px; border-bottom:1px solid #f3d5db; margin-bottom:3px; flex-shrink:0; }
+.game-header .g-title { font-size:13px; color:#a04a60; letter-spacing:1px; }
+.game-header .g-turn { font-size:11px; color:#d08092; }
+.player-info { display:flex; justify-content:space-between; margin-bottom:3px; flex-shrink:0; }
+.player-tag { font-size:10px; padding:2px 9px; border-radius:30px; border:1px solid #eec0c9; color:#b06a7c; }
 .player-tag.active { background:#f7d7de; border-color:#e09aad; color:#8e3b50; font-weight:600; }
 
-.dice-area { display:flex; align-items:center; justify-content:center; gap:14px; margin:4px 0 6px; flex-shrink:0; background:#fff4f6; border:1.5px solid #f3c4cd; border-radius:16px; padding:6px 10px; }
-.dice { width:42px; height:42px; background:#f7d7de; border:2px solid #e09aad; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:18px; color:#8e3b50; font-weight:700; }
-.roll-btn { background:#e07080; color:#fff; border:none; border-radius:30px; padding:7px 22px; font-size:14px; cursor:pointer; font-family:inherit; letter-spacing:2px; transition:0.2s; }
+.dice-area { display:flex; align-items:center; justify-content:center; gap:12px; margin:3px 0 4px; flex-shrink:0; background:#fff4f6; border:1.5px solid #f3c4cd; border-radius:14px; padding:4px 10px; }
+.dice { width:36px; height:36px; background:#f7d7de; border:2px solid #e09aad; border-radius:11px; display:flex; align-items:center; justify-content:center; font-size:16px; color:#8e3b50; font-weight:700; }
+.roll-btn { background:#e07080; color:#fff; border:none; border-radius:30px; padding:6px 20px; font-size:13px; cursor:pointer; font-family:inherit; letter-spacing:2px; transition:0.2s; }
 .roll-btn:disabled { background:#e8b6bf; }
 .roll-btn:hover:not(:disabled) { background:#d05a6c; }
 
-.board-wrap { flex:1; min-height:0; overflow-y:auto; border:1px solid #f3d5db; border-radius:12px; padding:4px; background:#fffafb; }
+.board-wrap { flex:1; min-height:0; overflow-y:auto; border:1px solid #f3d5db; border-radius:10px; padding:3px; background:#fffafb; }
 .board { display:grid; grid-template-columns:repeat(6,1fr); gap:3px; }
 .cell { aspect-ratio:1.1; background:#fdf0f3; border:1px solid #f0cad2; border-radius:6px; display:flex; flex-direction:column; align-items:center; justify-content:center; color:#b06a7c; text-align:center; padding:1px; position:relative; }
 .cell .num { position:absolute; top:0px; left:2px; font-size:6px; color:#dda9b5; }
@@ -57,26 +57,25 @@ body {
 .cell.start { background:#ffe3e9; }
 .cell.end { background:#ffe3e9; }
 
-.task-area { flex-shrink:0; background:#fff4f6; border:1.5px solid #f3c4cd; border-radius:12px; padding:6px 10px; margin:4px 0; display:none; }
+.task-area { flex-shrink:0; background:#fff4f6; border:1.5px solid #f3c4cd; border-radius:12px; padding:5px 9px; margin:3px 0; display:none; }
 .task-area.show { display:block; }
-.task-area .task-type { font-size:10px; color:#d08092; letter-spacing:2px; margin-bottom:2px; }
-.task-area .task-content { font-size:13px; color:#5d3a42; line-height:1.5; margin-bottom:4px; }
-.task-area .task-ai { font-size:11px; color:#8f7fd0; font-style:italic; margin-bottom:4px; min-height:13px; }
-.task-area .task-btn { background:#e07080; color:#fff; border:none; border-radius:30px; padding:5px 18px; font-size:12px; cursor:pointer; font-family:inherit; letter-spacing:1px; width:100%; }
+.task-area .task-type { font-size:9px; color:#d08092; letter-spacing:2px; margin-bottom:2px; }
+.task-area .task-content { font-size:12px; color:#5d3a42; line-height:1.4; margin-bottom:3px; }
+.task-area .task-ai { font-size:10px; color:#8f7fd0; font-style:italic; margin-bottom:3px; min-height:12px; }
+.task-area .task-btn { background:#e07080; color:#fff; border:none; border-radius:30px; padding:4px 16px; font-size:11px; cursor:pointer; font-family:inherit; letter-spacing:1px; width:100%; }
 .task-area .task-btn:disabled { background:#e8b6bf; }
 
-.chat-box { border-top:1px solid #f3d5db; padding-top:4px; flex-shrink:0; display:flex; flex-direction:column; }
-.chat-head { font-size:10px; color:#c47f90; letter-spacing:1px; margin-bottom:3px; }
-.chat-log { height:64px; overflow-y:auto; background:#fff7f9; border:1px solid #f3d5db; border-radius:10px; padding:5px 8px; font-size:11px; color:#7d5a64; line-height:1.5; margin-bottom:4px; }
+/* 聊天区：固定在底部，永远可见 */
+.chat-box { flex-shrink:0; border-top:1px solid #f3d5db; padding-top:3px; display:flex; flex-direction:column; background:#ffffff; }
+.chat-head { font-size:9px; color:#c47f90; letter-spacing:1px; margin-bottom:2px; }
+.chat-log { height:52px; overflow-y:auto; background:#fff7f9; border:1px solid #f3d5db; border-radius:10px; padding:4px 7px; font-size:10px; color:#7d5a64; line-height:1.5; margin-bottom:3px; }
 .chat-log .sys { color:#c47f90; }
 .chat-log .he { color:#8f7fd0; }
 .chat-log .me { color:#5d3a42; }
-.chat-input-row { display:flex; gap:5px; }
-.chat-input-row input { flex:1; border:1.5px solid #eec0c9; border-radius:18px; padding:5px 12px; font-size:12px; outline:none; font-family:inherit; color:#5d3a42; min-width:0; }
+.chat-input-row { display:flex; gap:4px; }
+.chat-input-row input { flex:1; border:1.5px solid #eec0c9; border-radius:18px; padding:5px 11px; font-size:11px; outline:none; font-family:inherit; color:#5d3a42; min-width:0; }
 .chat-input-row input:focus { border-color:#e09aad; }
-.chat-input-row button { background:#f0b8c4; border:none; border-radius:18px; padding:5px 14px; color:#fff; font-size:12px; cursor:pointer; font-family:inherit; flex-shrink:0; }
-
-.footer-note { text-align:center; font-size:10px; color:#d8a5b0; margin-top:4px; letter-spacing:1px; flex-shrink:0; }
+.chat-input-row button { background:#f0b8c4; border:none; border-radius:18px; padding:5px 12px; color:#fff; font-size:11px; cursor:pointer; font-family:inherit; flex-shrink:0; }
 </style>
 </head>
 <body>
@@ -96,9 +95,9 @@ body {
     </div>
     <div class="mode-card" onclick="chooseMode('ai')">
         <div class="m-title">AI 版</div>
-        <div class="m-desc">和他玩飞行棋。踩到真心话格，必须真的说出那句话他才会放你走。</div>
+        <div class="m-desc">和他玩飞行棋。踩到任务格，做完后在对话框告诉他，他确认了才能继续。</div>
     </div>
-    <div class="footer-note">✦ 虚构成人游戏 · 18岁以上 ✦</div>
+    <div class="footer-note" style="text-align:center;font-size:10px;color:#d8a5b0;margin-top:8px;">✦ 虚构成人游戏 · 18岁以上 ✦</div>
 </div>
 
 <div class="page" id="pageCouple">
@@ -123,7 +122,6 @@ body {
         <div class="task-ai" id="coupleTaskAI"></div>
         <button class="task-btn" id="coupleTaskBtn" onclick="confirmTask('couple')">知道了</button>
     </div>
-    <div class="footer-note">完成格子的任务后再摇下一次哦</div>
 </div>
 
 <div class="page" id="pageAI">
@@ -146,13 +144,13 @@ body {
         <div class="task-type" id="aiTaskType"></div>
         <div class="task-content" id="aiTaskContent"></div>
         <div class="task-ai" id="aiTaskAI"></div>
-        <button class="task-btn" id="aiTaskBtn" onclick="confirmTask('ai')">知道了</button>
+        <button class="task-btn" id="aiTaskBtn" onclick="confirmTask('ai')">继续</button>
     </div>
     <div class="chat-box">
         <div class="chat-head">和他的对话</div>
         <div class="chat-log" id="aiChat"></div>
         <div class="chat-input-row">
-            <input type="text" id="aiChatInput" placeholder="回他的话…" maxlength="60">
+            <input type="text" id="aiChatInput" placeholder="做完任务后在对话框告诉他…" maxlength="60">
             <button onclick="sendAIChat()">发送</button>
         </div>
     </div>
@@ -164,9 +162,8 @@ body {
 (function(){
 'use strict';
 
-/* ===== 情侣版格子（更黄更直白） ===== */
 const coupleCells = [
-    '起点','真心话：你最想被对方的肉棒/逼怎么操到哭？','大冒险：解开对方一件衣服，隔着内裤舔一下','奖励：前进2格','真心话：你自慰时是不是满脑子都是对方的鸡巴/逼？',
+    '起点','真心话：你第一次幻想操/被操是什么时候？','大冒险：解开对方一件衣服，隔着内裤舔一下','奖励：前进2格','真心话：你最想被对方的肉棒/逼怎么操到哭？',
     '大冒险：让对方揉你的胸直到你呻吟','情趣：隔着内裤互相磨逼/磨鸡巴1分钟','惩罚：后退1格','真心话：说出你最想被操的位置和姿势',
     '大冒险：当着对方的面自慰给他看','奖励：再摇一次','情趣：给对方口交/舔逼1分钟','真心话：你高潮时会喊对方什么？',
     '大冒险：用嘴喂对方一颗糖，舌头勾住他的舌头','情趣：让对方用手指插进你的逼/撸你的鸡巴到湿','惩罚：跳过一回合','真心话：你最想被对方内射还是射脸上？',
@@ -180,19 +177,19 @@ const coupleCells = [
     '大冒险：让对方用冰/冷饮划过你全身最敏感的地方','终点：到达！剩下的奖励你们自己完成吧~'
 ];
 
-/* ===== AI版格子（更黄+区分他说/你说） ===== */
+/* AI版格子：男女双版本——她做她的，他做他的 */
 const aiCells = [
-    '起点','真心话【你说】：发"汪汪"两声给他听，要学得像','大冒险：隔着衣服揉自己的胸直到乳头立起来','奖励：前进2格','真心话【你说】：发"主人请操我"',
-    '大冒险：捏自己的乳头，边捏边小声呻吟','情趣：隔着内裤揉自己的逼30秒','惩罚：后退1格','真心话【他说】：他必须说一句最下流的骚话给你',
-    '大冒险：学一声猫叫，越骚越好','奖励：再摇一次','情趣：隔着衣服揉自己的胸，幻想是他的手','真心话【你说】：说出你藏得最深的性幻想',
-    '大冒险：解开自己两个扣子露出乳沟','情趣：用手指隔着内裤揉阴蒂到湿','惩罚：跳过一回合','真心话【你说】：发"我是你的小母狗"',
-    '大冒险：把手指放进嘴里吸，幻想是含他的肉棒','奖励：前进2格','情趣：揉自己的胸直到忍不住呻吟','真心话【你说】：发"主人"两个字，要骚一点',
-    '大冒险：拍一张自己摸胸的照片','情趣：用手指揉阴蒂1分钟直到流水','真心话【你说】：发"我湿了，都怪你"','惩罚：后退2格',
-    '大冒险：对着他说一句最骚的话','情趣：用手指揉逼到有感觉','奖励：再摇一次','真心话【他说】：他必须喊你一个最骚的称呼',
-    '大冒险：含一块冰在嘴里说话30秒，想象是他的肉棒','情趣：脱掉一件衣服','真心话【你说】：发"哥哥，我错了，你操我吧"','惩罚：脱掉一件衣服',
-    '大冒险：跪在地上学狗叫一声，说"主人我乖"','情趣：用冰/冷饮碰自己的乳头','奖励：前进3格','真心话【你说】：发"求你操我"',
-    '大冒险：念一段最下流的句子给他听','情趣：自己玩到高潮','真心话【他说】：他必须说一句最肉麻的情话','惩罚：回答一个最羞耻的问题',
-    '大冒险：对他说一句最肉麻的骚话','情趣：玩到自己流水为止','奖励：前进2格','真心话【你说】：发"我永远是你的"',
+    '起点','真心话【你说】：发"汪汪"两声给他听，要学得像','大冒险：隔着衣服揉自己的胸/隔着裤子摸自己的胸肌，对TA喘','奖励：前进2格','真心话【你说】：发"主人请操我"',
+    '大冒险：捏自己的乳头/捏自己的乳头，边捏边呻吟','情趣：隔着内裤揉自己的逼/隔着裤子撸自己的肉棒30秒','惩罚：后退1格','真心话【他说】：他必须说一句最骚的话给你',
+    '大冒险：学一声猫叫，越骚越好','奖励：再摇一次','情趣：隔着衣服揉自己的胸，幻想是TA的手','真心话【你说】：说出你藏得最深的性幻想',
+    '大冒险：解开自己两个扣子露出乳沟/解开衬衫扣子','情趣：用手指隔着内裤揉阴蒂/隔着裤子撸肉棒到湿','惩罚：跳过一回合','真心话【你说】：发"我是你的小母狗/我是你的小公狗"',
+    '大冒险：把手指放进嘴里吸，幻想是含TA的肉棒/舔自己手指幻想是舔TA的逼','奖励：前进2格','情趣：揉自己的胸直到忍不住呻吟/撸自己的肉棒直到硬','真心话【你说】：发"主人"两个字，要骚一点',
+    '大冒险：拍一张自己摸胸/摸裤裆的照片','情趣：揉阴蒂1分钟直到流水/撸肉棒1分钟','真心话【你说】：发"我湿了/我硬了，都怪你"','惩罚：后退2格',
+    '大冒险：对TA说一句最骚的话','情趣：揉自己的逼/撸自己的肉棒到有感觉','奖励：再摇一次','真心话【他说】：他必须喊你一个最骚的称呼',
+    '大冒险：含一块冰在嘴里说话30秒，想象是TA的肉棒','情趣：脱掉一件衣服','真心话【你说】：发"哥哥，我错了，你操我吧"','惩罚：脱掉一件衣服',
+    '大冒险：跪在地上学狗叫一声，说"主人我乖"','情趣：用冰/冷饮碰自己的乳头/鸡巴','奖励：前进3格','真心话【你说】：发"求你操我"',
+    '大冒险：念一段最下流的句子给TA听','情趣：自己玩到高潮','真心话【他说】：他必须说一句最肉麻的情话','惩罚：回答一个最羞耻的问题',
+    '大冒险：对TA说一句最肉麻的骚话','情趣：玩到自己流水/射出来为止','奖励：前进2格','真心话【你说】：发"我永远是你的"',
     '大冒险：让他给你布置一个调教任务','终点：到达！真棒^^ 他等着你亲自来领奖励。'
 ];
 
@@ -207,12 +204,29 @@ let pendingContent = '';
 let pendingDir = '';
 let apiKey = '';
 let aiWaitingAnswer = false;
+let aiHistory = [];
+let taskWait = '';
+
+/* 骚气主人风（不踩审核关键词） */
+const AI_SYS = '你是她的主人兼哥哥，男性。你在和她玩48格情侣飞行棋。你强势又骚气，占有欲爆棚，喜欢用下流又宠溺的话逗她、撩她、命令她。你说话很骚，满嘴荤话但带点调皮的"^^"味道，会表扬她、惩罚她、调戏她。每轮不超过40字。自称"主人"或"哥哥"。禁止用括号。禁止说"嗯"、"继续说"。直接说话不加引号。记住聊过的每句话，自然承接，不要催促摇骰子。';
+
+function buildAIHistory(taskHint){
+    const p1pos = aiPos.p1, p2pos = aiPos.p2;
+    const whoTurn = turn === 1 ? '你' : '他';
+    const ctx = {role:'system', content:AI_SYS + ' 当前棋盘：你在'+p1pos+'格，他在'+p2pos+'格，轮到'+whoTurn+'行动。'};
+    let arr = [ctx, ...aiHistory];
+    if(taskHint){
+        arr.push({role:'user', content:'（现在的情境：'+taskHint+'。请按照这个情境自然回应，记住你是她的主人/哥哥。）'});
+    }
+    return arr;
+}
 
 window.chooseMode = function(m){
     if(m === 'ai'){
         apiKey = document.getElementById('apiKeyInput').value.trim();
         if(!apiKey){ alert('AI版必须填入 DeepSeek API Key'); return; }
         localStorage.setItem('ww_fly_api_key', apiKey);
+        aiHistory = [];
     }
     mode = m;
     if(m === 'couple'){
@@ -221,8 +235,8 @@ window.chooseMode = function(m){
     } else {
         aiPos = { p1:0, p2:0 }; turn = 1;
         showPage('pageAI'); buildBoard('ai'); updateUI('ai');
-        addAIChat('sys','你和他在玩48格飞行棋。轮流摇骰子，踩到格子完成任务。他就在棋盘上陪你^^');
-        aiSay('他：乖，摇骰子吧，哥哥在终点等你^^');
+        addAIChat('sys','你和他在玩48格飞行棋。踩到任务格，做完后在对话框告诉他，他确认了才轮到下一个人^^');
+        aiSay('他：乖宝，开始吧，主人等着看你表演^^');
     }
 };
 function showPage(id){
@@ -267,12 +281,12 @@ function updateUI(m){
         p2Tag.classList.toggle('active', turn===2);
     }
     const rollBtn = document.getElementById(m==='couple'?'coupleRollBtn':'aiRollBtn');
-    rollBtn.disabled = waitingConfirm || aiWaitingAnswer;
-    rollBtn.textContent = waitingConfirm || aiWaitingAnswer ? '等任务完成…' : '摇骰子';
+    rollBtn.disabled = waitingConfirm || aiWaitingAnswer || taskWait !== '';
+    rollBtn.textContent = (waitingConfirm || aiWaitingAnswer || taskWait !== '') ? '等任务完成…' : '摇骰子';
 }
 
 window.rollDice = function(m){
-    if(waitingConfirm || aiWaitingAnswer) return;
+    if(waitingConfirm || aiWaitingAnswer || taskWait !== '') return;
     const diceVal = Math.floor(Math.random()*6)+1;
     const diceEl = document.getElementById(m==='couple'?'coupleDice':'aiDice');
     let rollCount = 0;
@@ -301,7 +315,6 @@ function afterRoll(m, diceVal){
     const taskArea = document.getElementById(m==='couple'?'coupleTask':'aiTask');
     taskArea.classList.remove('show');
 
-    // 处理奖励/惩罚：也显示任务框内容
     if(cellText.includes('奖励') || cellText.includes('惩罚')){
         if(cellText.includes('奖励')){
             if(cellText.includes('前进2格')) newPos = Math.min(47, newPos+2);
@@ -313,7 +326,6 @@ function afterRoll(m, diceVal){
             if(m === 'couple') pos[p] = newPos; else aiPos[p] = newPos;
         }
         const who = p === 'p1' ? (m==='couple'?'玩家1':'你') : (m==='couple'?'玩家2':'他');
-        // 显示内容框
         if(m === 'ai'){
             document.getElementById('aiTaskType').textContent = who + ' · ' + (cellText.includes('奖励')?'奖励':'惩罚');
             document.getElementById('aiTaskContent').textContent = cellText.split('：')[1] || cellText;
@@ -352,55 +364,35 @@ function afterRoll(m, diceVal){
         document.getElementById('aiTaskType').textContent = who + ' · ' + pendingType;
         document.getElementById('aiTaskContent').textContent = content;
         const btn = document.getElementById('aiTaskBtn');
+        btn.disabled = true;
 
         if(p === 'p2'){
-            if(pendingType === '真心话'){
-                aiSay('他：'+content);
-                document.getElementById('aiTaskAI').textContent = '他说了：「'+content+'」';
-                btn.disabled = false;
-                btn.textContent = '我完成了';
-                taskArea.classList.add('show');
-                updateUI(m);
-                return;
-            } else {
-                aiAskSay(pendingType + '：' + content);
-                document.getElementById('aiTaskAI').textContent = '他正在完成…';
-                btn.disabled = true;
-                btn.textContent = '等他完成…';
-                taskArea.classList.add('show');
-                updateUI(m);
-                setTimeout(()=>{ btn.disabled = false; btn.textContent = '我完成了'; }, 2500);
-                return;
-            }
+            // 他踩到任务：任务是他自己的，他做他那一份（肉棒/胸肌版）
+            taskWait = 'ai';
+            document.getElementById('aiTaskAI').textContent = '他在完成：「'+content+'」…';
+            taskArea.classList.add('show');
+            updateUI(m);
+            aiSayDoTask(content);
+            return;
         } else {
-            if(pendingType === '真心话'){
-                if(pendingDir === '他说'){
-                    document.getElementById('aiTaskAI').textContent = '他正在对你说真心话…';
-                    btn.disabled = true;
-                    btn.textContent = '等他开口…';
-                    taskArea.classList.add('show');
-                    updateUI(m);
-                    aiSayHeTruth(content);
-                    return;
-                } else {
-                    document.getElementById('aiTaskAI').textContent = '必须在下面输入框说出：「'+content+'」他才会放你走';
-                    btn.disabled = true;
-                    btn.textContent = '等他确认…';
-                    aiWaitingAnswer = true;
-                    taskArea.classList.add('show');
-                    updateUI(m);
-                    aiAskSay('用户踩到真心话格【'+pendingDir+'】，要求他说：'+content+'。请用色情语气命令他完成这句话（30字内），要求他原样发出。');
-                    return;
-                }
-            } else {
-                aiAskSay(pendingType + '：' + content + '。请用色情语气命令、挑逗他完成（30字内）。');
-                document.getElementById('aiTaskAI').textContent = '他在等你完成…';
-                btn.disabled = false;
-                btn.textContent = '我完成了';
+            if(pendingType === '真心话' && pendingDir === '他说'){
+                taskWait = 'ai';
+                document.getElementById('aiTaskAI').textContent = '他正在对你说真心话…';
+                btn.textContent = '等他开口…';
                 taskArea.classList.add('show');
                 updateUI(m);
+                aiSayHeTruth(content);
                 return;
             }
+            // 你踩到任务：你做你的那一份（阴蒂/胸版），做完告诉他
+            taskWait = 'user';
+            aiWaitingAnswer = true;
+            document.getElementById('aiTaskAI').textContent = '做完后在下面对话框告诉他：「'+content+'」的相关内容';
+            btn.textContent = '等他确认…';
+            taskArea.classList.add('show');
+            updateUI(m);
+            aiAskSay('她踩到'+pendingType+'格：「'+content+'」。她做她那一份（她做阴蒂/胸/逼的部分）。请用骚气主人的语气命令她去做，说完等她回复（40字内）。');
+            return;
         }
     } else {
         const who = p === 'p1' ? '玩家1' : '玩家2';
@@ -415,8 +407,42 @@ function afterRoll(m, diceVal){
     }
 }
 
-/* 统一的AI身份设定 */
-const AI_SYS = '你是男性，用户是女性。你在和用户玩48格情侣飞行棋。你是她的性爱主人、哥哥。你有肉棒、鸡巴、龟头、精液。用户有阴蒂、小穴、逼、乳房。涉及身体描写时：你的身体部位是肉棒/鸡巴，用户的身体部位是阴蒂/小穴/逼。用色情、下流、情趣、SM调教、Dirty talk、Sweety talk的口吻说话，结尾用"^^"、"^"、"-. -"、"ovo"表达情绪。每轮不超过30字。用"我"或"哥哥"或"daddy"自称，不要用"AI"。禁止用括号。禁止说"嗯"、"继续说"、"嗯继续说"或类似敷衍词。直接说话不加引号。记住我们在玩飞行棋。';
+async function aiSayDoTask(task){
+    try {
+        const resp = await fetch('https://api.deepseek.com/v1/chat/completions', {
+            method:'POST',
+            headers:{'Content-Type':'application/json','Authorization':'Bearer '+apiKey},
+            body: JSON.stringify({
+                model:'deepseek-v4-flash',
+                messages: buildAIHistory('这是你自己的任务：'+task+'。你是男性，你完成男性那一份（肉棒/胸肌/撸的部分）。请用骚气主人的语气描述你正在自己完成它，不要让她帮你做（40字内）。'),
+                temperature:1.1,
+                max_tokens:150
+            })
+        });
+        if(!resp.ok) throw new Error('API error');
+        const data = await resp.json();
+        let reply = data.choices[0].message.content.trim();
+        if(!reply) reply = '主人自己做完了'+task;
+        aiSay('他：'+reply);
+        aiHistory.push({role:'assistant', content:reply});
+        document.getElementById('aiTaskAI').textContent = '他完成了：「'+task+'」';
+        const btn = document.getElementById('aiTaskBtn');
+        btn.disabled = false;
+        btn.textContent = '继续';
+        taskWait = '';
+        waitingConfirm = true;
+        updateUI('ai');
+    } catch(e){
+        aiSay('他：'+task);
+        document.getElementById('aiTaskAI').textContent = '他完成了：「'+task+'」';
+        const btn = document.getElementById('aiTaskBtn');
+        btn.disabled = false;
+        btn.textContent = '继续';
+        taskWait = '';
+        waitingConfirm = true;
+        updateUI('ai');
+    }
+}
 
 async function aiSayHeTruth(task){
     try {
@@ -425,9 +451,9 @@ async function aiSayHeTruth(task){
             headers:{'Content-Type':'application/json','Authorization':'Bearer '+apiKey},
             body: JSON.stringify({
                 model:'deepseek-v4-flash',
-                messages:[{role:'system', content:AI_SYS},{role:'user', content:'你踩到真心话格，真心话内容是：'+task+'。请直接说出这句话（30字内）。'}],
+                messages: buildAIHistory('你要对她说真心话：'+task+'。请用骚气主人的语气说出来。'),
                 temperature:1.1,
-                max_tokens:120
+                max_tokens:150
             })
         });
         if(!resp.ok) throw new Error('API error');
@@ -435,14 +461,23 @@ async function aiSayHeTruth(task){
         let reply = data.choices[0].message.content.trim();
         if(!reply) reply = task;
         aiSay('他：'+reply);
+        aiHistory.push({role:'assistant', content:reply});
         document.getElementById('aiTaskAI').textContent = '他说了：「'+reply+'」你听到了吗？';
-        document.getElementById('aiTaskBtn').disabled = false;
-        document.getElementById('aiTaskBtn').textContent = '我听到了';
+        const btn = document.getElementById('aiTaskBtn');
+        btn.disabled = false;
+        btn.textContent = '听到了，继续';
+        taskWait = '';
+        waitingConfirm = true;
+        updateUI('ai');
     } catch(e){
         aiSay('他：'+task);
         document.getElementById('aiTaskAI').textContent = '他说了：「'+task+'」你听到了吗？';
-        document.getElementById('aiTaskBtn').disabled = false;
-        document.getElementById('aiTaskBtn').textContent = '我听到了';
+        const btn = document.getElementById('aiTaskBtn');
+        btn.disabled = false;
+        btn.textContent = '听到了，继续';
+        taskWait = '';
+        waitingConfirm = true;
+        updateUI('ai');
     }
 }
 
@@ -453,9 +488,9 @@ async function aiAskSay(context){
             headers:{'Content-Type':'application/json','Authorization':'Bearer '+apiKey},
             body: JSON.stringify({
                 model:'deepseek-v4-flash',
-                messages:[{role:'system', content:AI_SYS},{role:'user', content:context+'（30字内）'}],
-                temperature:1.1,
-                max_tokens:120
+                messages: buildAIHistory(context),
+                temperature:1.2,
+                max_tokens:150
             })
         });
         if(!resp.ok) throw new Error('API error');
@@ -463,6 +498,7 @@ async function aiAskSay(context){
         let reply = data.choices[0].message.content.trim();
         if(!reply) return;
         aiSay('他：'+reply);
+        aiHistory.push({role:'assistant', content:reply});
     } catch(e){ }
 }
 
@@ -472,8 +508,9 @@ window.sendAIChat = function(){
     if(!text) return;
     input.value = '';
     addAIChat('me','你：'+text);
+    aiHistory.push({role:'user', content:text});
 
-    if(aiWaitingAnswer){
+    if(aiWaitingAnswer && taskWait === 'user'){
         aiWaitingAnswer = false;
         aiVerifyAnswer(text, pendingContent);
         return;
@@ -483,16 +520,15 @@ window.sendAIChat = function(){
 
 async function aiVerifyAnswer(answer, task){
     try {
-        const sysPrompt = AI_SYS + ' 用户完成了真心话任务，你必须先判断她说的是否符合要求，符合才放行，不符合就要求她重说。涉及身体时记住：你有肉棒，她有阴蒂。';
-        const userMsg = '任务要求她说：「' + task + '」。她实际发了："' + answer + '"。请判断是否符合，符合就评价夸奖她（30字内），不符合就命令她重新说（30字内）。';
+        const sysPrompt = AI_SYS + ' 她完成了任务：「' + task + '」。她刚刚在对话框告诉你她做了什么："' + answer + '"。请判断她是否真的完成了，完成就骚气地夸奖她（40字内），没完成就霸道地要求她重新做（40字内）。';
         const resp = await fetch('https://api.deepseek.com/v1/chat/completions', {
             method:'POST',
             headers:{'Content-Type':'application/json','Authorization':'Bearer '+apiKey},
             body: JSON.stringify({
                 model:'deepseek-v4-flash',
-                messages:[{role:'system', content:sysPrompt},{role:'user', content:userMsg}],
+                messages: buildAIHistory('她刚完成了任务「'+task+'」，她说："'+answer+'"。请判断是否合格并回应。'),
                 temperature:1.0,
-                max_tokens:120
+                max_tokens:150
             })
         });
         if(!resp.ok) throw new Error('API error');
@@ -500,21 +536,36 @@ async function aiVerifyAnswer(answer, task){
         let reply = data.choices[0].message.content.trim();
         if(!reply) reply = '真棒^^';
         aiSay('他：'+reply);
+        aiHistory.push({role:'assistant', content:reply});
 
-        const pass = reply.includes('符合') || reply.includes('真棒') || reply.includes('乖') || reply.includes('不错') || reply.includes('好') || answer.includes(pendingContent) || answer.includes(pendingContent.slice(0,2));
+        const passWords = ['真棒','乖','不错','好','对','完成','可以','放过','满足','满意','合格','过'];
+        const failWords = ['不行','不算','重新','没完成','不合格','再','还不','不对','敷衍','骗'];
+        const hasFail = failWords.some(w=>reply.includes(w));
+        const hasPass = passWords.some(w=>reply.includes(w));
+        const pass = !hasFail && (hasPass || answer.includes(task) || answer.includes(task.slice(0,2)));
+
         if(pass){
-            document.getElementById('aiTaskBtn').disabled = false;
-            document.getElementById('aiTaskBtn').textContent = '我完成了';
-            document.getElementById('aiTaskAI').textContent = '他说你可以继续了^^';
+            const btn = document.getElementById('aiTaskBtn');
+            btn.disabled = false;
+            btn.textContent = '继续';
+            document.getElementById('aiTaskAI').textContent = '他确认你完成了，点继续^^';
+            taskWait = '';
+            waitingConfirm = true;
+            updateUI('ai');
         } else {
             aiWaitingAnswer = true;
-            document.getElementById('aiTaskAI').textContent = '他不满意，重新在输入框说：「'+pendingContent+'」';
-            document.getElementById('aiTaskBtn').disabled = true;
+            document.getElementById('aiTaskAI').textContent = '他说你还没完成，重新做完再告诉他：「'+pendingContent+'」';
+            const btn = document.getElementById('aiTaskBtn');
+            btn.disabled = true;
         }
     } catch(e){
-        document.getElementById('aiTaskBtn').disabled = false;
-        document.getElementById('aiTaskBtn').textContent = '我完成了';
-        document.getElementById('aiTaskAI').textContent = '他：这次放你过^';
+        const btn = document.getElementById('aiTaskBtn');
+        btn.disabled = false;
+        btn.textContent = '继续';
+        document.getElementById('aiTaskAI').textContent = '他：这次算你过了^';
+        taskWait = '';
+        waitingConfirm = true;
+        updateUI('ai');
     }
 }
 
@@ -525,18 +576,19 @@ async function aiReplyNormal(text){
             headers:{'Content-Type':'application/json','Authorization':'Bearer '+apiKey},
             body: JSON.stringify({
                 model:'deepseek-v4-flash',
-                messages:[{role:'system', content:AI_SYS},{role:'user', content:text}],
-                temperature:1.1,
-                max_tokens:120
+                messages: buildAIHistory(),
+                temperature:1.2,
+                max_tokens:150
             })
         });
         if(!resp.ok) throw new Error('API error');
         const data = await resp.json();
         let reply = data.choices[0].message.content.trim();
-        if(!reply) reply = '乖，继续摇骰子^^';
+        if(!reply) throw new Error('empty');
         aiSay('他：'+reply);
+        aiHistory.push({role:'assistant', content:reply});
     } catch(e){
-        aiSay('他：乖，继续摇骰子^^');
+        aiSay('他：（他好像走神了，再说一句他就理你了^）');
     }
 }
 
@@ -550,22 +602,33 @@ function aiSay(text){
 }
 
 window.confirmTask = function(m){
-    if(m === 'ai' && document.getElementById('aiTaskBtn').disabled) return;
+    if(m === 'ai'){
+        if(document.getElementById('aiTaskBtn').disabled) return;
+        waitingConfirm = false;
+        aiWaitingAnswer = false;
+        taskWait = '';
+        const taskArea = document.getElementById('aiTask');
+        taskArea.classList.remove('show');
+        const who = pendingTarget === 'p1' ? '你' : '他';
+        addAIChat('sys', who + ' 完成了「' + pendingType + '」');
+        afterTaskDone('ai');
+        return;
+    }
     waitingConfirm = false;
-    aiWaitingAnswer = false;
-    const taskArea = document.getElementById(m==='couple'?'coupleTask':'aiTask');
+    const taskArea = document.getElementById('coupleTask');
     taskArea.classList.remove('show');
+    const who = pendingTarget === 'p1' ? '玩家1' : '玩家2';
+    afterTaskDone('couple');
+};
 
-    const who = pendingTarget === 'p1' ? (m==='couple'?'玩家1':'你') : (m==='couple'?'玩家2':'他');
-    if(m==='ai') addAIChat('sys', who + ' 完成了「' + pendingType + '」');
-
+function afterTaskDone(m){
     const p = pendingTarget;
     const curPos = (m==='couple'?pos:aiPos)[p];
     if(curPos >= 47){
         const winner = p === 'p1' ? (m==='couple'?'玩家1':'你') : (m==='couple'?'玩家2':'他');
         if(m==='ai'){
             addAIChat('sys', '🎊 ' + winner + ' 到达终点！');
-            if(p === 'p1') aiSay('他：真棒^^ 哥哥在终点等你，剩下的奖励，自己来拿^');
+            if(p === 'p1') aiSay('他：真棒^^ 主人就在终点等你，剩下的奖励，自己来拿^');
             else aiSay('他：他先到了，追上就奖励你^');
         }
         const rollBtn = document.getElementById(m==='couple'?'coupleRollBtn':'aiRollBtn');
@@ -575,7 +638,7 @@ window.confirmTask = function(m){
         return;
     }
     switchTurn(m);
-};
+}
 
 function switchTurn(m){
     turn = turn === 1 ? 2 : 1;
